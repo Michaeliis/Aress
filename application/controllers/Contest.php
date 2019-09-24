@@ -118,4 +118,18 @@ class Contest extends CI_Controller {
         
         echo "Intent telah dibuat";
     }
+
+    public function nyoba(){
+        $this->load->view('chat');
+    }
+
+    public function nyobawys(){
+        echo $this->input->post('beta'). "<br>";
+        echo $this->input->post('elijah');
+        echo "sup";
+    }
+
+    public function supbro(){
+        echo "sup";
+    }
 }
