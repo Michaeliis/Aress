@@ -120,28 +120,19 @@ class Contest extends CI_Controller {
         echo "Intent telah dibuat";
     }
 
-    public function chat(){
+    public function chat($msgId){
+        $data['msgInfo'] = $this->M_basic->find('message', array("msgId"=>$msgId))->result();
+        $data['chat'] = $this->M_basic->find('chat', array("msgId"=>$msgId))->result();
+
         $this->load->view('header');
-        $this->load->view('chat');
+        $this->load->view('messageSide');
+        $this->load->view('chat', $data);
         $this->load->view('footer');
-    }
-
-    public function nyobawys(){
-        echo $this->input->post('beta'). "<br>";
-        echo $this->input->post('elijah'). "<br>";
-        echo $this->input->post('report'). "<br>";
-        echo $this->input->post('subject'). "<br>";
-        
-        
-        echo "sup";
-    }
-
-    public function supbro(){
-        echo "sup";
     }
 
     public function compose(){
         $this->load->view('header');
+        $this->load->view('messageSide');
         $this->load->view('compose');
         $this->load->view('footer');
     }
@@ -206,5 +197,16 @@ class Contest extends CI_Controller {
             "chatStatus"=>1
         );
         $this->M_basic->insert('chat', $data);
+    }
+
+    public function inbox(){
+        $data['message'] = $this->M_basic->find('message', array('msgReceiver'=>'Ares'))->result();
+        $this->load->view('header');        $this->load->view('messageSide');
+        $this->load->view('messageList', $data);
+        $this->load->view('footer');
+    }
+
+    public function curdate(){
+        echo date("Y-m-d h:i:s");
     }
 }
