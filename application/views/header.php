@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="fixed sidebar-left-collapsed">
+<html class="fixed <?php if(isset($collapse)){echo 'sidebar-left-collapsed';}?>">
 	<head>
 
 		<!-- Basic -->
 		<meta charset="UTF-8">
 
-		<title>E-Mail | Okler Themes | Porto-Admin</title>
+		<title><?= $title?></title>
 		<meta name="keywords" content="HTML5 Admin Template" />
 		<meta name="description" content="Porto Admin - Responsive HTML5 Template">
 		<meta name="author" content="okler.net">
@@ -731,8 +731,8 @@
                                         <i class="fa fa-home"></i>
                                     </a>
                                 </li>
-                                <li><span>Mailbox</span></li>
-                                <li><span>Compose</span></li>
+                                <li><span><?= $subtitle?></span></li>
+                                <li><span><?= $title?></span></li>
                             </ol>
                     
                             <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>

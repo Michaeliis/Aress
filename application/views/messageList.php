@@ -18,10 +18,12 @@
                     <div class="col-sm-6">
                         <div class="search">
                             <div class="input-group input-search">
-                                <input type="text" class="form-control" name="q" id="q" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                                </span>
+                                <form name="searchMsg" id="searchMsg" action="<?= base_url('contest/search_message')?>">
+                                    <input type="text" class="form-control" name="q" id="q" placeholder="Search...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -75,7 +77,7 @@
                                     </div>
                                     <div class="col-mail">
                                         <p class="m-none mail-content">
-                                            <span class="subject"><?= $messages->msgSubject?> &nbsp;–&nbsp;</span>
+                                            <span class="subject"><?= $messages->msgSubject?></span>
                                         </p>
                                         <p class="m-none mail-date">
                                             <?php

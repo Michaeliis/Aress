@@ -124,14 +124,24 @@ class Contest extends CI_Controller {
         $data['msgInfo'] = $this->M_basic->find('message', array("msgId"=>$msgId))->result();
         $data['chat'] = $this->M_basic->find('chat', array("msgId"=>$msgId))->result();
 
-        $this->load->view('header');
+        $header = array(
+            "collapse"=>true,
+            "subtitle"=>"Report",
+            "title"=>"Mail"
+        );
+        $this->load->view('header', $header);
         $this->load->view('messageSide');
         $this->load->view('chat', $data);
         $this->load->view('footer');
     }
 
     public function compose(){
-        $this->load->view('header');
+        $header = array(
+            "collapse"=>true,
+            "subtitle"=>"Report",
+            "title"=>"New Report"
+        );
+        $this->load->view('header', $header);
         $this->load->view('messageSide');
         $this->load->view('compose');
         $this->load->view('footer');
@@ -201,12 +211,20 @@ class Contest extends CI_Controller {
 
     public function inbox(){
         $data['message'] = $this->M_basic->find('message', array('msgReceiver'=>'Ares'))->result();
-        $this->load->view('header');        $this->load->view('messageSide');
+
+        $header = array(
+            "collapse"=>true,
+            "subtitle"=>"Report",
+            "title"=>"Report List"
+        );
+        $this->load->view('header', $header);
+        $this->load->view('messageSide');
         $this->load->view('messageList', $data);
         $this->load->view('footer');
     }
 
     public function curdate(){
-        echo date("Y-m-d h:i:s");
+        $this->load->view('header');
+        $this->load->view('footer');
     }
 }
