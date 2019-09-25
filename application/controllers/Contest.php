@@ -120,16 +120,28 @@ class Contest extends CI_Controller {
     }
 
     public function nyoba(){
+        $this->load->view('header');
         $this->load->view('chat');
+        $this->load->view('footer');
     }
 
     public function nyobawys(){
         echo $this->input->post('beta'). "<br>";
-        echo $this->input->post('elijah');
+        echo $this->input->post('elijah'). "<br>";
+        echo $this->input->post('report'). "<br>";
+        echo $this->input->post('subject'). "<br>";
+        
+        
         echo "sup";
     }
 
     public function supbro(){
         echo "sup";
+    }
+
+    public function compose(){
+        $this->load->view('header');
+        $this->load->view('compose');
+        $this->load->view('footer');
     }
 }
