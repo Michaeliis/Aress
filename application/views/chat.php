@@ -115,9 +115,8 @@
 							
 									<div class="compose">
 										<form name="ooga" method="POST" action="<?= base_url('Contest/nyobawys')?>">
-											<textarea name="beta" id="summernote">
+											<textarea name="mail" id="summernote">
 											</textarea>
-											<input type="text" name="elijah">
 											<div class="text-right mt-md">
 												<a href="#" class="btn btn-primary" onclick="document.forms['ooga'].submit();">
 													<i class="fa fa-send mr-xs"></i>

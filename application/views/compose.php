@@ -113,7 +113,9 @@
                                     </ul>
                                 </div>
                                 <div class="mailbox-compose">
-                                    <form id="compose" action="<?= base_url('Contest/nyobawys')?>" method="POST" class="form-horizontal form-bordered form-bordered">
+
+                                    <!-- Form kirim -->
+                                    <form id="compose" action="<?= base_url('Contest/sendReport')?>" method="POST" class="form-horizontal form-bordered form-bordered">
                                         <!--
                                         <div class="form-group form-group-invisible">
                                             <label for="to" class="control-label-invisible">To:</label>
@@ -121,14 +123,17 @@
                                                 <input id="to" type="text" class="form-control form-control-invisible" data-role="tagsinput" data-tag-class="label label-primary" value="">
                                             </div>
                                         </div>
+                                        -->
                             
                                         <div class="form-group form-group-invisible">
-                                            <label for="cc" class="control-label-invisible">CC:</label>
+                                            <label for="to" class="control-label-invisible">To:</label>
                                             <div class="col-sm-offset-2 col-sm-9 col-md-offset-1 col-md-10">
-                                                <input id="cc" type="text" class="form-control form-control-invisible" data-role="tagsinput" data-tag-class="label label-primary" value="">
+                                                <select id="to" type="text" class="form-control form-control-invisible" data-role="tagsinput" data-tag-class="label label-primary" name="to">
+                                                    <option value="Ares">Ares</option>
+                                                </select>
                                             </div>
                                         </div>
-                                        -->
+                                        
                             
                                         <div class="form-group form-group-invisible">
                                             <label for="subject" class="control-label-invisible">Subject:</label>

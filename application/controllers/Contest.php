@@ -7,6 +7,7 @@ class Contest extends CI_Controller {
 		parent::__construct();
         $this->load->model('m_default');
         $this->load->helper('witai');
+        $this->load->model('M_basic');
 	}
 	public function index()
 	{
@@ -119,7 +120,7 @@ class Contest extends CI_Controller {
         echo "Intent telah dibuat";
     }
 
-    public function nyoba(){
+    public function chat(){
         $this->load->view('header');
         $this->load->view('chat');
         $this->load->view('footer');
@@ -143,5 +144,67 @@ class Contest extends CI_Controller {
         $this->load->view('header');
         $this->load->view('compose');
         $this->load->view('footer');
+    }
+    
+    public function sendReport(){
+        //tarik data form
+        $message = $this->input->post('report');
+        $subject = $this->input->post('subject');
+        $msgReceiver = $this->input->post('to');
+
+        //tarik data session
+        $msgSender = "Saya";
+
+        //tarik tanggal
+        $curDate = date("Y-m-d H:i:s");
+        $msgId = date("YmdHis");
+
+        //insert message baru
+        $data = array(
+            "msgId"=>$msgId,
+            "msgSubject"=>$subject,
+            "msgSender"=>$msgSender,
+            "msgReceiver"=>$msgReceiver,
+            "msgDate"=>$curDate,
+            "msgStatus"=>1
+        );
+        $this->M_basic->insert('message', $data);
+
+        //insert chat baru
+        $data = array(
+            "msgId"=>$msgId,
+            "chatId"=>$msgId,
+            "chatContent"=>$message,
+            "chatDate"=>$curDate,
+            "chatStatus"=>1
+        );
+        $this->M_basic->insert('chat', $data);
+
+        //interact dengan NLP
+        $server_output = doStuff("message", $message, null);
+        
+        $result = json_decode($server_output);
+        
+        if(isset($result->entities->intent[0]->value)){
+            $intent = $result->entities->intent[0]->value;
+            
+            $querRes = $this->m_default->getResponse($intent)->result();
+            foreach($querRes as $querRess){
+                $answer = $querRess->response;
+            }
+            
+        }else{
+            $answer = "no intent";
+        }
+        
+        //insert chat balasan bot
+        $data = array(
+            "msgId"=>$msgId,
+            "chatId"=>"reply",
+            "chatContent"=>$answer,
+            "chatDate"=>$curDate,
+            "chatStatus"=>1
+        );
+        $this->M_basic->insert('chat', $data);
     }
 }
