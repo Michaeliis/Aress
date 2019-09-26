@@ -725,7 +725,7 @@
 
                 <section role="main" class="content-body">
                     <header class="page-header">
-                        <h2>Compose</h2>
+                        <h2><?= $title?></h2>
                     
                         <div class="right-wrapper pull-right">
                             <ol class="breadcrumbs">

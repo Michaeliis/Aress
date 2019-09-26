@@ -275,15 +275,17 @@ class Contest extends CI_Controller {
         $this->load->view('footer');
     }
 
-    public function testDynamic(){
-        $keyword = $this->input->post('keyword');
-        $synonym = $this->input->post('synonym');
+    public function resolve($msgId){
+        $data['msgInfo'] = $this->M_basic->find('message', array("msgId"=>$msgId))->result();
+        $data['firstChat'] = $this->m_default->getFirstChat('chat', array("msgId"=>$msgId))->result();
+        $data['restChat'] = $this->m_default->getRestChat('chat', array("msgId"=>$msgId))->result();
         
-        $counter = 0;
-        foreach($keyword as $keywords){
-            echo $keywords;
-            echo $synonym[$counter];
-            $counter++;
-        }
+        $header = array(
+            "subtitle"=>"Test",
+            "title"=>"Panel"
+        );
+        $this->load->view('header', $header);
+        $this->load->view('resolve', $data);
+        $this->load->view('footer');
     }
 }
