@@ -53,14 +53,14 @@
                     </div>
 
                     
-                    
-                    <h3>Keywords</h3>
-                    <p> 
+                    <div class="form-group">
+                    <h3 class="col-sm-offset-1">Keywords</h3>
+                    <p class="col-sm-offset-1"> 
                         <input type="button" class="btn-success" value="Add Keyword" onClick="addRow('dataTable')"> 
                         <input type="button" class="btn-danger" value="Remove Keyword" onClick="deleteRow('dataTable')">
                     </p>
                     
-                    <table id="dataTable" class="input-group col-sm-11 mb-md">
+                    <table id="dataTable" class="input-group col-sm-10 col-sm-offset-1 mb-md">
                         <tbody>
                         <tr>
                             <p>
@@ -69,12 +69,13 @@
                                 <input type="text" name="keyword[]" class="form-control" placeholder="Keyword" required>
                             </td>
                             <td>
-                                <textarea name="synonym[]" class="form-control" placeholder="Synonym of that word"></textarea>
+                                <textarea name="synonym[]" rows="3" class="form-control" placeholder="Synonym of that word"></textarea>
                             </td>
                             </p>
                         </tr>
                         </tbody>
                     </table>
+                    </div>
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="sample">Response</label>

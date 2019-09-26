@@ -290,7 +290,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-active">
-                                        <a href="mailbox-folder.html">
+                                        <a href="<?= base_url('contest/message_all')?>">
                                             <span class="pull-right label label-primary">182</span>
                                             <i class="fa fa-envelope" aria-hidden="true"></i>
                                             <span>Mailbox</span>

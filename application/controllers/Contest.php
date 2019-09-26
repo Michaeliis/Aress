@@ -237,8 +237,9 @@ class Contest extends CI_Controller {
     }
 
     public function inbox(){
-        $data['message'] = $this->M_basic->find('message', array('msgReceiver'=>'Ares'))->result();
+        //$data['message'] = $this->M_basic->find('message', array('msgReceiver'=>'Ares'))->result();
 
+        $data['message'] = $this->M_basic->gets('message')->result();
         $header = array(
             "collapse"=>true,
             "subtitle"=>"Report",
