@@ -27,7 +27,7 @@
                                 <ul>
                                     <li class="status-online">
                                         <figure class="profile-picture">
-                                            <img src="<?= base_url('assets/')?>images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+                                            <img src="<?=base_url("assets/")?>images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
                                         </figure>
                                         <div class="profile-info">
                                             <span class="name">Joseph Doe Junior</span>
@@ -36,7 +36,7 @@
                                     </li>
                                     <li class="status-online">
                                         <figure class="profile-picture">
-                                            <img src="<?= base_url('assets/')?>images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+                                            <img src="<?=base_url("assets/")?>images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
                                         </figure>
                                         <div class="profile-info">
                                             <span class="name">Joseph Doe Junior</span>
@@ -45,7 +45,7 @@
                                     </li>
                                     <li class="status-offline">
                                         <figure class="profile-picture">
-                                            <img src="<?= base_url('assets/')?>images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+                                            <img src="<?=base_url("assets/")?>images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
                                         </figure>
                                         <div class="profile-info">
                                             <span class="name">Joseph Doe Junior</span>
@@ -54,7 +54,7 @@
                                     </li>
                                     <li class="status-offline">
                                         <figure class="profile-picture">
-                                            <img src="<?= base_url('assets/')?>images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+                                            <img src="<?=base_url("assets/")?>images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
                                         </figure>
                                         <div class="profile-info">
                                             <span class="name">Joseph Doe Junior</span>
@@ -80,9 +80,13 @@
 		<script src="<?=base_url("assets/")?>vendor/jquery-placeholder/jquery.placeholder.js"></script>
 		
 		<!-- Specific Page Vendor -->
-        
         <script src="<?=base_url("assets/")?>vendor/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
         <script src="<?=base_url("assets/")?>vendor/summernote/summernote.js"></script>
+
+        <script src="<?=base_url("assets/")?>vendor/select2/select2.js"></script>
+		<script src="<?=base_url("assets/")?>vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+		<script src="<?=base_url("assets/")?>vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+		<script src="<?=base_url("assets/")?>vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
 		
 		<!-- Theme Base, Components and Settings -->
 		<script src="<?=base_url("assets/")?>javascripts/theme.js"></script>
@@ -93,5 +97,9 @@
 		<!-- Theme Initialization Files -->
 		<script src="<?=base_url("assets/")?>javascripts/theme.init.js"></script>
 
+        <!-- Examples -->
+		<script src="<?=base_url("assets/")?>javascripts/tables/examples.datatables.default.js"></script>
+		<script src="<?=base_url("assets/")?>javascripts/tables/examples.datatables.row.with.details.js"></script>
+		<script src="<?=base_url("assets/")?>javascripts/tables/examples.datatables.tabletools.js"></script>
 	</body>
 </html>

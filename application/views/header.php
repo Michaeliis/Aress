@@ -27,6 +27,9 @@
         <link rel="stylesheet" href="<?=base_url("assets/")?>vendor/summernote/summernote-bs4.css" />
         <link rel="stylesheet" href="<?= base_url('assets/')?>vendor/bootstrap-tagsinput/bootstrap-tagsinput.css" />
 
+        <link rel="stylesheet" href="<?= base_url("assets/")?>vendor/select2/select2.css" />
+		<link rel="stylesheet" href="<?= base_url("assets/")?>vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+
 		<!-- Theme CSS -->
 		<link rel="stylesheet" href="<?=base_url("assets/")?>stylesheets/theme.css" />
 
