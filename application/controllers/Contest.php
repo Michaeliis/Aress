@@ -50,41 +50,28 @@ class Contest extends CI_Controller {
     }
 
     public function insertIntent(){
-        $intentName = $this->input->post("intentName");
-        $keyword = $this->input->post("keyword1");
-        $keyword2 = $this->input->post("keyword2");
+        $intentName = $this->input->post("intent");
         $sample = $this->input->post("sample");
+        $keyword = $this->input->post('keyword');
+        $synonym = $this->input->post('synonym');
+        $category = $this->input->post('category');
+        $assign = $this->input->post('assign');
+        $response = $this->input->post('response');
         
-
-        //untuk memasukkan keyword baru berupa intent
+        //untuk memasukkan intent baru 
         $json1 = json_encode(array("value"=>$intentName));
         echo $json1. "<br>";
         $server_output1 = doStuff("entities/intent", null, $json1);
-
-        //untuk memasukkan intent baru
-        $json = json_encode(array("id"=>$keyword));
-        echo $json. "<br>";
-        $server_output = doStuff("entities/", null, $json);
-        //untuk memasukkan keyword baru
-        $json1 = json_encode(array("value"=>$keyword));
-        echo $json1. "<br>";
-        $server_output1 = doStuff("entities/".$keyword, null, $json1);
-
-        //untuk memasukkan intent baru
-        $json = json_encode(array("id"=>$keyword2));
-        echo $json. "<br>";
-        $server_output = doStuff("entities/", null, $json);
-        //untuk memasukkan keyword baru
-        $json1 = json_encode(array("value"=>$keyword2));
-        echo $json1. "<br>";
-        $server_output1 = doStuff("entities/".$keyword2, null, $json1);
+        //ke DB
+        $dataIntentDb = array(
+            "intent"=>$intentName,
+            "response"=>$response,
+            "category"=>$category,
+            "assignedTo"=>$assign
+        );
+        $this->M_basic->insert("response", $dataIntentDb);
 
 
-        $posKey1 = strpos($sample, $keyword);
-        $endKey1 = $posKey1 + strlen($keyword);
-        $posKey2 = strpos($sample, $keyword2);
-        $endKey2 = $posKey2 + strlen($keyword2);
-        
         //untuk memasukkan sample
         $sampleJson[0] = array(
             "text"=>$sample,
@@ -92,25 +79,58 @@ class Contest extends CI_Controller {
                 array(
                     "entity"=>"intent",
                     "value"=>$intentName
-                ),
-                array(
-                    "entity"=>$keyword,
-                    "value"=>$keyword,
-                    "start"=>$posKey1,
-                    "end"=>$endKey1,
-                    "value"=>$keyword
-                ),
-                array(
-                    "entity"=>$keyword2,
-                    "value"=>$keyword2,
-                    "start"=>$posKey2,
-                    "end"=>$endKey2,
-                    "value"=>$keyword2
                 )
                 
             )
             
         );
+
+        $counter = 0;
+        foreach($keyword as $keywords){
+            echo $keywords;
+            echo $synonym[$counter];
+
+            //untuk memasukkan entity baru
+            $json = json_encode(array("id"=>$keywords));
+            echo $json. "<br>";
+            $server_output = doStuff("entities/", null, $json);
+
+            //untuk memasukkan keyword baru
+            $infoKeyword = array(
+                "values"=>array(
+                    "value"=>$keywords,
+                    "expressions"=>array($synonym[$counter])
+                    )
+            );
+            $json1 = json_encode($infoKeyword);
+            echo $json1. "<br>";
+            $server_output1 = doStuff("entities/".$keywords, null, $json1);
+
+            //menambahkan keywords ke json sample
+            $posKey = strpos($sample, $keywords);
+            $endKey = $posKey + strlen($keywords);
+
+            $sampleJson[0]["entities"][] = array(
+                "entity"=>$keywords,
+                "value"=>$keywords,
+                "start"=>$posKey,
+                "end"=>$endKey,
+                "value"=>$keywords
+            );
+
+            $counter++;
+        }
+
+        /*Untuk mekasukkan keyword (legacy)
+        //untuk memasukkan entity baru
+        $json = json_encode(array("id"=>$keyword2));
+        echo $json. "<br>";
+        $server_output = doStuff("entities/", null, $json);
+        //untuk memasukkan keyword baru
+        $json1 = json_encode(array("value"=>$keyword2));
+        echo $json1. "<br>";
+        $server_output1 = doStuff("entities/".$keyword2, null, $json1);
+        */
 
         //untuk memasukkan sample baru
         $json1 = json_encode($sampleJson);
@@ -242,8 +262,27 @@ class Contest extends CI_Controller {
         $this->load->view('footer');
     }
 
-    public function curdate(){
-        $this->load->view('header');
+    public function train_bot(){
+        $data['response'] = $this->M_basic->gets('response')->result();
+
+        $header = array(
+            "subtitle"=>"Train",
+            "title"=>"Train Bot"
+        );
+        $this->load->view('header', $header);
+        $this->load->view('trainbot', $data);
         $this->load->view('footer');
+    }
+
+    public function testDynamic(){
+        $keyword = $this->input->post('keyword');
+        $synonym = $this->input->post('synonym');
+        
+        $counter = 0;
+        foreach($keyword as $keywords){
+            echo $keywords;
+            echo $synonym[$counter];
+            $counter++;
+        }
     }
 }
