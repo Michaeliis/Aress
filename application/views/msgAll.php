@@ -23,7 +23,7 @@
             <tbody>
                 <?php foreach($message as $messages){?>
                 <tr class="gradeX">
-                    <td><a href="<?= base_url('contest/resolve/'). $messages->msgId?>"><?=$messages->msgId?></a></td>
+                    <td><a href="<?= base_url('incident/resolve/'). $messages->msgId?>"><?=$messages->msgId?></a></td>
                     <td><?=$messages->msgSubject?></td>
                     <td><?=$messages->msgSender?></td>
                     <td><?=$messages->msgReceiver?></td>

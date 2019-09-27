@@ -12,7 +12,7 @@
             <div class="mailbox-compose">
 
                 <!-- Form kirim -->
-                <form id="compose" action="<?= base_url('Contest/sendReport')?>" method="POST" class="form-horizontal form-bordered form-bordered">
+                <form id="compose" action="<?= base_url('report/sendReport')?>" method="POST" class="form-horizontal form-bordered form-bordered">
                     <!--
                     <div class="form-group form-group-invisible">
                         <label for="to" class="control-label-invisible">To:</label>

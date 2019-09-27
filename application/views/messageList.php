@@ -18,7 +18,7 @@
                     <div class="col-sm-6">
                         <div class="search">
                             <div class="input-group input-search">
-                                <form name="searchMsg" id="searchMsg" action="<?= base_url('contest/search_message')?>">
+                                <form name="searchMsg" id="searchMsg" action="<?= base_url('report/search_message')?>">
                                     <input type="text" class="form-control" name="q" id="q" placeholder="Search...">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
@@ -67,7 +67,7 @@
                         <ul id="" class="list-unstyled">
                             <?php foreach($message as $messages){?>
                             <li class="unread">
-                                <a href="<?= base_url('contest/chat/'). $messages->msgId?>">
+                                <a href="<?= base_url('report/chat/'). $messages->msgId?>">
                                     <div class="col-sender">
                                         <div class="checkbox-custom checkbox-text-primary ib">
                                             <input type="checkbox" id="mail1">

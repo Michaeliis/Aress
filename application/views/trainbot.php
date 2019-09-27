@@ -13,7 +13,7 @@
                 <h2 class="panel-title">New Transport</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('contest/insertIntent')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('bot/insertIntent')?>" method="POST">
                     
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Intent</label>
@@ -56,8 +56,8 @@
                     <div class="form-group">
                     <h3 class="col-sm-offset-1">Keywords</h3>
                     <p class="col-sm-offset-1"> 
-                        <input type="button" class="btn-success" value="Add Keyword" onClick="addRow('dataTable')"> 
-                        <input type="button" class="btn-danger" value="Remove Keyword" onClick="deleteRow('dataTable')">
+                        <input type="button" class="btn btn-success" value="Add Keyword" onClick="addRow('dataTable')"> 
+                        <input type="button" class="btn btn-danger" value="Remove Keyword" onClick="deleteRow('dataTable')">
                     </p>
                     
                     <table id="dataTable" class="input-group col-sm-10 col-sm-offset-1 mb-md">
