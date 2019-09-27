@@ -11,11 +11,15 @@ class Contest extends CI_Controller {
 	}
 	public function index()
 	{
-		$this->load->view("home");
+		$this->load->view("testhome");
     }
     
     public function testConverse(){
         $this->load->view('test');
+    }
+    
+    public function newIntent(){
+        $this->load->view('testnew_intent');
     }
     
     public function converse(){

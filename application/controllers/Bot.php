@@ -9,10 +9,6 @@ class Bot extends CI_Controller {
         $this->load->helper('witai');
         $this->load->model('M_basic');
 	}
-    
-    public function newIntent(){
-        $this->load->view('new_intent');
-    }
 
     public function train_bot(){
         $data['response'] = $this->M_basic->gets('response')->result();
