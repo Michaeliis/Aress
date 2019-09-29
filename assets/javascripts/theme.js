@@ -495,7 +495,7 @@ window.theme = {};
 		},
 
 		buildComposer: function() {
-			this.$wrapper.find( '#compose-field' ).summernote({
+			this.$wrapper.find('#summernote').summernote({
 				height: 250,
 				toolbar: [
 					['style', ['style']],
@@ -505,7 +505,7 @@ window.theme = {};
 					['para', ['ul', 'ol', 'paragraph']],
 					['height', ['height']],
 					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
+					['insert', ['link']],
 					['view', ['fullscreen']],
 					['help', ['help']]
 				]

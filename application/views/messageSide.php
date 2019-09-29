@@ -22,14 +22,14 @@
                     </div>
         
                     <div class="inner-menu-content">
-                        <a href="<?= base_url('contest/compose')?>" class="btn btn-block btn-primary btn-md pt-sm pb-sm text-md">
+                        <a href="<?= base_url('report/compose')?>" class="btn btn-block btn-primary btn-md pt-sm pb-sm text-md">
                             <i class="fa fa-envelope mr-xs"></i>
                             Compose
                         </a>
         
                         <ul class="list-unstyled mt-xl pt-md">
                             <li>
-                                <a href="<?= base_url('contest/inbox')?>" class="menu-item active">Inbox <span class="label label-primary text-normal pull-right">43</span></a>
+                                <a href="<?= base_url('report/inbox')?>" class="menu-item active">Inbox <span class="label label-primary text-normal pull-right">43</span></a>
                             </li>
                             <li>
                                 <a href="mailbox-folder.html" class="menu-item">Important</a>

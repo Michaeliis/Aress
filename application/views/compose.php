@@ -1,18 +1,9 @@
         <div class="inner-body">
-            <div class="inner-toolbar clearfix">
-                <ul>
-                    <li>
-                        <a onclick="document.forms['compose'].submit();"><i class="fa fa-send-o mr-sm"></i> Send</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-paperclip mr-sm"></i> Attach</a>
-                    </li>
-                </ul>
-            </div>
+            
             <div class="mailbox-compose">
 
                 <!-- Form kirim -->
-                <form id="compose" action="<?= base_url('report/sendReport')?>" method="POST" class="form-horizontal form-bordered form-bordered">
+                <form id="compose" action="<?= base_url('report/sendReport')?>" enctype="multipart/form-data" method="POST" class="form-horizontal form-bordered form-bordered" accept-charset="utf-8">
                     <!--
                     <div class="form-group form-group-invisible">
                         <label for="to" class="control-label-invisible">To:</label>
@@ -45,6 +36,10 @@
                             </textarea>
                         </div>
                     </div>
+                    <input type="file" name="userfile" size="20" />
+                    <p class="text-right">
+                        <a onclick="document.forms['compose'].submit();" class="btn btn-success"><i class="fa fa-send-o mr-sm"></i> Send</a>
+                    </p>  
                 </form>
             </div>
         </div>

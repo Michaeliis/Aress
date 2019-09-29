@@ -50,6 +50,36 @@ class Report extends CI_Controller {
         $curDate = date("Y-m-d H:i:s");
         $msgId = date("YmdHis");
 
+        $fileAttached = "";
+
+        //upload file
+        $config['upload_path']          = './uploads/';
+        $config['allowed_types']        = 'gif|jpg|png';
+        $config['max_size']             = 10240;
+        $config['file_name'] = date("YmdHis");
+
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload('userfile'))
+        {
+            $error = array('error' => $this->upload->display_errors());
+
+            echo $error;
+        }
+        else
+        {
+            $fileValues = $this->upload->data();
+            $fileExt = $fileValues['file_ext'];
+            $fileName = $fileValues['file_name'];
+
+            $fileData = array(
+                "fileName"=>$fileName,
+                "fileExtension"=>$fileExt
+            );
+            //insert file ke db
+            $this->m_basic->insert("file", $fileData);
+        }
+
         //interact dengan NLP
         $server_output = doStuff("message", $message, null);
         
@@ -77,6 +107,7 @@ class Report extends CI_Controller {
             "msgCategory"=>$category,
             "msgReceiver"=>$assignedTo,
             "msgDate"=>$curDate,
+            "fileName"=>$fileAttached,
             "msgStatus"=>1
         );
         $this->M_basic->insert('message', $data);

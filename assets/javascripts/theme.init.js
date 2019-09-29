@@ -303,11 +303,6 @@
 
 }).apply(this, [ jQuery ]);
 
-// SummerNote
-$(document).ready(function() {
-	$('#summernote').summernote();
-});
-
 // TextArea AutoSize
 (function( $ ) {
 
