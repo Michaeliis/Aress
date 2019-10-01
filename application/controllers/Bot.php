@@ -7,11 +7,11 @@ class Bot extends CI_Controller {
 		parent::__construct();
         $this->load->model('m_default');
         $this->load->helper('witai');
-        $this->load->model('M_basic');
+        $this->load->model('m_basic');
 	}
 
     public function train_bot(){
-        $data['response'] = $this->M_basic->gets('response')->result();
+        $data['response'] = $this->m_basic->gets('response')->result();
 
         $header = array(
             "subtitle"=>"Train",
@@ -42,7 +42,7 @@ class Bot extends CI_Controller {
             "category"=>$category,
             "assignedTo"=>$assign
         );
-        $this->M_basic->insert("response", $dataIntentDb);
+        $this->m_basic->insert("response", $dataIntentDb);
 
 
         //untuk memasukkan sample

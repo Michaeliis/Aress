@@ -7,13 +7,13 @@ class Report extends CI_Controller {
 		parent::__construct();
         $this->load->model('m_default');
         $this->load->helper('witai');
-        $this->load->model('M_basic');
+        $this->load->model('m_basic');
         $this->load->library('session');
 	}
 	
     public function chat($msgId){
-        $data['msgInfo'] = $this->M_basic->find('message', array("msgId"=>$msgId))->result();
-        $data['chat'] = $this->M_basic->find('chat', array("msgId"=>$msgId))->result();
+        $data['msgInfo'] = $this->m_basic->find('message', array("msgId"=>$msgId))->result();
+        $data['chat'] = $this->m_basic->find('chat', array("msgId"=>$msgId))->result();
 
         $header = array(
             "collapse"=>true,
@@ -34,7 +34,7 @@ class Report extends CI_Controller {
         );
         $this->load->view('header', $header);
         $this->load->view('messageSide');
-        $this->load->view('compose');
+        $this->load->view('newMessage');
         $this->load->view('footer');
     }
     
@@ -82,13 +82,13 @@ class Report extends CI_Controller {
                 //insert file ke db
                 $_SESSION["confirmReport"]["userFile"] = $userFile;
                 $_SESSION["confirmReport"]["fileData"] = $fileData;
-                //$this->M_basic->insert("file", $fileData);
+                //$this->m_basic->insert("file", $fileData);
             }
         }
         
 
         //interact dengan NLP
-        $server_output = doStuff("message", $message, null);
+        $server_output = doStuff("message", strip_tags($message), null);
         
         $result = json_decode($server_output);
         
@@ -117,7 +117,7 @@ class Report extends CI_Controller {
             "msgStatus"=>1
         );
         $_SESSION["confirmReport"]["message"] = $data;
-        //$this->M_basic->insert('message', $data);
+        //$this->m_basic->insert('message', $data);
 
         //insert chat baru
         $data = array(
@@ -130,7 +130,7 @@ class Report extends CI_Controller {
             "fileName"=>$fileAttached,
             "chatStatus"=>1
         );
-        //$this->M_basic->insert('chat', $data);
+        //$this->m_basic->insert('chat', $data);
         $_SESSION["confirmReport"]["chat"][0] = $data;
         
         //insert chat balasan bot
@@ -144,7 +144,7 @@ class Report extends CI_Controller {
             "fileName"=>"",
             "chatStatus"=>1
         );
-        //$this->M_basic->insert('chat', $data);
+        //$this->m_basic->insert('chat', $data);
         $_SESSION["confirmReport"]["chat"][1] = $data;
 
         $header = array(
@@ -162,23 +162,23 @@ class Report extends CI_Controller {
         $category = $this->input->post('category');
         $_SESSION["confirmReport"]["message"]["msgCategory"] = $category;
         if(isset($_SESSION["confirmReport"]["fileData"])){
-            $this->M_basic->insert("file", $_SESSION["confirmReport"]["fileData"]);
+            $this->m_basic->insert("file", $_SESSION["confirmReport"]["fileData"]);
         }
-        $this->M_basic->insert('message', $_SESSION["confirmReport"]["message"]);
-        $this->M_basic->insert('chat', $_SESSION["confirmReport"]["chat"][0]);
-        $this->M_basic->insert('chat', $_SESSION["confirmReport"]["chat"][1]);
+        $this->m_basic->insert('message', $_SESSION["confirmReport"]["message"]);
+        $this->m_basic->insert('chat', $_SESSION["confirmReport"]["chat"][0]);
+        $this->m_basic->insert('chat', $_SESSION["confirmReport"]["chat"][1]);
         $msgId = $_SESSION["confirmReport"]["message"]["msgId"];
         
-        $data['msgInfo'] = $this->M_basic->find('message', array("msgId"=>$msgId))->result();
-        $data['chat'] = $this->M_basic->find('chat', array("msgId"=>$msgId))->result();
+        $data['msgInfo'] = $this->m_basic->find('message', array("msgId"=>$msgId))->result();
+        $data['chat'] = $this->m_basic->find('chat', array("msgId"=>$msgId))->result();
 
         redirect(base_url('report/chat/'). $msgId);
     }
 
     public function inbox(){
-        //$data['message'] = $this->M_basic->find('message', array('msgReceiver'=>'Ares'))->result();
+        //$data['message'] = $this->m_basic->find('message', array('msgReceiver'=>'Ares'))->result();
 
-        $data['message'] = $this->M_basic->gets('message')->result();
+        $data['message'] = $this->m_basic->gets('message')->result();
         $header = array(
             "collapse"=>true,
             "subtitle"=>"Report",

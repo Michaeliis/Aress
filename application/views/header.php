@@ -313,8 +313,46 @@
                                         </a>
                                         <ul class="nav nav-children">
                                             <li>
-                                                <a href="<?= base_url('incident/message_all')?>">
+                                                <a href="<?= base_url('incident/all_message')?>">
                                                     View All
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa fa-users" aria-hidden="true"></i>
+                                            <span>Users</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="<?= base_url('user/all_user')?>">
+                                                    View All
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="<?= base_url('user/new_user')?>">
+                                                    New User
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa fa-tags" aria-hidden="true"></i>
+                                            <span>Category</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="<?= base_url('category/all_category')?>">
+                                                    View All
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="<?= base_url('category/new_category')?>">
+                                                    New Category
                                                 </a>
                                             </li>
                                         </ul>

@@ -21,6 +21,27 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="form-group form-group-invisible">
+                        <label for="to" class="control-label-invisible">Impact:</label>
+                        <div class="col-sm-offset-2 col-sm-9 col-md-offset-1 col-md-10">
+                            <select id="impact" type="text" class="form-control form-control-invisible" data-role="tagsinput" data-tag-class="label label-primary" name="impact">
+                                <option value="personal">Personal</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-invisible">
+                        <label for="to" class="control-label-invisible">Urgency:</label>
+                        <div class="col-sm-offset-2 col-sm-9 col-md-offset-1 col-md-10">
+                            <select id="urgency" type="text" class="form-control form-control-invisible" data-role="tagsinput" data-tag-class="label label-primary" name="urgency">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                                <option value="very high">Very high</option>
+                            </select>
+                        </div>
+                    </div>
                     
         
                     <div class="form-group form-group-invisible">

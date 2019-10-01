@@ -7,7 +7,7 @@ class Contest extends CI_Controller {
 		parent::__construct();
         $this->load->model('m_default');
         $this->load->helper('witai');
-        $this->load->model('M_basic');
+        $this->load->model('m_basic');
 	}
 	public function index()
 	{

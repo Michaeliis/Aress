@@ -1,13 +1,13 @@
 <!-- start: page -->
-<?php foreach($msgInfo as $msgInfos){
-    $msgReceiver = $msgInfos->msgReceiver;
-    $msgStart = $msgInfos->msgDate;
-    $msgCategory = $msgInfos->msgCategory;?>
+<?php
+    $msgReceiver = $msgInfo->msgReceiver;
+    $msgStart = $msgInfo->msgDate;
+    $msgCategory = $msgInfo->msgCategory;?>
     <p class="text-right">
         <a class="btn btn-primary">Assign</a>
-        <a href="<?= base_url('incident/resolve_edit/'). $msgId?>" class="btn btn-info">Modify</a>
+        <a href="<?= base_url('incident/edit_resolve/'). $msgId?>" class="btn btn-info">Modify</a>
     </p>
-<h3>Incident: <?= $msgInfos->msgId?></h3>
+<h3>Incident: <?= $msgInfo->msgId?></h3>
 
 <div class="row">
 
@@ -27,7 +27,7 @@
                     <label class="col-sm-3 control-label" for="position"><b>Caller</b></label>
 
                     <div class="col-sm-9">
-                        <?= $msgInfos->msgSender?>
+                        <?= $msgInfo->msgSender?>
                     </div>
                 </div>
 
@@ -36,11 +36,11 @@
 
                     <div class="col-sm-9">
                         <?php 
-                        if($msgInfos->msgStatus == 1){
+                        if($msgInfo->msgStatus == 1){
                             echo "Unassigned";
-                        }else if($msgInfos->msgStatus == 2){
+                        }else if($msgInfo->msgStatus == 2){
                             echo "Assigned";
-                        }else if($msgInfos->msgStatus == 3){
+                        }else if($msgInfo->msgStatus == 3){
                             echo "Resolved";
                         }
                         ?>
@@ -51,7 +51,7 @@
                     <label class="col-sm-3 control-label" for="position"><b>Title</b></label>
 
                     <div class="col-sm-9">
-                        <?= $msgInfos->msgSubject?>
+                        <?= $msgInfo->msgSubject?>
                     </div>
                 </div>
 
@@ -61,14 +61,11 @@
                 
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <?php foreach($firstChat as $chats){
-                            echo $chats->chatContent;
-                        } ?>
+                        <?= $firstChat->chatContent?>
                     </div>
                 </div>
                 <br>
             </div>
-            <?php }?>
         </section>
     </div>
 

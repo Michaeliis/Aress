@@ -11,7 +11,7 @@
 
 <div class="row">
 
-    <form id="form" name="form" action="<?= base_url('incident/modify/'). $msgId?>" method="post">
+    <form id="form" name="form" action="<?= base_url('incident/editResolve/'). $msgId?>" method="post">
         <div class="col-md-4">
             <section class="panel">
                 <header class="panel-heading">

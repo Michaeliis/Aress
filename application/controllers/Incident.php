@@ -7,11 +7,11 @@ class Incident extends CI_Controller {
 		parent::__construct();
         $this->load->model('m_default');
         $this->load->helper('witai');
-        $this->load->model('M_basic');
+        $this->load->model('m_basic');
     }
     
-    public function message_all(){
-        $data['message'] = $this->M_basic->gets('message')->result();
+    public function all_message(){
+        $data['message'] = $this->m_basic->gets('message')->result();
 
         $header = array(
             "subtitle"=>"Incident",
@@ -23,8 +23,8 @@ class Incident extends CI_Controller {
     }
 
     public function resolve($msgId){
-        $data['msgInfo'] = $this->M_basic->find('message', array("msgId"=>$msgId))->result();
-        $data['firstChat'] = $this->m_default->getFirstChat('chat', array("msgId"=>$msgId))->result();
+        $data['msgInfo'] = $this->m_basic->find('message', array("msgId"=>$msgId))->row();
+        $data['firstChat'] = $this->m_default->getFirstChat('chat', array("msgId"=>$msgId))->row();
         $data['restChat'] = $this->m_default->getRestChat('chat', array("msgId"=>$msgId))->result();
         $data['msgId'] = $msgId;
         $header = array(
@@ -36,8 +36,8 @@ class Incident extends CI_Controller {
         $this->load->view('footer');
     }
 
-    public function resolve_edit($msgId){
-        $data['msgInfo'] = $this->M_basic->find('message', array("msgId"=>$msgId))->result();
+    public function edit_resolve($msgId){
+        $data['msgInfo'] = $this->m_basic->find('message', array("msgId"=>$msgId))->result();
         $data['firstChat'] = $this->m_default->getFirstChat('chat', array("msgId"=>$msgId))->result();
         $data['restChat'] = $this->m_default->getRestChat('chat', array("msgId"=>$msgId))->result();
         $data['msgId'] = $msgId;
@@ -47,11 +47,11 @@ class Incident extends CI_Controller {
             "title"=>"Resolve Edit"
         );
         $this->load->view('header', $header);
-        $this->load->view('resolveEdit', $data);
+        $this->load->view('editResolve', $data);
         $this->load->view('footer');
     }
 
-    public function modify($msgId){
+    public function editResolve($msgId){
         $impact = $this->input->post("impact");
         $urgency = $this->input->post("urgency");
         $priority = $this->input->post("priority");
@@ -59,6 +59,15 @@ class Incident extends CI_Controller {
         $agent = $this->input->post("agent");
         $resolution = $this->input->post("resolution");
 
+        $data = array(
+            "msgImpact"=>$impact,
+            "msgUrgency"=>$urgency,
+            "msgPriority"=>$priority,
+            "msgTeam"=>$team,
+            "msgReceiver"=>$agent
+        );
         $where = array("msgId"=>$msgId);
+
+        $this->m_basic->update($where, "message", $data);
     }
 }
