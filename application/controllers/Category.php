@@ -62,7 +62,7 @@ class Category extends CI_Controller {
     public function editCategory(){
         $prevcategory = $this->input->post('prevcategory');
         $category = $this->input->post('category');
-        $detail = $this->input->post('edit');
+        $detail = $this->input->post('detail');
         
         $data = array(
             "categoryName"=>$category,

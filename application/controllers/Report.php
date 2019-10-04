@@ -147,6 +147,8 @@ class Report extends CI_Controller {
         //$this->m_basic->insert('chat', $data);
         $_SESSION["confirmReport"]["chat"][1] = $data;
 
+        $data["category"] = $this->m_basic->gets("category")->result();
+
         $header = array(
             "collapse"=>true,
             "subtitle"=>"Report",
@@ -154,7 +156,7 @@ class Report extends CI_Controller {
         );
         $this->load->view('header', $header);
         $this->load->view('messageSide');
-        $this->load->view('confirm_report');
+        $this->load->view('confirm_report', $data);
         $this->load->view('footer');
     }
 

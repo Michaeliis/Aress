@@ -2,7 +2,6 @@
 function doStuff($type, $input_utterance, $json){
     $input_utterance = rawurlencode($input_utterance);
     $witVersion = "20190922";
-    $result = "";
 
     //$witURL = $witRoot . "v=" . $witVersion . "&q=" . $input_utterance;
 
@@ -10,8 +9,8 @@ function doStuff($type, $input_utterance, $json){
     if($input_utterance != null){
         $witURL .= "&q=" . $input_utterance;
     }
-    echo $witURL. "<br>";
-
+    echo $witURL. "<br><br><br>";
+    
     $ch = curl_init();
     $header = array();
     $header[] = "Authorization: Bearer AKINPSUVCU5DSBTMAWN2JO4N6AVESDLV";

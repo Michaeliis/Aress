@@ -19,6 +19,7 @@
                         <label class="col-sm-3 control-label" for="position">Category Name</label>
 
                         <div class="col-sm-8">
+                            <input type="text" id="category" name="prevcategory" required value="<?= $category->categoryName?>" hidden>
                             <input type="text" id="category" name="category"  class="form-control mb-md" required value="<?= $category->categoryName?>">
                         </div>
                     </div>

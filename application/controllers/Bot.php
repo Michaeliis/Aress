@@ -60,8 +60,7 @@ class Bot extends CI_Controller {
 
         $counter = 0;
         foreach($keyword as $keywords){
-            echo $keywords;
-            echo $synonym[$counter];
+            
 
             //untuk memasukkan entity baru
             $json = json_encode(array("id"=>$keywords));
@@ -69,22 +68,26 @@ class Bot extends CI_Controller {
             $server_output = doStuff("entities/", null, $json);
 
             //untuk memasukkan keyword baru
+            $keywordsArray = explode(", ", $synonym[$counter]);
             $infoKeyword = array(
-                "values"=>array(
-                    "value"=>$keywords,
-                    "expressions"=>array($synonym[$counter])
-                    )
+                "value"=>$keywords,
+                "expressions"=>$keywordsArray
             );
             $json1 = json_encode($infoKeyword);
             echo $json1. "<br>";
-            $server_output1 = doStuff("entities/".$keywords, null, $json1);
+            $server_output1 = doStuff("entities/".str_replace(" ", "_", $keywords), null, $json1);
+            //masukkan keyword ke db
+            foreach($keywordsArray as $keywordsArrays){
+                $this->m_basic->insert("keyword", $keywordsArrays);
+            }
+            
 
             //menambahkan keywords ke json sample
             $posKey = strpos($sample, $keywords);
             $endKey = $posKey + strlen($keywords);
 
             $sampleJson[0]["entities"][] = array(
-                "entity"=>$keywords,
+                "entity"=>str_replace(" ", "_", $keywords),
                 "value"=>$keywords,
                 "start"=>$posKey,
                 "end"=>$endKey,
@@ -98,6 +101,7 @@ class Bot extends CI_Controller {
         $json1 = json_encode($sampleJson);
         echo $json1. "<br>";
         $server_output1 = doStuff("samples/", null, $json1);
+        echo "<br><br><br>". $server_output1;
         
         echo "Intent telah dibuat";
     }
