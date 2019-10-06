@@ -10,7 +10,7 @@
         <section class="panel">
             <header class="panel-heading">
                                         
-                <h2 class="panel-title">New Category</h2>
+                <h2 class="panel-title">Edit Category</h2>
             </header>
             <div class="panel-body">
                 <form class="form-horizontal form-bordered" action="<?= base_url('category/editCategory')?>" method="POST">

@@ -5,27 +5,31 @@
             <a href="#" class="fa fa-times"></a>
         </div>
 
-        <h2 class="panel-title">All Category</h2>
+        <h2 class="panel-title">All Response</h2>
     </header>
     <div class="panel-body">
         <table class="table table-bordered table-striped mb-none" id="datatable-default">
             <thead>
                 <tr>
-                    <th>Category Name</th>
-                    <th>Detail</th>
+                    <th>Intent Name</th>
+                    <th>Response</th>
+                    <th>Category</th>
+                    <th>Assigned To</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($category as $categories){?>
+                <?php foreach($response as $responses){?>
                 <tr class="gradeX">
-                    <td><?=$categories->categoryName?></td>
-                    <td><?=$categories->categoryDetail?></td>
+                    <td><?=$responses->intent?></td>
+                    <td><?=$responses->response?></td>
+                    <td><?=$responses->category?></td>
+                    <td><?=$responses->assignedTo?></td>
                     <td>
-                        <a href="<?= base_url("category/edit_category/").$categories->categoryName?>" class="btn btn-success">
+                        <a href="<?= base_url("category/edit_category/").$responses->intent?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?= $categories->categoryName?>" class="btn btn-danger">
+                        <a href="<?= $responses->intent?>" class="btn btn-danger">
                             Delete
                         </a>
                     </td>

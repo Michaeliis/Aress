@@ -10,7 +10,7 @@
         <section class="panel">
             <header class="panel-heading">
                                         
-                <h2 class="panel-title">New Transport</h2>
+                <h2 class="panel-title">Train Bot</h2>
             </header>
             <div class="panel-body">
                 <form class="form-horizontal form-bordered" action="<?= base_url('bot/insertIntent')?>" method="POST">
@@ -32,7 +32,11 @@
                         <label class="col-sm-3 control-label" for="position">Category</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="category" name="category"  class="form-control mb-md" required>
+                            <select id="category" name="category"  class="form-control mb-md" required>
+                                <?php foreach($category as $categories){?>
+                                <option value="<?= $categories->categoryName?>"><?= $categories->categoryName?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                     </div>
 
@@ -40,7 +44,11 @@
                         <label class="col-sm-3 control-label" for="position">Assigned To</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="assign" name="assign"  class="form-control mb-md" required>
+                            <select id="assign" name="assign"  class="form-control mb-md" required>
+                                <?php foreach($user as $users){?>
+                                <option value="<?= $users->userId?>"><?= $users->userName?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                     </div>
 

@@ -1,7 +1,7 @@
 <?php
 function doStuff($type, $input_utterance, $json){
     $input_utterance = rawurlencode($input_utterance);
-    $witVersion = "20190922";
+    $witVersion = "20191006";
 
     //$witURL = $witRoot . "v=" . $witVersion . "&q=" . $input_utterance;
 
@@ -13,7 +13,7 @@ function doStuff($type, $input_utterance, $json){
     
     $ch = curl_init();
     $header = array();
-    $header[] = "Authorization: Bearer AKINPSUVCU5DSBTMAWN2JO4N6AVESDLV";
+    $header[] = "Authorization: Bearer 4QRUVLFCX2EWXVMMXFHJIGJWUXJZDG2O";
 
     curl_setopt($ch, CURLOPT_URL, $witURL);
     //curl_setopt($ch, CURLOPT_POST, 1);  //sets method to POST (1 = TRUE)

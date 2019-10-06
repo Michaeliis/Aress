@@ -299,11 +299,23 @@
                                         </a>
                                     </li>
 
-                                    <li>
-                                        <a href="<?= base_url('bot/train_bot')?>">
+                                    <li class="nav-parent">
+                                        <a>
                                             <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                            <span>Train Bot</span>
+                                            <span>Bot</span>
                                         </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="<?= base_url('bot/train_bot')?>">
+                                                    Train Bot
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="<?= base_url('bot/all_response')?>">
+                                                    All Response
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
 
                                     <li class="nav-parent">

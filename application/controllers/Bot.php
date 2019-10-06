@@ -12,6 +12,8 @@ class Bot extends CI_Controller {
 
     public function train_bot(){
         $data['response'] = $this->m_basic->gets('response')->result();
+        $data['category'] = $this->m_basic->gets('category')->result();
+        $data['user'] = $this->m_basic->gets('user')->result();
 
         $header = array(
             "subtitle"=>"Train",
@@ -78,7 +80,7 @@ class Bot extends CI_Controller {
             $server_output1 = doStuff("entities/".str_replace(" ", "_", $keywords), null, $json1);
             //masukkan keyword ke db
             foreach($keywordsArray as $keywordsArrays){
-                $this->m_basic->insert("keyword", $keywordsArrays);
+                $this->m_basic->insert("keyword", array("entity"=>$keywords, "keyword"=>$keywordsArrays));
             }
             
 
@@ -104,5 +106,21 @@ class Bot extends CI_Controller {
         echo "<br><br><br>". $server_output1;
         
         echo "Intent telah dibuat";
+    }
+
+    public function all_response(){
+        $data['response'] = $this->m_basic->gets('response')->result();
+
+        $header = array(
+            "subtitle"=>"Response",
+            "title"=>"All Response"
+        );
+        $this->load->view('header', $header);
+        $this->load->view('allIntent', $data);
+        $this->load->view('footer');
+    }
+
+    public function query(){
+        echo $this->db->last_query();
     }
 }

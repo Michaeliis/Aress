@@ -14,7 +14,7 @@ class User extends CI_Controller {
         $data['user'] = $this->m_basic->gets("user")->result();
         $header = array(
             "subtitle"=>"User",
-            "title"=>"View"
+            "title"=>"View User"
         );
         $this->load->view('header', $header);
         $this->load->view('allUser', $data);
