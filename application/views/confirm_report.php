@@ -16,7 +16,7 @@
                     <div class="form-group form-group-invisible">
                         <label for="to" class="control-label-invisible">Report Category:</label>
                         <div class="col-sm-offset-3 col-sm-8 col-md-offset-2 col-md-9">
-                            <select id="to" type="text" class="form-control form-control-invisible" data-role="tagsinput" data-tag-class="label label-primary" name="to">
+                            <select id="category" type="text" class="form-control form-control-invisible" data-role="tagsinput" data-tag-class="label label-primary" name="category">
                                 <?php foreach($category as $categories){?>
                                 <option value="<?= $categories->categoryName?>" <?php if ($categories->categoryName == $_SESSION["confirmReport"]["message"]["msgCategory"]) echo "selected"?>><?= $categories->categoryName?></option>
                                 <?php } ?>

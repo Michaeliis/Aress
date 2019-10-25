@@ -22,7 +22,11 @@ class M_basic extends CI_Model{
     {
 		$this->db->where($where);
 		$this->db->update($table, $data);
-	}
+    }
+    
+    function delete($where, $table){
+        $this->db->delete($table, $where);
+    }
     
 }
 ?>

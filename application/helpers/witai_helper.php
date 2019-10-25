@@ -1,7 +1,7 @@
 <?php
 function doStuff($type, $input_utterance, $json){
     $input_utterance = rawurlencode($input_utterance);
-    $witVersion = "20191006";
+    $witVersion = "20191024";
 
     //$witURL = $witRoot . "v=" . $witVersion . "&q=" . $input_utterance;
 
@@ -13,7 +13,7 @@ function doStuff($type, $input_utterance, $json){
     
     $ch = curl_init();
     $header = array();
-    $header[] = "Authorization: Bearer 4QRUVLFCX2EWXVMMXFHJIGJWUXJZDG2O";
+    $header[] = "Authorization: Bearer KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
 
     curl_setopt($ch, CURLOPT_URL, $witURL);
     //curl_setopt($ch, CURLOPT_POST, 1);  //sets method to POST (1 = TRUE)
@@ -27,6 +27,33 @@ function doStuff($type, $input_utterance, $json){
     $server_output = curl_exec($ch); //call the URL and store the data in $server_output
 
     curl_close($ch);
+    echo $server_output. "<br><br>";
+    
+    return $server_output;
+}
+
+function deleteStuff($type){
+    $witVersion = "20191024";
+
+    //$witURL = $witRoot . "v=" . $witVersion . "&q=" . $input_utterance;
+
+    $witURL = "https://api.wit.ai/". $type. "?v=". $witVersion;
+    echo $witURL. "<br><br><br>";
+    
+    $ch = curl_init();
+    $header = array();
+    $header[] = "Authorization: Bearer KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
+
+    curl_setopt($ch, CURLOPT_URL, $witURL);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+    //curl_setopt($ch, CURLOPT_POST, 1);  //sets method to POST (1 = TRUE)
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $header); //sets the header value above - required for wit.ai authentication
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //inhibits the immediate display of the returned data
+
+    $server_output = curl_exec($ch); //call the URL and store the data in $server_output
+
+    curl_close($ch);
+    echo $server_output. "<br><br>";
     
     return $server_output;
 }
