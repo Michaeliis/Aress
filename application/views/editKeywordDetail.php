@@ -13,7 +13,7 @@
                 <h2 class="panel-title">Edit Keyword</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('bot/editKeywordDetail')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('keyword/editKeywordDetail')?>" method="POST">
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Entity Name</label>

@@ -13,7 +13,7 @@
                 <h2 class="panel-title">Edit Keyword</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('bot/editKeyword')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('keyword/editKeyword')?>" method="POST">
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Entity Name</label>
@@ -35,10 +35,10 @@
                             <tr class="gradeX">
                                 <td><?=$keywords->keyword?></td>
                                 <td>
-                                    <a href="<?= base_url("bot/edit_keyword_detail/").$keywords->entity."/".$keywords->keyword?>" class="btn btn-success">
+                                    <a href="<?= base_url("keyword/edit_keyword_detail/").$keywords->entity."/".$keywords->keyword?>" class="btn btn-success">
                                         Edit
                                     </a>
-                                    <a href="<?= base_url("bot/delete_keyword_detail/").$keywords->entity."/".$keywords->keyword?>" class="btn btn-danger">
+                                    <a href="<?= base_url("keyword/delete_keyword_detail/").$keywords->entity."/".$keywords->keyword?>" class="btn btn-danger">
                                         Delete
                                     </a>
                                 </td>

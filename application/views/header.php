@@ -48,13 +48,13 @@
             <!-- start: header -->
             <header class="header">
                 <div class="logo-container">
-                    <a href="../" class="logo">
-                        <img src="<?= base_url('assets/')?>images/logo.png" height="35" alt="Porto Admin" />
-                    </a>
-                    <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
-                        <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
-                    </div>
-                </div>
+					<a href="../" class="logo">
+						<img src="<?= base_url()?>assets/images/logo.png" height="35" alt="Ares" />
+					</a>
+					<div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+						<i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+					</div>
+				</div>
 
                 <!-- start: search & user box -->
                 <div class="header-right">
@@ -313,6 +313,20 @@
                                             <li>
                                                 <a href="<?= base_url('bot/all_response')?>">
                                                     All Response
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                            <span>Keyword</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="<?= base_url('keyword/all_keyword')?>">
+                                                    All Keyword
                                                 </a>
                                             </li>
                                         </ul>
