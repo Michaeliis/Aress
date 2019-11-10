@@ -118,6 +118,18 @@ class Bot extends CI_Controller {
         $this->load->view('footer');
     }
 
+    public function testJson(){
+        $this->load->view('testJson');
+    }
+
+    public function converse(){
+        $message = $this->input->post('text');
+
+        $server_output = doStuff("message", strip_tags($message), null);
+        
+        echo $server_output;
+    }
+
     public function query(){
         echo $this->db->last_query();
     }
