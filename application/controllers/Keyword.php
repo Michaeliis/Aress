@@ -11,6 +11,7 @@ class Keyword extends CI_Controller {
     }
     
     public function all_keyword(){
+        $data['entity'] = $this->m_basic->gets('entity')->result();
         $data['keyword'] = $this->m_basic->gets('keyword')->result();
 
         $header = array(
@@ -84,14 +85,15 @@ class Keyword extends CI_Controller {
 
     public function insertKeywordDetail(){
         $entity = $this->input->post("entity");
+        $value = $this->input->post("value");
         $keyword = $this->input->post("keyword");
 
-        foreach($keyword as $keywords){
-            $type = "entities/".$entity."/values/".$entity."/expressions";
+        foreach($keyword as $counter => $keywords){
+            $type = "entities/".$entity."/values/".$value[$counter]."/expressions";
             $json = json_encode(array("expression"=>$keywords));
             doStuff($type, null, $json);
         
-            $this->m_basic->insert("keyword", array("entity"=>$entity, "keyword"=>$keywords));
+            $this->m_basic->insert("keyword", array("entity"=>$entity, "value"=>$value[$counter], "keyword"=>$keywords));
         }
     }
 }?>

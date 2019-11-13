@@ -31,5 +31,39 @@ class TestDB extends CI_Controller {
         echo $full_text;
     }
 
+    public function echoAssArray(){
+        $thing = array();
+        $thing["jjba"][] = "Phantom Blood";
+        $thing["jjba"][] = "Burning Blood";
+        $thing["jjba"][] = "Stardust Crusade";
+
+        foreach($thing as $things => $value){
+            echo $things . "->";
+            foreach($value as $values){
+                echo $values . "<br>";
+            }
+            
+        }
+    }
+
+    public function testStuff(){
+        $data['response'] = $this->m_basic->gets('response')->result();
+        $data['category'] = $this->m_basic->gets('category')->result();
+        $data['user'] = $this->m_basic->gets('user')->result();
+
+        $data['entity'] = $this->m_basic->gets('entity')->result();
+
+        $header = array(
+            "subtitle"=>"Train",
+            "title"=>"Train Bot"
+        );
+        $this->load->view('header', $header);
+        $this->load->view('testNewSample', $data);
+        $this->load->view('footer');
+    }
+
+    public function testJquery(){
+        $this->load->view("testJquery");
+    }
 }
 ?>

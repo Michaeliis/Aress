@@ -18,24 +18,26 @@
             </thead>
             <tbody>
                 <?php
-                $counter = 0;
+                $tableData = array();
                 foreach($keyword as $keywords){
-                    $keywordList[$keywords->entity][] = $keywords->keyword;
+                    $tableData[$keywords->entity][] = $keywords->keyword;
                 }
-                foreach($keywordList as $keywordLists => $vals){?>
+
+                foreach($entity as $entities){
+                    $entity = $entities->entity;?> 
                 <tr class="gradeX">
-                    <td><?=$keywordLists?></td>
+                    <td><?= $entity?></td>
                     <td>
                         <?php
-                        foreach($vals as $values => $valss){
-                            echo $valss. "; ";
+                        foreach($tableData[$entity] as $values){
+                            echo $values. "; ";
                         }?>
                     </td>
                     <td>
-                        <a href="<?= base_url("keyword/edit_keyword/").$keywordLists?>" class="btn btn-success">
+                        <a href="<?= base_url("keyword/edit_keyword/").$entity?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?= $keywordLists?>" class="btn btn-danger">
+                        <a href="<?= $entity?>" class="btn btn-danger">
                             Delete
                         </a>
                     </td>

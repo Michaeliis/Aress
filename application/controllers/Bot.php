@@ -15,39 +15,46 @@ class Bot extends CI_Controller {
         $data['category'] = $this->m_basic->gets('category')->result();
         $data['user'] = $this->m_basic->gets('user')->result();
 
+        $data['entity'] = $this->m_basic->gets('entity')->result();
+
         $header = array(
             "subtitle"=>"Train",
             "title"=>"Train Bot"
         );
         $this->load->view('header', $header);
-        $this->load->view('trainbot', $data);
+        $this->load->view('testNewSample', $data);
         $this->load->view('footer');
     }
 
     public function insertIntent(){
         $intentName = $this->input->post("intent");
-        $sample = $this->input->post("sample");
-        $keyword = $this->input->post('keyword');
-        $synonym = $this->input->post('synonym');
         $category = $this->input->post('category');
         $assign = $this->input->post('assign');
+        $sample = $this->input->post("sample");
+        $entity = $this->input->post("entity");
+        $value = $this->input->post("value");
+        $start = $this->input->post("start");
+        $end = $this->input->post("end");
         $response = $this->input->post('response');
-        
-        //untuk memasukkan intent baru 
-        $json1 = json_encode(array("value"=>$intentName));
-        echo $json1. "<br>";
-        $server_output1 = doStuff("entities/intent", null, $json1);
-        //ke DB
-        $dataIntentDb = array(
-            "intent"=>$intentName,
+
+        //memasukkan response ke DB
+        $responseId = "";
+        $response = array(
+            "responseId"=>$responseId,
             "response"=>$response,
             "category"=>$category,
             "assignedTo"=>$assign
         );
-        $this->m_basic->insert("response", $dataIntentDb);
+        $this->m_basic->insert("response", $response);
+        //menambahkan responseDetail
+        $responseDetail = array(
+            "responseId"=>$responseId,
+            "entity"=>"intent",
+            "value"=>$value
+        );
+        $this->m_basic->insert("responseDetail", $responseDetail);
 
-
-        //untuk memasukkan sample
+        //untuk memasukkan intent ke json sample
         $sampleJson[0] = array(
             "text"=>$sample,
             "entities"=>array(
@@ -60,44 +67,25 @@ class Bot extends CI_Controller {
             
         );
 
-        $counter = 0;
-        foreach($keyword as $keywords){
-            //untuk memasukkan entity baru
-            $json = json_encode(array("id"=>$keywords));
-            echo $json. "<br>";
-            $server_output = doStuff("entities/", null, $json);
-
-            //untuk memasukkan keyword baru
-            $keywordsArray = explode(", ", $synonym[$counter]);
-            $infoKeyword = array(
-                "value"=>$keywords,
-                "expressions"=>$keywordsArray
-            );
-            $json1 = json_encode($infoKeyword);
-            echo $json1. "<br>";
-            $server_output1 = doStuff("entities/".str_replace(" ", "_", $keywords), null, $json1);
-            //masukkan keyword ke db
-            $this->m_basic->insert("keyword", array("entity"=>$keywords, "keyword"=>$keywords));
-            foreach($keywordsArray as $keywordsArrays){
-                $this->m_basic->insert("keyword", array("entity"=>$keywords, "keyword"=>$keywordsArrays));
-            }
-
+        foreach($entity as $counter => $entities){
             //menambahkan keywords ke json sample
-            $posKey = strpos($sample, $keywords);
-            $endKey = $posKey + strlen($keywords);
-
             $sampleJson[0]["entities"][] = array(
-                "entity"=>str_replace(" ", "_", $keywords),
-                "value"=>$keywords,
-                "start"=>$posKey,
-                "end"=>$endKey,
-                "value"=>$keywords
+                "entity"=>$entities,
+                "start"=>$start[$counter],
+                "end"=>$end[$counter],
+                "value"=>$value[$counter]
             );
 
-            $counter++;
+            //menambahkan responseDetail
+            $responseDetail = array(
+                "responseId"=>$responseId,
+                "entity"=>$entities,
+                "value"=>$value
+            );
+            $this->m_basic->insert("responseDetail", $responseDetail);
         }
 
-        //untuk memasukkan sample baru
+        //untuk memasukkan sample baru ke Wit.ai
         $json1 = json_encode($sampleJson);
         echo $json1. "<br>";
         $server_output1 = doStuff("samples/", null, $json1);
