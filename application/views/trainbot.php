@@ -22,7 +22,7 @@
                             <input list="intent" name="intent"  class="form-control mb-md" required>
                             <datalist id="intent">
                                 <?php foreach($response as $responses){?>
-                                <option value="<?= $responses->intent?>"></option>
+                                <option value="<?= $responses->responseId?>"><?= $responses->responseId?></option>
                                 <?php } ?>
                             </datalist>
                         </div>
@@ -72,7 +72,7 @@
                         <tbody>
                         <tr>
                             <p>
-                            <td><input type="checkbox" required="required" name="chk[]" checked="checked" /></td>
+                            <td><input type="checkbox" name="chk[]"/></td>
                             <td>
                                 <input type="text" name="text[]" class="form-control" placeholder="Text">
                             </td>
@@ -134,7 +134,7 @@ function addRow(tableID) {
         var row = table.insertRow(rowCount);
 
         var newcell = row.insertCell(0);
-        newcell.innerHTML = '<input type="checkbox" required="required" name="chk[]" />';
+        newcell.innerHTML = '<input type="checkbox" name="chk[]" />';
 
         var newcell = row.insertCell(1);
         newcell.innerHTML = '<input type="text"  class="form-control" placeholder="Text" required="required" name="text[]" />';
@@ -177,22 +177,24 @@ function deleteRow(tableID) {
 	}
 }
 
-document.getElementById("sample").onselect = function(){
+document.getElementById("sample").onmouseup = function(){
     var rowCount = dataTable.rows.length - 1;
 
     var start = document.getElementsByName("start[]");
+    var selectedText = window.getSelection().toString();
+    if(selectedText != ""){
+        if(start[rowCount].value != ""){
+            addRow('dataTable');
+            rowCount++;
+        }
+        start[rowCount].value = sample.selectionStart;
 
-    if(start[rowCount].value != ""){
-        addRow('dataTable');
-        rowCount++;
+        var end = document.getElementsByName("end[]");
+        end[rowCount].value = sample.selectionEnd;
+
+        var text = document.getElementsByName("text[]");
+        text[rowCount].value = selectedText;
     }
-    start[rowCount].value = sample.selectionStart;
-
-    var end = document.getElementsByName("end[]");
-    end[rowCount].value = sample.selectionEnd;
-
-    var text = document.getElementsByName("text[]");
-    text[rowCount].value = window.getSelection().toString();
 }
 
 function valueSet(obj){

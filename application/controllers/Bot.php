@@ -22,7 +22,7 @@ class Bot extends CI_Controller {
             "title"=>"Train Bot"
         );
         $this->load->view('header', $header);
-        $this->load->view('testNewSample', $data);
+        $this->load->view('trainbot', $data);
         $this->load->view('footer');
     }
 
