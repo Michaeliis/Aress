@@ -12,7 +12,7 @@ class Keyword extends CI_Controller {
     
     public function all_keyword(){
         $data['entity'] = $this->m_basic->gets('entity')->result();
-        $data['keyword'] = $this->m_basic->gets('keyword')->result();
+        $data['expression'] = $this->m_basic->gets('expression')->result();
 
         $header = array(
             "subtitle"=>"Keyword",
@@ -93,7 +93,7 @@ class Keyword extends CI_Controller {
             $json = json_encode(array("expression"=>$keywords));
             doStuff($type, null, $json);
         
-            $this->m_basic->insert("keyword", array("entity"=>$entity, "value"=>$value[$counter], "keyword"=>$keywords));
+            $this->m_basic->insert("expression", array("entity"=>$entity, "value"=>$value[$counter], "expression"=>$keywords));
         }
     }
 }?>

@@ -10,10 +10,10 @@
         <section class="panel">
             <header class="panel-heading">
                                         
-                <h2 class="panel-title">Edit Keyword</h2>
+                <h2 class="panel-title">Edit Expression</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('keyword/editKeywordDetail')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('entity/editExpression')?>" method="POST">
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Entity Name</label>
@@ -24,11 +24,19 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="sample">Keyword</label>
+                        <label class="col-sm-3 control-label" for="position">Value Name</label>
 
                         <div class="col-sm-8">
-                        <input type="text" id="keywordOld" name="keywordOld" required value="<?= $keyword?>" readonly hidden>
-                            <input type="text" id="keyword" name="keyword"  class="form-control mb-md" required value="<?= $keyword?>">
+                            <input type="text" id="value" name="value"  class="form-control mb-md" required value="<?= $value?>" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="sample">Expression</label>
+
+                        <div class="col-sm-8">
+                        <input type="text" id="expressionOld" name="expressionOld" required value="<?= $expression?>" readonly hidden>
+                        <input type="text" id="expression" name="expression"  class="form-control mb-md" required value="<?= $expression?>">
                         </div>
                     </div>
                     

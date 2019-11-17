@@ -90,10 +90,10 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="number" name="start[]" placeholder="Start">
+                                <input type="number" class="form-control" name="start[]" placeholder="Start">
                             </td>
                             <td>
-                                <input type="number" name="end[]" placeholder="Start">
+                                <input type="number" class="form-control" name="end[]" placeholder="End">
                             </td>
                             </p>
                         </tr>

@@ -20,7 +20,7 @@ foreach($expression as $expressions){
                 <h2 class="panel-title">Edit Entity</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('entity/insertEntity')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('entity/editEntity')?>" method="POST">
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Entity Name</label>
@@ -49,10 +49,10 @@ foreach($expression as $expressions){
                                 ?>
                                 </td>
                                 <td>
-                                    <a href="<?= base_url("entity/edit_keyword_detail/").$values->value."/".$values->value?>" class="btn btn-success">
+                                    <a href="<?= base_url("entity/edit_value/").$entity."/".$values->value?>" class="btn btn-success">
                                         Edit
                                     </a>
-                                    <a href="<?= base_url("entity/delete_keyword_detail/").$values->value."/".$values->value?>" class="btn btn-danger">
+                                    <a href="<?= base_url("entity/delete_keyword_detail/").$entity."/".$values->value?>" class="btn btn-danger">
                                         Delete
                                     </a>
                                 </td>

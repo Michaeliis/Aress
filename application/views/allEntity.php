@@ -12,32 +12,32 @@
             <thead>
                 <tr>
                     <th>Entity</th>
-                    <th>Synonym</th>
+                    <th>Value</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $tableData = array();
-                foreach($expression as $expressions){
-                    $tableData[$expressions->entity][] = $expressions->expression;
+                foreach($value as $values){
+                    $tableData[$values->entity][] = $values->value;
                 }
 
                 foreach($entity as $entities){
-                    $entity = $entities->entity;?> 
+                    $entityName = $entities->entity;?> 
                 <tr class="gradeX">
-                    <td><?= $entity?></td>
+                    <td><?= $entityName?></td>
                     <td>
                         <?php
-                        foreach($tableData[$entity] as $values){
+                        foreach($tableData[$entityName] as $values){
                             echo $values. "; ";
                         }?>
                     </td>
                     <td>
-                        <a href="<?= base_url("keyword/edit_keyword/").$entity?>" class="btn btn-success">
+                        <a href="<?= base_url("entity/edit_entity/").$entityName?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?= $entity?>" class="btn btn-danger">
+                        <a href="<?= $entityName    ?>" class="btn btn-danger">
                             Delete
                         </a>
                     </td>
