@@ -146,4 +146,27 @@ class Entity extends CI_Controller {
         //update expression to db
         $this->m_basic->update(array("entity"=>$entity, "value"=>$value, "expression"=>$expressionOld), "expression", array("expression"=>$expression));
     }
+
+    public function testThis(){
+        $query = "SELECT conditionId, count(conditionDetailId) AS 'score' FROM conditionDetail WHERE ";
+        $query.= "(";
+        $query.= "conditionEntity = 'intent'";
+        $query.= " AND ";
+        $query.= "conditionValue = 'hell'";
+        $query.= ")";
+        $query.= " OR ";
+        $query.= "(";
+        $query.= "conditionEntity = 'blade'";
+        $query.= " AND ";
+        $query.= "conditionValue = 'senua'";
+        $query.= ")";
+        $query.= " GROUP BY conditionId";
+
+        echo $query. "<br>";
+
+        /*$result = $this->m_basic->runQuery($query)->result();
+        foreach($result as $results){
+            echo $results->conditionId;
+        }*/
+    }
 }?>

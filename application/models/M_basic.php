@@ -27,6 +27,10 @@ class M_basic extends CI_Model{
     function delete($where, $table){
         $this->db->delete($table, $where);
     }
+
+    function runQuery($query){
+        return $this->db->query($query);
+    }
     
 }
 ?>

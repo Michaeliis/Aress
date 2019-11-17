@@ -37,6 +37,8 @@ class Bot extends CI_Controller {
         $end = $this->input->post("end");
         $response = $this->input->post('response');
 
+        $sampleId = date("YmdHis");
+
         //memasukkan response ke DB
         $responseId = "";
         $response = array(
@@ -46,13 +48,12 @@ class Bot extends CI_Controller {
             "assignedTo"=>$assign
         );
         $this->m_basic->insert("response", $response);
-        //menambahkan responseDetail
+        //menambahkan sample intent ke db
         $responseDetail = array(
-            "responseId"=>$responseId,
-            "entity"=>"intent",
-            "value"=>$value
+            "sampleId"=>$responseId,
+            "intentName"=>$value
         );
-        $this->m_basic->insert("responseDetail", $responseDetail);
+        $this->m_basic->insert("sampleintent", $responseDetail);
 
         //untuk memasukkan intent ke json sample
         $sampleJson[0] = array(
@@ -62,9 +63,7 @@ class Bot extends CI_Controller {
                     "entity"=>"intent",
                     "value"=>$intentName
                 )
-                
             )
-            
         );
 
         foreach($entity as $counter => $entities){
@@ -75,14 +74,14 @@ class Bot extends CI_Controller {
                 "end"=>$end[$counter],
                 "value"=>$value[$counter]
             );
-
-            //menambahkan responseDetail
-            $responseDetail = array(
+            
+            //memasukkan detail sample ke db
+            $sampleDetail = array(
                 "responseId"=>$responseId,
-                "entity"=>$entities,
-                "value"=>$value
+                "entityName"=>$entities,
+                "valueName"=>$value[$counter]
             );
-            $this->m_basic->insert("responseDetail", $responseDetail);
+            $this->m_basic->insert("sampleentity", $sampleDetail);
         }
 
         //untuk memasukkan sample baru ke Wit.ai
@@ -90,6 +89,9 @@ class Bot extends CI_Controller {
         echo $json1. "<br>";
         $server_output1 = doStuff("samples/", null, $json1);
         echo "<br><br><br>". $server_output1;
+
+        //memasukkan sample baru ke db
+        $this->m_basic->insert("sample", array("sampleId"=>$sampleId, "date"=>date("Y-m-d")));
         
         echo "Intent telah dibuat";
     }
