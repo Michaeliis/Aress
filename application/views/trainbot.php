@@ -13,42 +13,13 @@
                 <h2 class="panel-title">Train Bot</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('bot/insertIntent')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('bot/check')?>" method="POST">
                     
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Intent</label>
 
                         <div class="col-sm-8">
-                            <input list="intent" name="intent"  class="form-control mb-md" required>
-                            <datalist id="intent">
-                                <?php foreach($response as $responses){?>
-                                <option value="<?= $responses->responseId?>"><?= $responses->responseId?></option>
-                                <?php } ?>
-                            </datalist>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="position">Category</label>
-
-                        <div class="col-sm-8">
-                            <select id="category" name="category"  class="form-control mb-md" required>
-                                <?php foreach($category as $categories){?>
-                                <option value="<?= $categories->categoryName?>"><?= $categories->categoryName?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="position">Assigned To</label>
-
-                        <div class="col-sm-8">
-                            <select id="assign" name="assign"  class="form-control mb-md" required>
-                                <?php foreach($user as $users){?>
-                                <option value="<?= $users->userId?>"><?= $users->userName?></option>
-                                <?php } ?>
-                            </select>
+                            <input type="text" name="intent"  class="form-control mb-md" required>
                         </div>
                     </div>
 
@@ -62,52 +33,73 @@
 
                     
                     <div class="form-group">
-                    <h3 class="col-sm-offset-1">Keywords</h3>
-                    <p class="col-sm-offset-1"> 
-                        <input type="button" class="btn btn-success" value="Add Keyword" onClick="addRow('dataTable')"> 
-                        <input type="button" class="btn btn-danger" value="Remove Keyword" onClick="deleteRow('dataTable')">
-                    </p>
-                    
-                    <table id="dataTable" class="input-group col-sm-10 col-sm-offset-1 mb-md">
-                        <tbody>
-                        <tr>
-                            <p>
-                            <td><input type="checkbox" name="chk[]"/></td>
-                            <td>
-                                <input type="text" name="text[]" class="form-control" placeholder="Text">
-                            </td>
-                            <td>
-                                <select name="entity[]" class="form-control" placeholder="Entity" param=0 onchange="valueSet(this)" required>
-                                    <option value="">Select Entity</option>
-                                <?php foreach($entity as $entities){?>
-                                    <option value="<?= $entities->entity?>"><?= $entities->entity?></option>
-                                <?php } ?>
-                                </select>
-                            </td>
-                            <td>
-                                <select name="value[]" class="form-control" placeholder="Value" param=0 required>
-                                    <option value="">Select Value</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="number" class="form-control" name="start[]" placeholder="Start">
-                            </td>
-                            <td>
-                                <input type="number" class="form-control" name="end[]" placeholder="End">
-                            </td>
-                            </p>
-                        </tr>
-                        </tbody>
-                    </table>
+                        <h3 class="col-sm-offset-1">Keywords</h3>
+                        <p class="col-sm-offset-1"> 
+                            <input type="button" class="btn btn-success" value="Add Keyword" onClick="addRow('dataTable')"> 
+                            <input type="button" class="btn btn-danger" value="Remove Keyword" onClick="deleteRow('dataTable')">
+                        </p>
+                        
+                        <table id="dataTable" class="input-group col-sm-10 col-sm-offset-1 mb-md">
+                            <tbody>
+                            <tr>
+                                <p>
+                                <td><input type="checkbox" name="chk[]"/></td>
+                                <td>
+                                    <input type="text" name="text[]" class="form-control" placeholder="Text">
+                                </td>
+                                <td>
+                                    <select name="entity[]" class="form-control" placeholder="Entity" param=0 onchange="valueSet(this)" required>
+                                        <option value="">Select Entity</option>
+                                    <?php foreach($entity as $entities){?>
+                                        <option value="<?= $entities->entity?>"><?= $entities->entity?></option>
+                                    <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="value[]" class="form-control" placeholder="Value" param=0 required>
+                                        <option value="">Select Value</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="start[]" placeholder="Start">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="end[]" placeholder="End">
+                                </td>
+                                </p>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
 
+                    <?php foreach($item as $items){?>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="sample">Response</label>
+                        <label class="col-sm-3 control-label" for="sample"><?= $items->itemId?></label>
 
                         <div class="col-sm-8">
-                            <textarea name="response" rows="4" class="form-control mb-md" required></textarea>
+                            <?php if($items->itemValue == "textarea"){?>
+                            <textarea name="<?= $items->itemId?>" rows="4" class="form-control mb-md" required></textarea>
+                            <?php }?>
+
+                            <?php if($items->itemValue == "text"){?>
+                            <input type="text" name="<?= $items->itemId?>" class="form-control mb-md" required>
+                            <?php }?>
+
+                            <?php if($items->itemValue == "number"){?>
+                            <input type="number" name="<?= $items->itemId?>" class="form-control mb-md" required>
+                            <?php }?>
+
+                            <?php if($items->itemValue == "select"){?>
+                            <select name="<?= $items->itemId?>" class="form-control mb-md" required>
+                                <option value="">Select <?= $items->itemId?></option>
+                                <?php foreach($itemOption[$items->itemId] as $itemOptions){?>
+                                    <option value="<?=$itemOptions["itemOptionValue"]?>"><?=$itemOptions["itemOptionName"]?></option>
+                                <?php }?>
+                            </select>
+                            <?php }?>
                         </div>
                     </div>
+                    <?php }?>
                     
                     <footer class="panel-footer">
                         <div class="row">
@@ -211,7 +203,7 @@ function valueSet(obj){
             var html = '';
             var i;
             for(i=0; i<data.length; i++){
-                html += '<option value='+data[i].keyword+'>'+data[i].keyword+'</option>';
+                html += '<option value='+data[i].value+'>'+data[i].value+'</option>';
             }
             $("[name='value[]'][param="+param+"]").html(html);
 

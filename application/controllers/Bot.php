@@ -11,10 +11,16 @@ class Bot extends CI_Controller {
 	}
 
     public function train_bot(){
-        $data['response'] = $this->m_basic->gets('response')->result();
-        $data['category'] = $this->m_basic->gets('category')->result();
-        $data['user'] = $this->m_basic->gets('user')->result();
+        $appId = "1";
+        $item = $this->m_basic->find('item', array("appId"=>$appId))->result();
+        $data["itemOption"] = array();
+        foreach($item as $items){
+            if($items->itemValue == "select"){
+                $data["itemOption"][$items->itemId] = $this->m_basic->find("itemoption", array("itemId"=>$items->itemId))->result_array();
+            }
+        }
 
+        $data['item'] = $item;
         $data['entity'] = $this->m_basic->gets('entity')->result();
 
         $header = array(
@@ -26,34 +32,71 @@ class Bot extends CI_Controller {
         $this->load->view('footer');
     }
 
+    public function check(){
+        $appId = "1";
+        $responseId = "";
+
+        $item = $this->m_basic->find("item", array("appId"=>$appId))->result();
+        foreach($item as $items){
+            $output[$items->itemId] = $this->input->post($items->itemId);
+        }
+
+        //memasukkan responseDetail ke db
+        foreach($output as $responseTitle => $responseValue){
+            $responseDetail = array(
+                "responseId"=>$responseId,
+                "responseTitle"=>$responseTitle,
+                "responseValue"=>$responseValue
+            );
+            echo json_encode($responseDetail). "<br>";
+            //$this->m_basic->insert("responsedetail", $responseDetail);
+        }
+
+        echo $this->input->post("Response TextArea");
+    }
+
     public function insertIntent(){
+        $appId = "1";
+
         $intentName = $this->input->post("intent");
-        $category = $this->input->post('category');
-        $assign = $this->input->post('assign');
         $sample = $this->input->post("sample");
         $entity = $this->input->post("entity");
         $value = $this->input->post("value");
         $start = $this->input->post("start");
         $end = $this->input->post("end");
-        $response = $this->input->post('response');
+
+        $item = $this->m_basic->find("item", array("appId"=>$appId))->result();
+        foreach($item as $items){
+            $output[$items->itemId] = $this->input->post($items->itemId);
+        }
 
         $sampleId = date("YmdHis");
 
         //memasukkan response ke DB
+        $conditionId = "";
         $responseId = "";
         $response = array(
-            "responseId"=>$responseId,
-            "response"=>$response,
-            "category"=>$category,
-            "assignedTo"=>$assign
+            "conditionId"=>$conditionId,
+            "responseId"=>$responseId
         );
         $this->m_basic->insert("response", $response);
+
+        //memasukkan responseDetail ke db
+        foreach($output as $responseTitle => $responseValue){
+            $responseDetail = array(
+                "responseId"=>$responseId,
+                "responseTitle"=>$responseTitle,
+                "responseValue"=>$responseValue
+            );
+            //$this->m_basic->insert("responsedetail", $responseDetail);
+        }
+        
         //menambahkan sample intent ke db
-        $responseDetail = array(
+        $sampleIntent = array(
             "sampleId"=>$responseId,
-            "intentName"=>$value
+            "intentName"=>$intentName
         );
-        $this->m_basic->insert("sampleintent", $responseDetail);
+        $this->m_basic->insert("sampleintent", $sampleIntent);
 
         //untuk memasukkan intent ke json sample
         $sampleJson[0] = array(

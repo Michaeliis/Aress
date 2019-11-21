@@ -148,25 +148,50 @@ class Entity extends CI_Controller {
     }
 
     public function testThis(){
-        $query = "SELECT conditionId, count(conditionDetailId) AS 'score' FROM conditionDetail WHERE ";
-        $query.= "(";
-        $query.= "conditionEntity = 'intent'";
-        $query.= " AND ";
-        $query.= "conditionValue = 'hell'";
-        $query.= ")";
-        $query.= " OR ";
-        $query.= "(";
-        $query.= "conditionEntity = 'blade'";
-        $query.= " AND ";
-        $query.= "conditionValue = 'senua'";
-        $query.= ")";
-        $query.= " GROUP BY conditionId";
+        $message = "tolong komputer saya tidak meledak";
 
-        echo $query. "<br>";
+        //interact dengan NLP
+        $server_output = doStuff("message", strip_tags($message), null);
+        $result = json_decode($server_output, true);
 
-        /*$result = $this->m_basic->runQuery($query)->result();
-        foreach($result as $results){
-            echo $results->conditionId;
-        }*/
+        $entity = $result["entities"];
+
+        //mengecek response dari db
+        $query = "SELECT conditionDetail.conditionId, count(conditionDetailId) AS 'score', conditionCount FROM conditionDetail INNER JOIN conditionn ON conditionn.conditionId = conditionDetail.conditionId JOIN conditionintent ON conditionintent.conditionId = conditionDetail.conditionId WHERE ";
+        $next = false;
+        foreach($entity as $entities => $value){
+            foreach($value as $values){
+                if($next){
+                    $query.= " OR ";
+                }
+                $query.= "(";
+                $query.= "conditionEntity = '".$entities."'";
+                $query.= " AND ";
+                $query.= "conditionValue = '".$values["value"]."'";
+                $query.= ")";
+    
+                $next = true;
+            }
+        }
+        $query.= " GROUP BY conditionId HAVING count(conditionDetailId) = conditionCount";
+        echo $query. "<br><br>";
+
+        $result = $this->m_basic->runQuery($query)->row();
+        if(isset($result)){
+            $conditionId = $result->conditionId;
+            $response = $this->m_basic->find("response", array("conditionId"=>$conditionId))->row();
+            if(isset($response)){
+                $responseDetail = $this->m_basic->find("responsedetail", array("responseId"=>$response->responseId))->result();
+                foreach($responseDetail as $responseDetails){
+                    $output[$responseDetails->responseTitle] = $responseDetails->responseValue;
+                }
+            }
+        }
+
+        if(!isset($output)){
+            $output = array("reply"=>"sorry");
+        }
+        
+        echo json_encode($output);
     }
 }?>
