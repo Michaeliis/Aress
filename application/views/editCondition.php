@@ -10,33 +10,66 @@
         <section class="panel">
             <header class="panel-heading">
                                         
-                <h2 class="panel-title">Train Bot</h2>
+                <h2 class="panel-title">New Condition</h2>
             </header>
             <div class="panel-body">
                 <form class="form-horizontal form-bordered" action="<?= base_url('bot/insertConditionResponse')?>" method="POST">
-                    
+                    <input type="conditionId" name="conditionId" value="<?= $condition->conditionId?>" readonly hidden required>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="position">Condition Name</label>
+
+                        <div class="col-sm-8">
+                            <input type="conditionName" name="conditionName" value="<?= $condition->conditionName?>" class="form-control mb-md" required>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Intent</label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="intent"  class="form-control mb-md" required>
+                            <input type="text" name="intent" value="<?= $conditionintent->conditionIntent?>" class="form-control mb-md" required>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="sample">Sample</label>
+                    <table class="table table-bordered table-striped mb-none" id="datatable-default">
+                        <thead>
+                            <tr>
+                                <th class="col-md-3">Entity</th>
+                                <th class="col-md-3">Value</th>
+                                <th class="col-md-2">Status</th>
+                                <th class="col-md-2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($conditiondetail as $conditiondetails){?>
+                            <tr class="gradeX">
+                                <td><?=$conditiondetails->conditionEntity?></td>
+                                <td><?=$conditiondetails->conditionValue?></td>
+                                <td>
+                                <?php if($conditiondetails->conditionDetailStatus == "1"){?>
+                                    <span style="color:green">Active</span>
+                                <?php }else if($conditiondetails->conditionDetailStatus == "0"){?>
+                                    <span style="color:red">Inactive</span>
+                                <?php }?>
+                                </td>
+                                <td>
+                                    <a href="<?= base_url("entity/edit_value/").$conditiondetails->conditionDetailId ?>" class="btn btn-success">
+                                        Edit
+                                    </a>
+                                    <a href="<?= base_url("entity/delete_keyword_detail/").$conditiondetails->conditionDetailId ?>" class="btn btn-danger">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
 
-                        <div class="col-sm-8">
-                            <textarea id="sample" name="sample" rows="4" class="form-control mb-md" required></textarea>
-                        </div>
-                    </div>
-
-                    
                     <div class="form-group">
-                        <h3 class="col-sm-offset-1">Keywords</h3>
+                        <h3 class="col-sm-offset-1">Condition</h3>
                         <p class="col-sm-offset-1"> 
-                            <input type="button" class="btn btn-success" value="Add Keyword" onClick="addRow('dataTable')"> 
-                            <input type="button" class="btn btn-danger" value="Remove Keyword" onClick="deleteRow('dataTable')">
+                            <input type="button" class="btn btn-success" value="Add Condition" onClick="addRow('dataTable')"> 
+                            <input type="button" class="btn btn-danger" value="Remove Condition" onClick="deleteRow('dataTable')">
                         </p>
                         
                         <table id="dataTable" class="input-group col-sm-10 col-sm-offset-1 mb-md">
@@ -44,9 +77,6 @@
                             <tr>
                                 <p>
                                 <td><input type="checkbox" name="chk[]"/></td>
-                                <td>
-                                    <input type="text" name="text[]" class="form-control" placeholder="Text">
-                                </td>
                                 <td>
                                     <select name="entity[]" class="form-control" placeholder="Entity" param=0 onchange="valueSet(this)" required>
                                         <option value="">Select Entity</option>
@@ -60,46 +90,11 @@
                                         <option value="">Select Value</option>
                                     </select>
                                 </td>
-                                <td>
-                                    <input type="number" class="form-control" name="start[]" placeholder="Start">
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control" name="end[]" placeholder="End">
-                                </td>
                                 </p>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-
-                    <?php foreach($item as $items){?>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="sample"><?= $items->itemName?></label>
-
-                        <div class="col-sm-8">
-                            <?php if($items->itemValue == "textarea"){?>
-                            <textarea name="<?= $items->itemId?>" rows="4" class="form-control mb-md" required></textarea>
-                            <?php }?>
-
-                            <?php if($items->itemValue == "text"){?>
-                            <input type="text" name="<?= $items->itemId?>" class="form-control mb-md" required>
-                            <?php }?>
-
-                            <?php if($items->itemValue == "number"){?>
-                            <input type="number" name="<?= $items->itemId?>" class="form-control mb-md" required>
-                            <?php }?>
-
-                            <?php if($items->itemValue == "select"){?>
-                            <select name="<?= $items->itemId?>" class="form-control mb-md" required>
-                                <option value="">Select <?= $items->itemId?></option>
-                                <?php foreach($itemOption[$items->itemId] as $itemOptions){?>
-                                    <option value="<?=$itemOptions["itemOptionValue"]?>"><?=$itemOptions["itemOptionName"]?></option>
-                                <?php }?>
-                            </select>
-                            <?php }?>
-                        </div>
-                    </div>
-                    <?php }?>
                     
                     <footer class="panel-footer">
                         <div class="row">
@@ -129,19 +124,10 @@ function addRow(tableID) {
         newcell.innerHTML = '<input type="checkbox" name="chk[]" />';
 
         var newcell = row.insertCell(1);
-        newcell.innerHTML = '<input type="text"  class="form-control" placeholder="Text" required="required" name="text[]" />';
-
-        var newcell = row.insertCell(2);
         newcell.innerHTML = '<select name="entity[]" class="form-control" placeholder="Entity" param='+(rowNum)+' onchange="valueSet(this)" required><option value="">Select Entity</option><?php foreach($entity as $entities){?><option value="<?= $entities->entityId?>"><?= $entities->entityName?></option><?php } ?></select>';
 
-        var newcell = row.insertCell(3);
+        var newcell = row.insertCell(2);
         newcell.innerHTML = '<select name="value[]" class="form-control" placeholder="Value" param="'+ (rowNum) +'" required><option value="">Select Value</option></select>';
-
-        var newcell = row.insertCell(4);
-        newcell.innerHTML = '<input type="number" name="start[]" placeholder="Start">';
-
-        var newcell = row.insertCell(5);
-        newcell.innerHTML = '<input type="number" name="end[]" placeholder="End">';
         rowNum++;
         console.log(rowNum);
 	}else{
@@ -167,26 +153,6 @@ function deleteRow(tableID) {
       console.log(rowNum);
 		}
 	}
-}
-
-document.getElementById("sample").onmouseup = function(){
-    var rowCount = dataTable.rows.length - 1;
-
-    var start = document.getElementsByName("start[]");
-    var selectedText = window.getSelection().toString();
-    if(selectedText != ""){
-        if(start[rowCount].value != ""){
-            addRow('dataTable');
-            rowCount++;
-        }
-        start[rowCount].value = sample.selectionStart;
-
-        var end = document.getElementsByName("end[]");
-        end[rowCount].value = sample.selectionEnd;
-
-        var text = document.getElementsByName("text[]");
-        text[rowCount].value = selectedText;
-    }
 }
 
 function valueSet(obj){

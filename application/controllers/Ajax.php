@@ -12,7 +12,7 @@ class Ajax extends CI_Controller {
     
     public function selectValue(){
         $entity = $this->input->post('entity');
-        $where = array("entity"=>$entity);
+        $where = array("entityId"=>$entity);
         $data = $this->m_basic->find("value", $where)->result();
         echo json_encode($data);
     }

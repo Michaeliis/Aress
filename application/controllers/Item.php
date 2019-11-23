@@ -35,17 +35,21 @@ class Item extends CI_Controller {
 
     public function newItem(){
         $appId = "1";
-        $itemId = str_replace(" ", "_", $this->input->post("item"));
+        $itemName = str_replace(" ", "_", $this->input->post("item"));
         $itemValue = $this->input->post("value");
         $itemDetail = $this->input->post("detail");
         $optionValue = $this->input->post("optionValue");
         $optionName = $this->input->post("optionName");
         
-        $this->m_basic->insert("item", array("appId"=>$appId, "itemId"=>$itemId, "itemValue"=>$itemValue, "itemDetail"=>$itemDetail, "itemStatus"=>"1"));
+        $itemId = $this->m_basic->insert("item", array("appId"=>$appId, "itemName"=>$itemName, "itemValue"=>$itemValue, "itemDetail"=>$itemDetail, "itemStatus"=>"1"));
 
         foreach($optionValue as $counter => $optionValues){
-            $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "itemOptionStatus"=>"1"));
+            if($optionValues != null){
+                $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "itemOptionStatus"=>"1"));
+            }
         }
+
+        redirect(base_url("item/all_item"));
     }
 
     public function edit_item($itemId){
@@ -78,7 +82,21 @@ class Item extends CI_Controller {
             foreach($optionValue as $counter => $optionValues){
                 $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "itemOptionStatus"=>"1"));
             }
-        }  
+        }
+
+        redirect(base_url("item/all_item"));
+    }
+
+    public function delete_item($itemId){
+        $this->m_basic->update(array("itemId"=>$itemId), "item", array("itemStatus"=>"0"));
+
+        redirect(base_url("item/all_item"));
+    }
+
+    public function activate_item($itemId){
+        $this->m_basic->update(array("itemId"=>$itemId), "item", array("itemStatus"=>"1"));
+
+        redirect(base_url("item/all_item"));
     }
 
     public function edit_item_option($itemId, $itemOptionValue){
@@ -91,5 +109,15 @@ class Item extends CI_Controller {
         $this->load->view('header', $header);
         $this->load->view('editItemOption', $data);
         $this->load->view('footer');
+    }
+
+    public function editItemOption(){
+        $itemId = $this->input->post("itemId");
+        $itemOptionValue = $this->input->post("itemOptionValue");
+        $itemOptionName = $this->input->post("itemOptionName");
+
+        $this->m_basic->update(array("itemId"=>$itemId, "itemOptionValue"=>$itemOptionValue), "itemoption", array("itemOptionName"=>$itemOptionName));
+        
+        redirect(base_url("item/edit_item/"). $itemId);
     }
 }?>

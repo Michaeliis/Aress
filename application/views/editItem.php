@@ -13,7 +13,7 @@
                 <h2 class="panel-title">Train Bot</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('item/newItem')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('item/editItem')?>" method="POST">
                     
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Item Name</label>
@@ -27,7 +27,7 @@
                         <label class="col-sm-3 control-label" for="position">Item Detail</label>
 
                         <div class="col-sm-8">
-                            <textarea id="detail" name="detail" rows="4" class="form-control mb-md" required readonly><?= $item->itemDetail ?></textarea>
+                            <textarea id="detail" name="detail" rows="4" class="form-control mb-md" required><?= $item->itemDetail ?></textarea>
                         </div>
                     </div>
 

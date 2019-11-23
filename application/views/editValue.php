@@ -19,7 +19,8 @@
                         <label class="col-sm-3 control-label" for="position">Entity Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="entity" name="entity"  class="form-control mb-md" required value="<?= $entity?>" readonly>
+                            <input type="text" id="entity" name="entity" required value="<?= $entity->entityId?>" readonly hidden>
+                            <input type="text" id="entityName" name="entityName"  class="form-control mb-md" required value="<?= $entity->entityName?>" readonly hidden>
                         </div>
                     </div>
 
@@ -27,7 +28,8 @@
                         <label class="col-sm-3 control-label" for="position">Value Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="value" name="value"  class="form-control mb-md" required value="<?= $value?>" readonly>
+                            <input type="text" id="value" name="value" required value="<?= $value->valueId?>" readonly hidden>
+                            <input type="text" id="valueName" name="valueName"  class="form-control mb-md" required value="<?= $value->value?>" readonly>
                         </div>
                     </div>
                     
@@ -45,10 +47,10 @@
                                     <?= $expressions->expression?>
                                 </td>
                                 <td>
-                                    <a href="<?= base_url("entity/edit_expression/").$entity."/".$value."/".$expressions->expression?>" class="btn btn-success">
+                                    <a href="<?= base_url("entity/edit_expression/").$entity->entityId."/".$value->valueId."/".$expressions->expressionId?>" class="btn btn-success">
                                         Edit
                                     </a>
-                                    <a href="<?= $expressions->expression?>" class="btn btn-danger">
+                                    <a href="<?= $expressions->expressionId?>" class="btn btn-danger">
                                         Delete
                                     </a>
                                 </td>

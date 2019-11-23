@@ -5,32 +5,35 @@
             <a href="#" class="fa fa-times"></a>
         </div>
 
-        <h2 class="panel-title">All Entity</h2>
+        <h2 class="panel-title">All App</h2>
     </header>
     <div class="panel-body">
         <table class="table table-bordered table-striped mb-none" id="datatable-default">
             <thead>
                 <tr>
-                    <th>Entity</th>
-                    <th>Value</th>
+                    <th>App Name</th>
+                    <th>Detail</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($entity as $entities){?> 
+                <?php foreach($app as $apps){?>
                 <tr class="gradeX">
-                    <td><?= $entities->entityName?></td>
+                    <td><?=$apps->appName?></td>
+                    <td><?=$apps->appDetail?></td>
                     <td>
-                        <?php
-                        foreach($value[$entities->entityId] as $values){
-                            echo $values->value. "; ";
-                        }?>
+                        <?php if($apps->appStatus=="1"){?>
+                            <span style="color:green">Active</span>
+                        <?php }else if($apps->appStatus=="0"){?>
+                            <span style="color:red">Inactive</span>
+                        <?php }?>
                     </td>
                     <td>
-                        <a href="<?= base_url("entity/edit_entity/").$entities->entityId?>" class="btn btn-success">
+                        <a href="<?= base_url("app/edit_app/"). $apps->appId?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?= $entities->entityId?>" class="btn btn-danger">
+                        <a href="<?= base_url("app/delete_app/"). $apps->appId?>" class="btn btn-danger">
                             Delete
                         </a>
                     </td>

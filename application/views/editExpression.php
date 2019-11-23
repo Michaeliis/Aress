@@ -19,7 +19,8 @@
                         <label class="col-sm-3 control-label" for="position">Entity Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="entity" name="entity"  class="form-control mb-md" required value="<?= $entity?>" readonly>
+                            <input type="text" id="entity" name="entity" hidden required value="<?= $entity->entityId?>" readonly>
+                            <input type="text" id="entityName" name="entityName" class="form-control mb-md" required value="<?= $entity->entityName?>" readonly>
                         </div>
                     </div>
 
@@ -27,7 +28,8 @@
                         <label class="col-sm-3 control-label" for="position">Value Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="value" name="value"  class="form-control mb-md" required value="<?= $value?>" readonly>
+                            <input type="text" id="value" name="value" hidden required value="<?= $value->valueId?>" readonly>
+                            <input type="text" id="valueName" name="valueName"  class="form-control mb-md" required value="<?= $value->value?>" readonly>
                         </div>
                     </div>
 
@@ -35,8 +37,8 @@
                         <label class="col-sm-3 control-label" for="sample">Expression</label>
 
                         <div class="col-sm-8">
-                        <input type="text" id="expressionOld" name="expressionOld" required value="<?= $expression?>" readonly hidden>
-                        <input type="text" id="expression" name="expression"  class="form-control mb-md" required value="<?= $expression?>">
+                        <input type="text" id="expressionOld" name="expressionOld" required value="<?= $expression->expression?>" readonly hidden>
+                        <input type="text" id="expression" name="expression"  class="form-control mb-md" required value="<?= $expression->expression?>">
                         </div>
                     </div>
                     

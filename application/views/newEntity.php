@@ -22,6 +22,14 @@
                             <input type="text" id="entity" name="entity"  class="form-control mb-md" required>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="position">Entity Detail</label>
+
+                        <div class="col-sm-8">
+                            <textarea rows="4" id="detail" name="detail"  class="form-control mb-md" required></textarea>
+                        </div>
+                    </div>
                     
                     <div class="form-group">
                     <h3 class="col-sm-offset-1">Values</h3>

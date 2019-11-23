@@ -5,12 +5,6 @@
     }
 </style>
 <!-- start: page -->
-<?php
-$expressionList = array();
-foreach($expression as $expressions){
-    $expressionList[$expressions->value][] = $expressions->expression;
-}
-?>
 
 <div class="row">
     <div class="col-lg-12">
@@ -21,12 +15,13 @@ foreach($expression as $expressions){
             </header>
             <div class="panel-body">
                 <form class="form-horizontal form-bordered" action="<?= base_url('entity/editEntity')?>" method="POST">
+                    <input type="text" name="entityId" value="<?= $entity->entityId?>" hidden>
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Entity Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="entity" name="entity" value="<?= $entity?>" class="form-control mb-md" required readonly>
+                            <input type="text" id="entity" name="entity" value="<?= $entity->entityName?>" class="form-control mb-md" required readonly>
                         </div>
                     </div>
 
@@ -43,16 +38,16 @@ foreach($expression as $expressions){
                             <tr class="gradeX">
                                 <td><?=$values->value?></td>
                                 <td><?php
-                                foreach($expressionList[$values->value] as $expressionLists){
-                                    echo ($expressionLists . "; ");
+                                foreach($expression[$values->valueId] as $expressions){
+                                    echo ($expressions->expression . "; ");
                                 }
                                 ?>
                                 </td>
                                 <td>
-                                    <a href="<?= base_url("entity/edit_value/").$entity."/".$values->value?>" class="btn btn-success">
+                                    <a href="<?= base_url("entity/edit_value/").$entity->entityId. "/". $values->valueId?>" class="btn btn-success">
                                         Edit
                                     </a>
-                                    <a href="<?= base_url("entity/delete_keyword_detail/").$entity."/".$values->value?>" class="btn btn-danger">
+                                    <a href="<?= base_url("entity/delete_keyword_detail/").$entity->entityId."/".$values->valueId?>" class="btn btn-danger">
                                         Delete
                                     </a>
                                 </td>

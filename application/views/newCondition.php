@@ -10,11 +10,19 @@
         <section class="panel">
             <header class="panel-heading">
                                         
-                <h2 class="panel-title">Train Bot</h2>
+                <h2 class="panel-title">New Condition</h2>
             </header>
             <div class="panel-body">
                 <form class="form-horizontal form-bordered" action="<?= base_url('bot/insertConditionResponse')?>" method="POST">
                     
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="position">Condition Name</label>
+
+                        <div class="col-sm-8">
+                            <input type="conditionName" name="conditionName"  class="form-control mb-md" required>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Intent</label>
 
@@ -23,15 +31,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="sample">Sample</label>
-
-                        <div class="col-sm-8">
-                            <textarea id="sample" name="sample" rows="4" class="form-control mb-md" required></textarea>
-                        </div>
-                    </div>
-
-                    
                     <div class="form-group">
                         <h3 class="col-sm-offset-1">Keywords</h3>
                         <p class="col-sm-offset-1"> 
@@ -60,46 +59,11 @@
                                         <option value="">Select Value</option>
                                     </select>
                                 </td>
-                                <td>
-                                    <input type="number" class="form-control" name="start[]" placeholder="Start">
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control" name="end[]" placeholder="End">
-                                </td>
                                 </p>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-
-                    <?php foreach($item as $items){?>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="sample"><?= $items->itemName?></label>
-
-                        <div class="col-sm-8">
-                            <?php if($items->itemValue == "textarea"){?>
-                            <textarea name="<?= $items->itemId?>" rows="4" class="form-control mb-md" required></textarea>
-                            <?php }?>
-
-                            <?php if($items->itemValue == "text"){?>
-                            <input type="text" name="<?= $items->itemId?>" class="form-control mb-md" required>
-                            <?php }?>
-
-                            <?php if($items->itemValue == "number"){?>
-                            <input type="number" name="<?= $items->itemId?>" class="form-control mb-md" required>
-                            <?php }?>
-
-                            <?php if($items->itemValue == "select"){?>
-                            <select name="<?= $items->itemId?>" class="form-control mb-md" required>
-                                <option value="">Select <?= $items->itemId?></option>
-                                <?php foreach($itemOption[$items->itemId] as $itemOptions){?>
-                                    <option value="<?=$itemOptions["itemOptionValue"]?>"><?=$itemOptions["itemOptionName"]?></option>
-                                <?php }?>
-                            </select>
-                            <?php }?>
-                        </div>
-                    </div>
-                    <?php }?>
                     
                     <footer class="panel-footer">
                         <div class="row">
@@ -136,12 +100,6 @@ function addRow(tableID) {
 
         var newcell = row.insertCell(3);
         newcell.innerHTML = '<select name="value[]" class="form-control" placeholder="Value" param="'+ (rowNum) +'" required><option value="">Select Value</option></select>';
-
-        var newcell = row.insertCell(4);
-        newcell.innerHTML = '<input type="number" name="start[]" placeholder="Start">';
-
-        var newcell = row.insertCell(5);
-        newcell.innerHTML = '<input type="number" name="end[]" placeholder="End">';
         rowNum++;
         console.log(rowNum);
 	}else{
@@ -167,26 +125,6 @@ function deleteRow(tableID) {
       console.log(rowNum);
 		}
 	}
-}
-
-document.getElementById("sample").onmouseup = function(){
-    var rowCount = dataTable.rows.length - 1;
-
-    var start = document.getElementsByName("start[]");
-    var selectedText = window.getSelection().toString();
-    if(selectedText != ""){
-        if(start[rowCount].value != ""){
-            addRow('dataTable');
-            rowCount++;
-        }
-        start[rowCount].value = sample.selectionStart;
-
-        var end = document.getElementsByName("end[]");
-        end[rowCount].value = sample.selectionEnd;
-
-        var text = document.getElementsByName("text[]");
-        text[rowCount].value = selectedText;
-    }
 }
 
 function valueSet(obj){

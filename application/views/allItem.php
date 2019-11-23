@@ -14,6 +14,7 @@
                     <th>Item Name</th>
                     <th>Value</th>
                     <th>Detail</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -24,12 +25,26 @@
                     <td><?=$items->itemValue?></td>
                     <td><?=$items->itemDetail?></td>
                     <td>
+                        <?php if($items->itemStatus == "1"){?>
+                            <span style="color:green">Active</span>
+                        <?php }else{?>
+                            <span style="color:red">Inactive</span>
+                        <?php }?>
+                    </td>
+                    <td>
                         <a href="<?= base_url("item/edit_item/").$items->itemId?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?= $items->itemId?>" class="btn btn-danger">
-                            Delete
-                        </a>
+                        <?php if($items->itemStatus == "1"){?>
+                            <a href="<?= base_url("item/delete_item/").$items->itemId?>" class="btn btn-danger">
+                                Delete
+                            </a>
+                        <?php }else{?>
+                            <a href="<?= base_url("item/activate_item/").$items->itemId?>" class="btn btn-danger">
+                                Reactivate
+                            </a>
+                        <?php }?>
+                        
                     </td>
                 </tr>
                 <?php } ?>

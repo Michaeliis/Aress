@@ -8,34 +8,36 @@
 <div class="row">
     <div class="col-lg-12">
         <section class="panel">
-            <header class="panel-heading">
-                                        
-                <h2 class="panel-title">Edit Item Option</h2>
+            <header class="panel-heading">       
+                <h2 class="panel-title">New App</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('item/editItemOption')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('app/newApp')?>" method="POST">
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="position">Item Name</label>
+                        <label class="col-sm-3 control-label" for="position">App Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="itemId" name="itemId"  class="form-control mb-md" required value="<?= $itemOption->itemId?>" readonly>
+                            <input type="text" id="appName" name="appName"  class="form-control mb-md" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="position">Option Value</label>
+                        <label class="col-sm-3 control-label" for="position">App Language</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="itemOptionValue" name="itemOptionValue"  class="form-control mb-md" required value="<?= $itemOption->itemOptionValue?>" readonly>
+                            <select id="appLanguage" name="appLanguage"  class="form-control mb-md" required>
+                                <option value="">Select Language</option>
+                                <option value="en">English</option>
+                                <option value="id">Indonesian</option>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="position">Option Name</label>
+                        <label class="col-sm-3 control-label" for="sample">App Detail</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="itemOptionName" name="itemOptionName"  class="form-control mb-md" required value="<?= $itemOption->itemOptionName?>">
+                            <textarea name="appDetail" rows="4" class="form-control mb-md" required></textarea>
                         </div>
                     </div>
                     

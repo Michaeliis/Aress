@@ -3,6 +3,7 @@ class M_basic extends CI_Model{
     
     function insert($table, $data){
         $this->db->insert($table, $data);
+        return $this->db->insert_id();
     }
     
     function find($table, $where){

@@ -11,8 +11,13 @@ class Entity extends CI_Controller {
     }
 
     public function all_entity(){
-        $data['entity'] = $this->m_basic->gets('entity')->result();
-        $data['value'] = $this->m_basic->gets('value')->result();
+        $appId = 1;
+
+        $entity = $this->m_basic->find('entity', array("appId"=>$appId))->result();
+        $data['entity'] = $entity;
+        foreach($entity as $entities){
+            $data['value'][$entities->entityId] = $this->m_basic->find('value', array("entityId"=>$entities->entityId))->result();
+        }
 
         $header = array(
             "subtitle"=>"Entity",
@@ -34,33 +39,35 @@ class Entity extends CI_Controller {
     }
 
     public function insertEntity(){
-        $entity = $this->input->post("entity");
-        $detail = $this->input->post("detail");
+        $appToken = "KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
+
+        $entityName = $this->input->post("entity");
+        $entityDetail = $this->input->post("detail");
         $value = $this->input->post("value");
         $expression = $this->input->post("expression");
 
         //untuk memasukkan entity baru
-        $json = json_encode(array("id"=>$entity));
-        $server_output = doStuff("entities/", null, $json);
+        $json = json_encode(array("id"=>$entityName));
+        $server_output = doStuff("entities/", null, $json, $appToken);
         echo $server_output. "<br>";
         //memasukkan entity ke db
-        $this->m_basic->insert("entity", array("entity"=>$entity, "detail"=>$detail));
+        $entityId = $this->m_basic->insert("entity", array("entityName"=>$entityName, "detail"=>$entityDetail, "entityStatus"=>"1"));
 
         //memasukkan value baru
         foreach($value as $counter =>$values){
             $expressions = explode(";", $expression[$counter]);
 
             $json = json_encode(array("value"=>$values, "expressions"=>$expressions));
-            $server_output = doStuff("entities/".$entity."/values/", null, $json);
+            $server_output = doStuff("entities/".$entityName."/values/", null, $json, $appToken);
             echo $server_output. "<br>";
+
+            //memasukkan value ke db
+            $valueId = $this->m_basic->insert("value", array("entityId"=>$entityId, "value"=>$values, "valueStatus"=>"1"));
 
             //memasukkan expression ke db
             foreach($expressions as $expressionss){
-                $this->m_basic->insert("expression", array("entity"=>$entity, "value"=>$values, "expression"=>$expressionss));
+                $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "expressionStatus"=>"1"));
             }
-
-            //memasukkan value ke db
-            $this->m_basic->insert("value", array("entity"=>$entity, "value"=>$values));
         }
     }
 
@@ -70,9 +77,13 @@ class Entity extends CI_Controller {
             "title"=>"Edit Entity"
         );
 
-        $data["entity"] = $entity;
-        $data["value"] = $this->m_basic->find("value", array("entity"=>$entity))->result();
-        $data["expression"] = $this->m_basic->find("expression", array("entity"=>$entity))->result();
+        $data["entity"] = $this->m_basic->find("entity", array("entityId"=>$entity))->row();
+
+        $value = $this->m_basic->find("value", array("entityId"=>$entity))->result();
+        $data["value"] = $value;
+        foreach($value as $values){
+            $data["expression"][$values->valueId] = $this->m_basic->find("expression", array("valueId"=>$values->valueId))->result();
+        }
 
         $this->load->view('header', $header);
         $this->load->view('editEntity', $data);
@@ -80,7 +91,10 @@ class Entity extends CI_Controller {
     }
 
     public function editEntity(){
-        $entity = $this->input->post("entity");
+        $appToken = "KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
+
+        $entityId = $this->input->post("entityId");
+        $entityName = $this->input->post("entity");
         $value = $this->input->post("value");
         $expression  = $this->input->post("expression");
 
@@ -89,23 +103,23 @@ class Entity extends CI_Controller {
             $expressions = explode(";", $expression[$counter]);
 
             $json = json_encode(array("value"=>$values, "expressions"=>$expressions));
-            $server_output = doStuff("entities/".$entity."/values/", null, $json);
+            $server_output = doStuff("entities/".$entityName."/values/", null, $json, $appToken);
             echo $server_output. "<br>";
+
+            //memasukkan value ke db
+            $valueId = $this->m_basic->insert("value", array("entityId"=>$entityId, "value"=>$values, "valueStatus"=>"1"));
 
             //memasukkan expression ke db
             foreach($expressions as $expressionss){
-                $this->m_basic->insert("expression", array("entity"=>$entity, "value"=>$values, "expression"=>$expressionss));
+                $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "expressionStatus"=>"1"));
             }
-
-            //memasukkan value ke db
-            $this->m_basic->insert("value", array("entity"=>$entity, "value"=>$values));
         }
     }
 
     public function edit_value($entity, $value){
-        $data['value'] = $value;
-        $data['entity'] = $entity;
-        $data['expression'] = $this->m_basic->find("expression", array("entity"=>$entity, "value"=>$value))->result();
+        $data['value'] = $this->m_basic->find("value", array("valueId"=>$value))->row();
+        $data['entity'] = $this->m_basic->find("entity", array("entityId"=>$entity))->row();
+        $data['expression'] = $this->m_basic->find("expression", array("valueId"=>$value))->result();
 
         $header = array(
             "subtitle"=>"Entity",
@@ -117,9 +131,9 @@ class Entity extends CI_Controller {
     }
 
     public function edit_expression($entity, $value, $expression){
-        $data['value'] = $value;
-        $data['entity'] = $entity;
-        $data['expression'] = $expression;
+        $data['value'] = $this->m_basic->find("value", array("valueId"=>$value))->row();
+        $data['entity'] = $this->m_basic->find("entity", array("entityId"=>$entity))->row();
+        $data['expression'] = $this->m_basic->find("expression", array("expressionId"=>$expression))->row();
 
         $header = array(
             "subtitle"=>"Entity",
@@ -131,27 +145,33 @@ class Entity extends CI_Controller {
     }
 
     public function editExpression(){
+        $appToken = "KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
+
         $entity = $this->input->post("entity");
+        $entityName = $this->input->post("entityName");
         $value = $this->input->post("value");
+        $valueName = $this->input->post("valueName");
         $expressionOld = $this->input->post("expressionOld");
         $expression = $this->input->post("expression");
 
         //remove old expression
-        $type = "entities/".$entity."/values/".$value."/expressions/".rawurlencode($expressionOld);
+        $type = "entities/".$entityName."/values/".$valueName."/expressions/".rawurlencode($expressionOld);
         deleteStuff($type);
         //insert new expression
-        $type = "entities/".$entity."/values/".$value."/expressions";
+        $type = "entities/".$entityName."/values/".$valueName."/expressions";
         $json = json_encode(array("expression"=>$expression));
-        doStuff($type, null, $json);
+        doStuff($type, null, $json, $appToken);
         //update expression to db
         $this->m_basic->update(array("entity"=>$entity, "value"=>$value, "expression"=>$expressionOld), "expression", array("expression"=>$expression));
     }
 
     public function testThis(){
+        $appToken = "KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
+        
         $message = "tolong komputer saya tidak meledak";
 
         //interact dengan NLP
-        $server_output = doStuff("message", strip_tags($message), null);
+        $server_output = doStuff("message", strip_tags($message), null, $appToken);
         $result = json_decode($server_output, true);
 
         $entity = $result["entities"];
@@ -179,7 +199,7 @@ class Entity extends CI_Controller {
         $result = $this->m_basic->runQuery($query)->row();
         if(isset($result)){
             $conditionId = $result->conditionId;
-            $response = $this->m_basic->find("response", array("conditionId"=>$conditionId))->row();
+            $response = $this->m_basic->find("conditionresponse", array("conditionId"=>$conditionId))->row();
             if(isset($response)){
                 $responseDetail = $this->m_basic->find("responsedetail", array("responseId"=>$response->responseId))->result();
                 foreach($responseDetail as $responseDetails){
