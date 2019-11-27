@@ -24,15 +24,39 @@
                         </div>
                     </div>
 
-                    <?php foreach($responsedetail as $responsedetails){?>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="sample"><?= $responsedetails->responseTitle?></label>
-
-                        <div class="col-sm-8">
-                            <textarea id="<?= $responsedetails->responseTitle?>" name="<?= $responsedetails->responseTitle?>" class="form-control mb-md" required><?= $responsedetails->responseValue ?></textarea>
-                        </div>
-                    </div>
-                    <?php }?>
+                    <table class="table table-bordered table-striped mb-none" id="datatable-default">
+                        <thead>
+                            <tr>
+                                <th class="col-md-3">Title</th>
+                                <th class="col-md-3">Value</th>
+                                <th class="col-md-2">Status</th>
+                                <th class="col-md-2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($responsedetail as $responsedetails){?>
+                            <tr class="gradeX">
+                                <td><?= $responsedetails->responseTitle?></td>
+                                <td><?= $responsedetails->responseValue ?></td>
+                                <td>
+                                    <?php if($responsedetails->responseDetailStatus=="1"){?>
+                                        <span style="color:green">Active</span>
+                                    <?php }else if($responsedetails->responseDetailStatus=="0"){?>
+                                        <span style="color:red">Inactive</span>
+                                    <?php }?>
+                                </td>
+                                <td>
+                                    <a href="<?= base_url("response/edit_response_detail/").$response->responseId. "/". $responsedetails->responseTitle?>" class="btn btn-success">
+                                        Edit
+                                    </a>
+                                    <a href="<?= base_url("response/delete_response_detail/").$response->responseId."/".$responsedetails->responseTitle?>" class="btn btn-danger">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
                     
                     <footer class="panel-footer">
                         <div class="row">

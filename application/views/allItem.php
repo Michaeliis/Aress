@@ -5,7 +5,7 @@
             <a href="#" class="fa fa-times"></a>
         </div>
 
-        <h2 class="panel-title">All Category</h2>
+        <h2 class="panel-title">All Item</h2>
     </header>
     <div class="panel-body">
         <table class="table table-bordered table-striped mb-none" id="datatable-default">
@@ -21,7 +21,7 @@
             <tbody>
                 <?php foreach($item as $items){?>
                 <tr class="gradeX">
-                    <td><?=$items->itemId?></td>
+                    <td><?=$items->itemName?></td>
                     <td><?=$items->itemValue?></td>
                     <td><?=$items->itemDetail?></td>
                     <td>

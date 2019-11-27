@@ -1,8 +1,7 @@
 <?php
-function doStuff($type, $input_utterance, $json){
+function doStuff($type, $input_utterance, $json, $token){
     $input_utterance = rawurlencode($input_utterance);
     $witVersion = "20191024";
-    $token = "KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
 
     //$witURL = $witRoot . "v=" . $witVersion . "&q=" . $input_utterance;
 
@@ -67,9 +66,8 @@ function putStuff($type, $input_utterance, $json, $token){
     return $server_output;
 }
 
-function deleteStuff($type){
+function deleteStuff($type, $token){
     $witVersion = "20191024";
-    $token = "KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
 
     //$witURL = $witRoot . "v=" . $witVersion . "&q=" . $input_utterance;
 

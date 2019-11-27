@@ -42,7 +42,11 @@
                         <label class="col-sm-3 control-label" for="position">Position</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="position" name="position"  class="form-control mb-md" required>
+                            <select id="position" name="position"  class="form-control mb-md" required>
+                                <option value="">Select Position</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                            </select>
                         </div>
                     </div>
                     

@@ -39,6 +39,22 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="col-sm-3 control-label" for="position">Username</label>
+
+                        <div class="col-sm-8">
+                            <input type="text" id="username" name="username" class="form-control mb-md" required value="<?= $user->userUsername?>">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="position">New Password (optional)</label>
+
+                        <div class="col-sm-8">
+                            <input type="text" id="password" name="password" class="form-control mb-md">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Phone</label>
 
                         <div class="col-sm-8">
@@ -50,7 +66,11 @@
                         <label class="col-sm-3 control-label" for="position">Position</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="position" name="position"  class="form-control mb-md" required value="<?= $user->userPosition?>">
+                            <select id="position" name="position"  class="form-control mb-md" required>
+                                <option value="">Select Position</option>
+                                <option <?php if($userPosition == "admin"){echo "selected";}?> value="admin">Admin</option>
+                                <option <?php if($userPosition == "user"){echo "selected";}?> value="user">User</option>
+                            </select>
                         </div>
                     </div>
                     

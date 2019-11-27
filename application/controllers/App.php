@@ -8,10 +8,33 @@ class App extends CI_Controller {
         $this->load->model('m_default');
         $this->load->helper('witai');
         $this->load->model('m_basic');
-	}
+
+        $this->load->library("session");
+
+        if(!isset($_SESSION["userId"])){
+            redirect(base_url("login/login"));
+        }
+    }
+    
+    function select_app(){
+        $data["app"] = $this->m_basic->find('app', array("appStatus"=>"1"))->result();
+
+        $header["title"] = "Select App";
+        $this->load->view("headerLogin", $header);
+        $this->load->view("selectApp", $data);
+        $this->load->view("footerLogin");
+    }
+
+    function setActive($appId){
+        $app = $this->m_basic->find("app", array("appId"=>$appId, "appStatus"=>"1"))->row();
+        if(isset($app)){
+            $_SESSION["appId"] = $app->appId;
+            $_SESSION["appToken"] = $app->appToken;
+            redirect(base_url("dashboard"));
+        }
+    }
 
     public function all_app(){
-        $appId = "1";
         $data["app"] = $this->m_basic->gets('app')->result();
 
         $header = array(

@@ -8,10 +8,17 @@ class Entity extends CI_Controller {
         $this->load->model('m_default');
         $this->load->helper('witai');
         $this->load->model('m_basic');
+        $this->load->model('m_witai');
+
+        $this->load->library("session");
+        
+        if(!isset($_SESSION["userId"])){
+            redirect(base_url("login/login"));
+        }
     }
 
     public function all_entity(){
-        $appId = 1;
+        $appId = $_SESSION["appId"];
 
         $entity = $this->m_basic->find('entity', array("appId"=>$appId))->result();
         $data['entity'] = $entity;
@@ -39,7 +46,8 @@ class Entity extends CI_Controller {
     }
 
     public function insertEntity(){
-        $appToken = "KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
+        $appToken = $_SESSION["appToken"];
+        $appId = $_SESSION["appId"];
 
         $entityName = $this->input->post("entity");
         $entityDetail = $this->input->post("detail");
@@ -51,7 +59,7 @@ class Entity extends CI_Controller {
         $server_output = doStuff("entities/", null, $json, $appToken);
         echo $server_output. "<br>";
         //memasukkan entity ke db
-        $entityId = $this->m_basic->insert("entity", array("entityName"=>$entityName, "detail"=>$entityDetail, "entityStatus"=>"1"));
+        $entityId = $this->m_basic->insert("entity", array("appId"=>$appId, "entityName"=>$entityName, "detail"=>$entityDetail, "entityStatus"=>"1"));
 
         //memasukkan value baru
         foreach($value as $counter =>$values){
@@ -91,7 +99,7 @@ class Entity extends CI_Controller {
     }
 
     public function editEntity(){
-        $appToken = "KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
+        $appToken = $_SESSION["appToken"];
 
         $entityId = $this->input->post("entityId");
         $entityName = $this->input->post("entity");
@@ -145,7 +153,7 @@ class Entity extends CI_Controller {
     }
 
     public function editExpression(){
-        $appToken = "KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
+        $appToken = $_SESSION["appToken"];
 
         $entity = $this->input->post("entity");
         $entityName = $this->input->post("entityName");
@@ -156,7 +164,7 @@ class Entity extends CI_Controller {
 
         //remove old expression
         $type = "entities/".$entityName."/values/".$valueName."/expressions/".rawurlencode($expressionOld);
-        deleteStuff($type);
+        deleteStuff($type, $appToken);
         //insert new expression
         $type = "entities/".$entityName."/values/".$valueName."/expressions";
         $json = json_encode(array("expression"=>$expression));
@@ -166,7 +174,7 @@ class Entity extends CI_Controller {
     }
 
     public function testThis(){
-        $appToken = "KQNFYUHSVRGMQJKL6GULGD62FGP5E5Y6";
+        $appToken = $_SESSION["appToken"];
         
         $message = "tolong komputer saya tidak meledak";
 
@@ -177,26 +185,7 @@ class Entity extends CI_Controller {
         $entity = $result["entities"];
 
         //mengecek response dari db
-        $query = "SELECT conditionDetail.conditionId, count(conditionDetailId) AS 'score', conditionCount FROM conditionDetail INNER JOIN conditionn ON conditionn.conditionId = conditionDetail.conditionId JOIN conditionintent ON conditionintent.conditionId = conditionDetail.conditionId WHERE ";
-        $next = false;
-        foreach($entity as $entities => $value){
-            foreach($value as $values){
-                if($next){
-                    $query.= " OR ";
-                }
-                $query.= "(";
-                $query.= "conditionEntity = '".$entities."'";
-                $query.= " AND ";
-                $query.= "conditionValue = '".$values["value"]."'";
-                $query.= ")";
-    
-                $next = true;
-            }
-        }
-        $query.= " GROUP BY conditionId HAVING count(conditionDetailId) = conditionCount";
-        echo $query. "<br><br>";
-
-        $result = $this->m_basic->runQuery($query)->row();
+        $result = $this->m_witai->searchCondition($entity)->row();
         if(isset($result)){
             $conditionId = $result->conditionId;
             $response = $this->m_basic->find("conditionresponse", array("conditionId"=>$conditionId))->row();

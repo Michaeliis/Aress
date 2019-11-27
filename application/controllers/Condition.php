@@ -8,10 +8,16 @@ class Condition extends CI_Controller {
         $this->load->model('m_default');
         $this->load->helper('witai');
         $this->load->model('m_basic');
+
+        $this->load->library("session");
+        
+        if(!isset($_SESSION["userId"])){
+            redirect(base_url("login/login"));
+        }
     }
     
     public function all_condition(){
-        $appId = "1";
+        $appId = $_SESSION["appId"];
 
         $data["condition"] = $this->m_basic->find("conditionn", array("appId"=>$appId))->result();
 
@@ -25,7 +31,8 @@ class Condition extends CI_Controller {
     }
 
     public function new_condition(){
-        $appId = "1";
+        $appId = $_SESSION["appId"];
+        $data['intent'] = $this->m_basic->find('intent', array("appId"=>$appId, "intentStatus"=>"1"))->result();
         $data['entity'] = $this->m_basic->find('entity', array("appId"=>$appId, "entityStatus"=>"1"))->result();
 
         $header = array(
@@ -38,7 +45,7 @@ class Condition extends CI_Controller {
     }
 
     public function newCondition(){
-        $appId = "1";
+        $appId = $_SESSION["appId"];
 
         $intentName = $this->input->post("intent");
         $entityId = $this->input->post("entity");
@@ -80,7 +87,7 @@ class Condition extends CI_Controller {
     }
 
     public function edit_condition($conditionId){
-        $appId = "1";
+        $appId = $_SESSION["appId"];
 
         $data["condition"] = $this->m_basic->find("conditionn", array("conditionId"=>$conditionId, "appId"=>$appId))->row();
         $data["conditiondetail"] = $this->m_basic->find("conditiondetail", array("conditionId"=>$conditionId))->result();
@@ -129,48 +136,5 @@ class Condition extends CI_Controller {
         $this->m_basic->update(array("conditionId"=>$conditionId), "conditionn", array("conditionName"=>$conditionName, "conditionCount"=>"conditionCount+".count($value)));
         
         $this->m_basic->update(array("conditionId"=>$conditionId), "conditionintent", array("conditionIntent"=>$intent));
-    }
-
-    public function insertCategory(){
-        $category = $this->input->post('category');
-        $detail = $this->input->post('detail');
-        
-        $data = array(
-            "categoryName"=>$category,
-            "categoryDetail"=>$detail,
-            "categoryStatus"=>1
-        );
-
-        $this->m_basic->insert("category", $data);
-        
-        redirect(base_url("category/all_category"));
-    }
-
-    public function edit_category($categoryName){
-        $data['category'] = $this->m_basic->find("category", array("categoryName"=>$categoryName))->row();
-
-        $header = array(
-            "subtitle"=>"Category",
-            "title"=>"New Category"
-        );
-        $this->load->view('header', $header);
-        $this->load->view('editCategory', $data);
-        $this->load->view('footer');
-    }
-
-    public function editCategory(){
-        $prevcategory = $this->input->post('prevcategory');
-        $category = $this->input->post('category');
-        $detail = $this->input->post('detail');
-        
-        $data = array(
-            "categoryName"=>$category,
-            "categoryDetail"=>$detail,
-            "categoryStatus"=>1
-        );
-
-        $this->m_basic->update(array("categoryName"=>$prevcategory), "category", $data);
-        
-        redirect(base_url("category/all_category"));
     }
 }

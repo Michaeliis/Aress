@@ -8,10 +8,16 @@ class Response extends CI_Controller {
         $this->load->model('m_default');
         $this->load->helper('witai');
         $this->load->model('m_basic');
+
+        $this->load->library("session");
+
+        if(!isset($_SESSION["userId"])){
+            redirect(base_url("login/login"));
+        }
     }
     
     public function all_response(){
-        $appId = "1";
+        $appId = $_SESSION["appId"];
         $data["response"] = $this->m_basic->find("response", array("appId"=>$appId))->result();
 
         $header = array(
@@ -24,7 +30,7 @@ class Response extends CI_Controller {
     }
 
     public function new_response(){
-        $appId = "1";
+        $appId = $_SESSION["appId"];
 
         $item = $this->m_basic->find('item', array("appId"=>$appId, "itemStatus"=>"1"))->result();
         $data["itemOption"] = array();
@@ -46,7 +52,7 @@ class Response extends CI_Controller {
     }
 
     public function newResponse(){
-        $appId = "1";
+        $appId = $_SESSION["appId"];
 
         $responseName = $this->input->post("responseName");
 
@@ -81,5 +87,28 @@ class Response extends CI_Controller {
         $this->load->view('header', $header);
         $this->load->view('editResponse', $data);
         $this->load->view('footer');
+    }
+
+    public function edit_response_detail($responseId, $responseTitle){
+        $data["responsedetail"] = $this->m_basic->find("responsedetail", array("responseId"=>$responseId, "responseTitle"=>$responseTitle))->row();
+
+        $header = array(
+            "subtitle"=>"Response",
+            "title"=>"Edit Response Detail"
+        );
+        $this->load->view('header', $header);
+        $this->load->view('editResponseDetail', $data);
+        $this->load->view('footer');
+    }
+
+    public function editResponseDetail(){
+        $responseId = $this->input->post("responseId");
+        $oldresponseTitle = $this->input->post("oldresponseTitle");
+        $responseTitle = $this->input->post("responseTitle");
+        $responseValue = $this->input->post("responseValue");
+
+        $this->m_basic->update(array("responseId"=>$responseId, "responseTitle"=>$oldresponseTitle), "responsedetail", array("responseTitle"=>$responseTitle, "responseValue"=>$responseValue));
+
+        redirect(base_url("response/edit_response/").$responseId);
     }
 }

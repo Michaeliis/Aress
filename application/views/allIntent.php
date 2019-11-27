@@ -5,33 +5,43 @@
             <a href="#" class="fa fa-times"></a>
         </div>
 
-        <h2 class="panel-title">All Response</h2>
+        <h2 class="panel-title">All Intent</h2>
     </header>
     <div class="panel-body">
         <table class="table table-bordered table-striped mb-none" id="datatable-default">
             <thead>
                 <tr>
                     <th>Intent Name</th>
-                    <th>Response</th>
-                    <th>Category</th>
-                    <th>Assigned To</th>
+                    <th>Detail</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($response as $responses){?>
+                <?php foreach($intent as $intents){?>
                 <tr class="gradeX">
-                    <td><?=$responses->intent?></td>
-                    <td><?=$responses->response?></td>
-                    <td><?=$responses->category?></td>
-                    <td><?=$responses->assignedTo?></td>
+                    <td><?=$intents->intentName?></td>
+                    <td><?=$intents->intentDetail?></td>
                     <td>
-                        <a href="<?= base_url("category/edit_category/").$responses->intent?>" class="btn btn-success">
+                        <?php if($intents->intentStatus == "1"){?>
+                            <span style="color:green">Active</span>
+                        <?php }else if($intents->intentStatus == "0"){?>
+                            <span style="color:red">Inactive</span>
+                        <?php }?>
+                    </td>
+                    <td>
+                        <a href="<?= base_url("intent/edit_intent/").$intents->intentId?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?= $responses->intent?>" class="btn btn-danger">
-                            Delete
-                        </a>
+                        <?php if($intents->intentStatus == "1"){?>
+                            <a href="<?= base_url("intent/delete_intent/").$intents->intentId?>" class="btn btn-danger">
+                                Delete
+                            </a>
+                        <?php }else if($intents->intentStatus == "0"){?>
+                            <a href="<?= base_url("intent/activate_intent/").$intents->intentId?>" class="btn btn-danger">
+                                Reactivate
+                            </a>
+                        <?php }?>
                     </td>
                 </tr>
                 <?php } ?>

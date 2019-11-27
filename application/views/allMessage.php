@@ -11,34 +11,31 @@
         <table class="table table-bordered table-striped mb-none" id="datatable-default">
             <thead>
                 <tr>
-                    <th>Entity</th>
-                    <th>Synonym</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $tableData = array();
-                foreach($expression as $expressions){
-                    $tableData[$expressions->entity][] = $expressions->expression;
-                }
-
-                foreach($entity as $entities){
-                    $entity = $entities->entity;?> 
+                foreach($message as $messages){?> 
                 <tr class="gradeX">
-                    <td><?= $entity?></td>
+                    <td><?= $messages->messageText?></td>
+                    <td><?= $messages->messageDate?></td>
                     <td>
-                        <?php
-                        foreach($tableData[$entity] as $values){
-                            echo $values. "; ";
-                        }?>
+                        <?php 
+                        if($messages->messageStatus == 1){
+                            echo "Replied";
+                        }else if($messages->messageStatus == 0){
+                            echo "Not Replied";
+                        }
+                        ?>
                     </td>
                     <td>
-                        <a href="<?= base_url("keyword/edit_keyword/").$entity?>" class="btn btn-success">
-                            Edit
-                        </a>
-                        <a href="<?= $entity?>" class="btn btn-danger">
-                            Delete
+                        <a href="<?= base_url("message/view_message/").$messages->messageId?>" class="btn btn-success">
+                            View
                         </a>
                     </td>
                 </tr>

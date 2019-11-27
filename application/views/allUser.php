@@ -31,11 +31,9 @@
                     <td>
                         <?php 
                         if($users->userStatus == 1){
-                            echo "Unassigned";
-                        }else if($users->userStatus == 2){
-                            echo "Assigned";
-                        }else if($users->userStatus == 3){
-                            echo "Resolved";
+                            echo "Active";
+                        }else if($users->userStatus == 0){
+                            echo "Inactive";
                         }
                         ?>
                     </td>

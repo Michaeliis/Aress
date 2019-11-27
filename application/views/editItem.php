@@ -10,16 +10,17 @@
         <section class="panel">
             <header class="panel-heading">
                                         
-                <h2 class="panel-title">Train Bot</h2>
+                <h2 class="panel-title">Edit Item</h2>
             </header>
             <div class="panel-body">
                 <form class="form-horizontal form-bordered" action="<?= base_url('item/editItem')?>" method="POST">
-                    
+                <input type="text" id="itemId" name="itemId" value="<?= $item->itemId ?>" required hidden readonly>
+
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Item Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="item" name="item"  class="form-control mb-md" value="<?= $item->itemId ?>" required readonly>
+                            <input type="text" id="item" name="item"  class="form-control mb-md" value="<?= $item->itemName ?>" required readonly>
                         </div>
                     </div>
 

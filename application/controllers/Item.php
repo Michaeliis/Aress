@@ -8,10 +8,17 @@ class Item extends CI_Controller {
         $this->load->model('m_default');
         $this->load->helper('witai');
         $this->load->model('m_basic');
+
+        $this->load->library("session");
+
+        if(!isset($_SESSION["userId"])){
+            redirect(base_url("login/login"));
+        }
     }
 
     public function all_item(){
-        $data['item'] = $this->m_basic->find('item', array("appId"=>"1"))->result();
+        $appId = $_SESSION["appId"];
+        $data['item'] = $this->m_basic->find('item', array("appId"=>$appId))->result();
 
         $header = array(
             "subtitle"=>"Item",
@@ -23,7 +30,7 @@ class Item extends CI_Controller {
     }
 
     public function new_item(){
-        $data["appId"] = "1";
+        $data["appId"] = $_SESSION["appId"];
         $header = array(
             "subtitle"=>"Item",
             "title"=>"New Item"
@@ -34,7 +41,7 @@ class Item extends CI_Controller {
     }
 
     public function newItem(){
-        $appId = "1";
+        $appId = $_SESSION["appId"];
         $itemName = str_replace(" ", "_", $this->input->post("item"));
         $itemValue = $this->input->post("value");
         $itemDetail = $this->input->post("detail");
@@ -53,7 +60,7 @@ class Item extends CI_Controller {
     }
 
     public function edit_item($itemId){
-        $appId = "1";
+        $appId = $_SESSION["appId"];
 
         $item = $this->m_basic->find("item", array("appId"=>$appId, "itemId"=>$itemId))->row();
         if($item->itemValue == "select"){
@@ -70,13 +77,12 @@ class Item extends CI_Controller {
     }
 
     public function editItem(){
-        $appId = "1";
-        $itemId = str_replace(" ", "_", $this->input->post("item"));
+        $itemId = $this->input->post("itemId");
         $itemDetail = $this->input->post("detail");
         $optionValue = $this->input->post("optionValue");
         $optionName = $this->input->post("optionName");
         
-        $this->m_basic->update(array("appId"=>$appId, "itemId"=>$itemId), "item", array("itemDetail"=>$itemDetail));
+        $this->m_basic->update(array("itemId"=>$itemId), "item", array("itemDetail"=>$itemDetail));
 
         if(isset($optionValue)){
             foreach($optionValue as $counter => $optionValues){
