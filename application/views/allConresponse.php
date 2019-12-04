@@ -30,12 +30,18 @@
                         <?php }?>
                     </td>
                     <td>
-                        <a href="<?= base_url("app/edit_app/"). $conresponses->conditionId."/".$conresponses->responseId?>" class="btn btn-success">
+                        <a href="<?= base_url("conresponse/edit_condition_response/"). $conresponses->crId?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?= base_url("app/delete_app/"). $conresponses->conditionId."/".$conresponses->responseId?>" class="btn btn-danger">
-                            Delete
-                        </a>
+                        <?php if($conresponses->crStatus=="1"){?>
+                            <a href="<?= base_url("conresponse/delete_condition_response/"). $conresponses->crId?>" class="btn btn-danger">
+                                Delete
+                            </a>
+                        <?php }else if($conresponses->crStatus=="0"){?>
+                            <a href="<?= base_url("conresponse/activate_condition_response/"). $conresponses->crId?>" class="btn btn-danger">
+                                Activate
+                            </a>
+                        <?php }?>
                     </td>
                 </tr>
                 <?php } ?>

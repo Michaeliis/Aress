@@ -11,15 +11,23 @@
         <section class="panel">
             <header class="panel-heading">
                                         
-                <h2 class="panel-title">View Message</h2>
+                <h2 class="panel-title">View Sample</h2>
             </header>
             <div class="panel-body">
                 <form class="form-horizontal form-bordered">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="position">Message</label>
+                        <label class="col-sm-3 control-label" for="position">Sample</label>
 
                         <div class="col-sm-8">
-                            <span  class="form-control mb-md"><?= $message->messageText?></span>
+                            <span  class="form-control mb-md"><?= $sample->sampleText?></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="position">Intent</label>
+
+                        <div class="col-sm-8">
+                            <span  class="form-control mb-md"><?= $sampleintent->intentName?></span>
                         </div>
                     </div>
 
@@ -31,10 +39,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($messageResponse as $item => $value){?>
+                            <?php foreach($sampleentity as $sampleenties){?>
                             <tr class="gradeX">
-                                <td><?= $item ?></td>
-                                <td><?= $value ?></td>
+                                <td><?= $sampleenties->entityName ?></td>
+                                <td><?= $sampleenties->valueName ?></td>
                             </tr>
                             <?php } ?>
                         </tbody>
@@ -43,7 +51,7 @@
                     <footer class="panel-footer">
                         <div class="row">
                             <div class="col-sm-offset-11">
-                                <a href="<?= base_url("message/all_message")?>" class="btn btn-warning">Back</a>
+                                <a href="<?= base_url("sample/all_sample")?>" class="btn btn-warning">Back</a>
                             </div>
                         </div>
                     </footer>

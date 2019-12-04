@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th>Condition Name</th>
-                    <th>Condition Entities</th>
+                    <th>Entity Count</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -33,9 +33,15 @@
                         <a href="<?= base_url("condition/edit_condition/").$conditions->conditionId?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?= $conditions->conditionId?>" class="btn btn-danger">
-                            Delete
-                        </a>
+                        <?php if($conditions->conditionStatus == "1"){?>
+                            <a href="<?= base_url("condition/delete_condition/").$conditions->conditionId?>" class="btn btn-danger">
+                                Delete
+                            </a>
+                        <?php }else if($conditions->conditionStatus == "0"){?>
+                            <a href="<?= base_url("condition/activate_condition/").$conditions->conditionId?>" class="btn btn-danger">
+                                Reactivate
+                            </a>
+                        <?php }?>
                     </td>
                 </tr>
                 <?php } ?>

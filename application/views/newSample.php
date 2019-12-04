@@ -13,13 +13,18 @@
                 <h2 class="panel-title">Train Bot</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('sample/newsample')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('sample/newSample')?>" method="POST">
                     
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Intent</label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="intent"  class="form-control mb-md" required>
+                            <select name="intent"  class="form-control mb-md" required>
+                                <option value="">Select Intent</option>
+                                <?php foreach($intent as $intents){?>
+                                    <option value="<?= $intents->intentName?>"><?= $intents->intentName?></option>
+                                <?php }?>
+                            </select>
                         </div>
                     </div>
 

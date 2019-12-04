@@ -42,7 +42,8 @@
                     
                     <footer class="panel-footer">
                         <div class="row">
-                            <div class="col-sm-offset-10">
+                            <div class="col-sm-offset-9">
+                                <a href="<?= base_url("condition/edit_condition/").$conditionDetail->conditionId?>" class="btn btn-warning">Back</a>
                                 <input type="submit" value="Submit" class="btn btn-primary">
                                 <input type="reset" value="Reset" class="btn btn-default">
                             </div>

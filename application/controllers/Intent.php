@@ -81,7 +81,7 @@ class Intent extends CI_Controller {
         $appToken = $_SESSION["appToken"];
 
         $intent = $this->m_basic->find("intent", array("intentId"=>$intentId))->row();
-        deleteStuff("/entities/intent/values/".$intent->intentName, $appToken);
+        deleteStuff("/entities/intent/values/".$intent->intentName, null, $appToken);
 
         $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentStatus"=>"0"));
         redirect(base_url("intent/all_intent"));

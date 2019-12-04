@@ -31,9 +31,15 @@
                         <a href="<?= base_url("response/edit_response/").$responses->responseId?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?= $responses->responseId?>" class="btn btn-danger">
-                            Delete
-                        </a>
+                        <?php if($responses->responseStatus == "1"){?>
+                            <a href="<?= base_url("response/delete_response/").$responses->responseId?>" class="btn btn-danger">
+                                Delete
+                            </a>
+                        <?php }else if($responses->responseStatus == "0"){?>
+                            <a href="<?= base_url("response/activate_response/").$responses->responseId?>" class="btn btn-danger">
+                                Reactivate
+                            </a>
+                        <?php }?>
                     </td>
                 </tr>
                 <?php } ?>

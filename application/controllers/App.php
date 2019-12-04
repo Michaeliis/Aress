@@ -99,4 +99,14 @@ class App extends CI_Controller {
 
         redirect(base_url("app/all_app"));
     }
+
+    public function delete_app($appId){
+        $this->m_basic->update(array("appId"=>$appId), "app", array("appStatus"=>"0"));
+        redirect(base_url("app/all_app"));
+    }
+
+    public function activate_app($appId){
+        $this->m_basic->update(array("appId"=>$appId), "app", array("appStatus"=>"1"));
+        redirect(base_url("app/all_app"));
+    }
 }

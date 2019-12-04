@@ -33,9 +33,15 @@
                         <a href="<?= base_url("app/edit_app/"). $apps->appId?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?= base_url("app/delete_app/"). $apps->appId?>" class="btn btn-danger">
-                            Delete
-                        </a>
+                        <?php if($apps->appStatus=="1"){?>
+                            <a href="<?= base_url("app/delete_app/"). $apps->appId?>" class="btn btn-danger">
+                                Delete
+                            </a>
+                        <?php }else if($apps->appStatus=="0"){?>
+                            <a href="<?= base_url("app/activate_app/"). $apps->appId?>" class="btn btn-danger">
+                                Reactivate
+                            </a>
+                        <?php }?>
                     </td>
                 </tr>
                 <?php } ?>

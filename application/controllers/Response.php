@@ -91,6 +91,18 @@ class Response extends CI_Controller {
         $this->load->view('footer');
     }
 
+    public function delete_response($responseId){
+        $this->m_basic->update(array("responseId"=>$responseId), "response", array("responseStatus"=>"0"));
+
+        redirect(base_url("response/all_response"));
+    }
+
+    public function activate_response($responseId){
+        $this->m_basic->update(array("responseId"=>$responseId), "response", array("responseStatus"=>"1"));
+
+        redirect(base_url("response/all_response"));
+    }
+
     public function editResponse(){
         $responseId = $this->input->post("responseId");
         $responseName = $this->input->post("responseName");

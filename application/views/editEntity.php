@@ -28,8 +28,9 @@
                     <table class="table table-bordered table-striped mb-none" id="datatable-default">
                         <thead>
                             <tr>
-                                <th class="col-md-4">Value</th>
-                                <th class="col-md-4">Expression</th>
+                                <th class="col-md-3">Value</th>
+                                <th class="col-md-3">Expression</th>
+                                <th class="col-md-2">Status</th>
                                 <th class="col-md-2">Action</th>
                             </tr>
                         </thead>
@@ -42,14 +43,27 @@
                                     echo ($expressions->expression . "; ");
                                 }
                                 ?>
+                                <td>
+                                    <?php if($values->valueStatus == "1"){?>
+                                        <span style="color:green">Active</span>
+                                    <?php }else if($values->valueStatus == "0"){?>
+                                        <span style="color:red">Inactive</span>
+                                    <?php }?>
+                                </td>
                                 </td>
                                 <td>
                                     <a href="<?= base_url("entity/edit_value/").$entity->entityId. "/". $values->valueId?>" class="btn btn-success">
                                         Edit
                                     </a>
-                                    <a href="<?= base_url("entity/delete_keyword_detail/").$entity->entityId."/".$values->valueId?>" class="btn btn-danger">
-                                        Delete
-                                    </a>
+                                    <?php if($values->valueStatus == "1"){?>
+                                        <a href="<?= base_url("entity/delete_value/").$values->valueId?>" class="btn btn-danger">
+                                            Delete
+                                        </a>
+                                    <?php }else if($values->valueStatus == "0"){?>
+                                        <a href="<?= base_url("entity/activate_value/").$values->valueId?>" class="btn btn-danger">
+                                            Reactivate
+                                        </a>
+                                    <?php }?>
                                 </td>
                             </tr>
                             <?php } ?>
@@ -82,7 +96,8 @@
                     
                     <footer class="panel-footer">
                         <div class="row">
-                            <div class="col-sm-offset-10">
+                            <div class="col-sm-offset-9">
+                                <a href="<?= base_url("entity/all_entity")?>" class="btn btn-warning">Back</a>
                                 <input type="submit" value="Submit" class="btn btn-primary">
                                 <input type="reset" value="Reset" class="btn btn-default">
                             </div>

@@ -13,6 +13,7 @@
                 <tr>
                     <th>Entity</th>
                     <th>Value</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -27,12 +28,25 @@
                         }?>
                     </td>
                     <td>
+                        <?php if($values->valueStatus == "1"){?>
+                            <span style="color:green">Active</span>
+                        <?php }else if($values->valueStatus == "0"){?>
+                            <span style="color:red">Inactive</span>
+                        <?php }?>
+                    </td>
+                    <td>
                         <a href="<?= base_url("entity/edit_entity/").$entities->entityId?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?= $entities->entityId?>" class="btn btn-danger">
-                            Delete
-                        </a>
+                        <?php if($values->valueStatus == "1"){?>
+                            <a href="<?= base_url("entity/delete_entity/").$entities->entityId?>" class="btn btn-danger">
+                                Delete
+                            </a>
+                        <?php }else if($values->valueStatus == "0"){?>
+                            <a href="<?= base_url("entity/activate_entity/").$entities->entityId?>" class="btn btn-danger">
+                                Reactivate
+                            </a>
+                        <?php }?>
                     </td>
                 </tr>
                 <?php } ?>

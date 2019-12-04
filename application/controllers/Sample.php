@@ -31,14 +31,16 @@ class Sample extends CI_Controller {
 
     public function new_sample(){
         $appId = $_SESSION["appId"];
+
         $data['entity'] = $this->m_basic->find('entity', array("appId"=>$appId, "entityStatus"=>"1"))->result();
+        $data['intent'] = $this->m_basic->find('intent', array("appId"=>$appId, "intentStatus"=>"1"))->result();
 
         $header = array(
             "subtitle"=>"Sample",
             "title"=>"New Sample"
         );
         $this->load->view('header', $header);
-        $this->load->view('trainbot', $data);
+        $this->load->view('newSample', $data);
         $this->load->view('footer');
     }
 
@@ -117,7 +119,25 @@ class Sample extends CI_Controller {
         echo "Intent telah dibuat";
     }
 
+    public function view_sample($sampleId){
+        $data["sample"] = $this->m_basic->find("sample", array("sampleId"=>$sampleId))->row();
+        $data["sampleintent"] = $this->m_basic->find("sampleintent", array("sampleId"=>$sampleId))->row();
+        $data["sampleentity"] = $this->m_basic->find("sampleentity", array("sampleId"=>$sampleId))->result();
+
+        $header = array(
+            "subtitle"=>"Sample",
+            "title"=>"New Sample"
+        );
+        $this->load->view('header', $header);
+        $this->load->view('viewSample', $data);
+        $this->load->view('footer');
+    }
+
     public function delete_sample($sampleId){
-        
+        $appToken = $_SESSION["appToken"];
+
+        $sampleText = $this->m_basic->find("sample", array("sampleId"=>$sampleId))->row()->sampleText;
+        $json[] = array("text"=>$sampleText);
+        deleteStuff("samples", json_encode($json), $appToken);
     }
 }

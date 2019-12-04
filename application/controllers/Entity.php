@@ -9,6 +9,7 @@ class Entity extends CI_Controller {
         $this->load->helper('witai');
         $this->load->model('m_basic');
         $this->load->model('m_witai');
+        $this->load->model('m_entity');
 
         $this->load->library("session");
         
@@ -124,6 +125,35 @@ class Entity extends CI_Controller {
         redirect(base_url("entity/all_entity"));
     }
 
+    public function delete_entity($entityId){
+        $appToken = $_SESSION["appToken"];
+
+        $entity = $this->m_basic->find("entity", array("entityId"=>$entityId))->row();
+        deleteStuff("/entities/".$entity->entityName, null, $appToken);
+
+        $this->m_basic->update(array("entityId"=>$entityId), "entity", array("entityStatus"=>"0"));
+        redirect(base_url("entity/all_entity"));
+    }
+
+    public function activate_entity($entityId){
+        $appToken = $_SESSION["appToken"];
+        $entityName = $this->m_basic->find("entity", array("entityId"=>$entityId))->row()->entityName;
+
+        $entitySet = $this->m_entity->entitySet($entityId)->result();
+        foreach($entitySet as $entitySets){
+            $entityArray[$entitySets->value][] = $entitySets->expression;
+        }
+
+        foreach($entityArray as $value => $expression){
+            $json["value"] = $value;
+            $json["expressions"] = $entityArray[$value];
+            doStuff("/entities/".$entityName."/values", null, json_encode($json), $appToken);
+        }
+
+        $this->m_basic->update(array("entityId"=>$entityId), "entity", array("entityStatus"=>"1"));
+        redirect(base_url("entity/all_entity"));
+    }
+
     public function edit_value($entity, $value){
         $data['value'] = $this->m_basic->find("value", array("valueId"=>$value))->row();
         $data['entity'] = $this->m_basic->find("entity", array("entityId"=>$entity))->row();
@@ -136,6 +166,16 @@ class Entity extends CI_Controller {
         $this->load->view('header', $header);
         $this->load->view('editValue', $data);
         $this->load->view('footer');
+    }
+
+    public function delete_value($valueId){
+        $appToken = $_SESSION["appToken"];
+
+        $valueEntity = $this->m_entity->valueEntity($valueId)->row();
+
+        deleteStuff("entities/".$valueEntity->entityName."/values/".$valueEntity->value, null, $appToken);
+
+        redirect(base_url("edit_entity/"));
     }
 
     public function edit_expression($entity, $value, $expression){
@@ -164,7 +204,7 @@ class Entity extends CI_Controller {
 
         //remove old expression
         $type = "entities/".$entityName."/values/".$valueName."/expressions/".rawurlencode($expressionOld);
-        deleteStuff($type, $appToken);
+        deleteStuff($type, null, $appToken);
         //insert new expression
         $type = "entities/".$entityName."/values/".$valueName."/expressions";
         $json = json_encode(array("expression"=>$expression));

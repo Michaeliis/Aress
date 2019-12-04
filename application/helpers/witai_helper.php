@@ -66,7 +66,7 @@ function putStuff($type, $input_utterance, $json, $token){
     return $server_output;
 }
 
-function deleteStuff($type, $token){
+function deleteStuff($type, $json, $token){
     $witVersion = "20191024";
 
     //$witURL = $witRoot . "v=" . $witVersion . "&q=" . $input_utterance;
@@ -82,6 +82,10 @@ function deleteStuff($type, $token){
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
     //curl_setopt($ch, CURLOPT_POST, 1);  //sets method to POST (1 = TRUE)
     curl_setopt($ch, CURLOPT_HTTPHEADER, $header); //sets the header value above - required for wit.ai authentication
+    if(isset($json)){
+        curl_setopt($ch, CURLOPT_POST, 1); // Do a regular HTTP POST
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json); // Insert JSON body
+    }
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //inhibits the immediate display of the returned data
 
     $server_output = curl_exec($ch); //call the URL and store the data in $server_output

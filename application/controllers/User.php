@@ -97,4 +97,16 @@ class User extends CI_Controller {
         $this->m_basic->update(array("userId"=>$userId), "user", $data);
         redirect(base_url("user/all_user"));
     }
+
+    public function delete_user($userId){
+        $this->m_basic->update(array("userId"=>$userId), "user", array("userStatus"=>"0"));
+
+        redirect(base_url("user/all_user"));
+    }
+
+    public function activate_user($userId){
+        $this->m_basic->update(array("userId"=>$userId), "user", array("userStatus"=>"1"));
+
+        redirect(base_url("user/all_user"));
+    }
 }

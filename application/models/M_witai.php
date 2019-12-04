@@ -24,6 +24,9 @@ class M_witai extends CI_Model{
             }
         }
 
+        if(!$next){
+            $query.= "false";
+        }
         
         $query.= " GROUP BY conditionId HAVING count(conditionDetailId) = conditionCount";
         if(isset($intentValue)){

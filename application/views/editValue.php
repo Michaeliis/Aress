@@ -58,6 +58,14 @@
                             <?php } ?>
                         </tbody>
                     </table>
+
+                    <footer class="panel-footer">
+                        <div class="row">
+                            <div class="col-sm-offset-11">
+                                <a href="<?= base_url("entity/edit_entity/").$entity->entityId?>" class="btn btn-warning">Back</a>
+                            </div>
+                        </div>
+                    </footer>
                 </form>
             </div>
         </section>										

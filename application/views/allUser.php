@@ -29,21 +29,25 @@
                     <td><?=$users->userEmail?></td>
                     <td><?=$users->userPosition?></td>
                     <td>
-                        <?php 
-                        if($users->userStatus == 1){
-                            echo "Active";
-                        }else if($users->userStatus == 0){
-                            echo "Inactive";
-                        }
-                        ?>
+                        <?php if($users->userStatus == "1"){?>
+                            <span style="color:green">Active</span>
+                        <?php }else if($users->userStatus == "0"){?>
+                            <span style="color:red">Inactive</span>
+                        <?php }?>
                     </td>
                     <td>
                         <a href="<?= base_url("user/edit_user/").$users->userId?>" class="btn btn-success">
                             Edit
                         </a>
-                        <a href="<?=$users->userId?>" class="btn btn-danger">
-                            Delete
-                        </a>
+                        <?php if($users->userStatus == "1"){?>
+                            <a href="<?= base_url("user/delete_user/").$users->userId?>" class="btn btn-danger">
+                                Delete
+                            </a>
+                        <?php }else if($users->userStatus == "0"){?>
+                            <a href="<?= base_url("user/activate_user/").$users->userId?>" class="btn btn-danger">
+                                Reactivate
+                            </a>
+                        <?php }?>
                     </td>
                 </tr>
                 <?php } ?>

@@ -30,6 +30,9 @@
                         <?php }?>
                     </td>
                     <td>
+                        <a href="<?= base_url("sample/view_sample/").$samples->sampleId?>" class="btn btn-success">
+                            View
+                        </a>
                         <a href="<?= base_url("sample/delete_sample/").$samples->sampleId?>" class="btn btn-danger">
                             Delete
                         </a>

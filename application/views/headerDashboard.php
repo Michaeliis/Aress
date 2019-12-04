@@ -167,6 +167,23 @@
 
                                     <li class="nav-parent">
                                         <a>
+                                            <i class="fa fa-database" aria-hidden="true"></i>
+                                            <span>Sample</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="<?= base_url('sample/all_sample')?>">
+                                                    All Sample
+                                                </a>
+                                                <a href="<?= base_url('sample/new_sample')?>">
+                                                    New Sample
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-parent">
+                                        <a>
                                             <i class="fa fa-gavel" aria-hidden="true"></i>
                                             <span>Condition</span>
                                         </a>
@@ -209,12 +226,28 @@
                                                 <a href="<?= base_url('conresponse/all_condition_response')?>">
                                                     All Condition-Response
                                                 </a>
-                                                <a href="<?= base_url('response/new_condition_response')?>">
+                                                <a href="<?= base_url('conresponse/new_condition_response')?>">
                                                     New Condition-Response
                                                 </a>
                                             </li>
                                         </ul>
                                     </li>
+
+                                    <?php if($_SESSION["userPosition"] == "admin"){?>
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                                            <span>Message</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="<?= base_url('message/all_message')?>">
+                                                    View All
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <?php } ?>
 
                                     <?php if($_SESSION["userPosition"] == "admin"){?>
                                     <li class="nav-parent">
@@ -278,6 +311,7 @@
                 
                 </aside>
                 <!-- end: sidebar -->
+
 
                 <section role="main" class="content-body">
                     <header class="page-header">

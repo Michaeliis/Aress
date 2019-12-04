@@ -143,6 +143,16 @@ class Condition extends CI_Controller {
         redirect(base_url("condition/all_condition"));
     }
 
+    public function delete_condition($conditionId){
+        $this->m_basic->update(array("conditionId"=>$conditionId), "conditionn", array("conditionStatus"=>"0"));
+        redirect(base_url("condition/all_condition"));
+    }
+
+    public function activate_condition($conditionId){
+        $this->m_basic->update(array("conditionId"=>$conditionId), "conditionn", array("conditionStatus"=>"1"));
+        redirect(base_url("condition/all_condition"));
+    }
+
     public function edit_condition_detail($conditionDetailId){
         $appId = $_SESSION["appId"];
 

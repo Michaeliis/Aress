@@ -170,6 +170,23 @@
 
                                     <li class="nav-parent">
                                         <a>
+                                            <i class="fa fa-database" aria-hidden="true"></i>
+                                            <span>Sample</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="<?= base_url('sample/all_sample')?>">
+                                                    All Sample
+                                                </a>
+                                                <a href="<?= base_url('sample/new_sample')?>">
+                                                    New Sample
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-parent">
+                                        <a>
                                             <i class="fa fa-gavel" aria-hidden="true"></i>
                                             <span>Condition</span>
                                         </a>
@@ -218,6 +235,22 @@
                                             </li>
                                         </ul>
                                     </li>
+
+                                    <?php if($_SESSION["userPosition"] == "admin"){?>
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                                            <span>Message</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="<?= base_url('message/all_message')?>">
+                                                    View All
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <?php } ?>
 
                                     <?php if($_SESSION["userPosition"] == "admin"){?>
                                     <li class="nav-parent">

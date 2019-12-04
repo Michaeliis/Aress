@@ -19,6 +19,7 @@ class Bot extends CI_Controller {
 
     public function train_bot(){
         $appId = $_SESSION["appId"];
+        
         $item = $this->m_basic->find('item', array("appId"=>$appId, "itemStatus"=>"1"))->result();
         $data['intent'] = $this->m_basic->find('intent', array("appId"=>$appId, "intentStatus"=>"1"))->result();
         $data["itemOption"] = array();
@@ -184,6 +185,8 @@ class Bot extends CI_Controller {
 
         //mengecek response dari db
         $result = $this->m_witai->searchCondition($entity, $_SESSION['appId'])->row();
+        $output = array();
+        
         if(isset($result)){
             $conditionId = $result->conditionId;
             $response = $this->m_basic->find("conditionresponse", array("conditionId"=>$conditionId))->row();
@@ -204,6 +207,5 @@ class Bot extends CI_Controller {
         $this->load->view('header', $header);
         $this->load->view('checkBotResult', $data);
         $this->load->view('footer');
-        
     }
 }
