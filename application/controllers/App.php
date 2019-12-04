@@ -57,12 +57,13 @@ class App extends CI_Controller {
     }
 
     public function newApp(){
+        $appToken = $_SESSION["appToken"];
         $appName = $this->input->post("appName");
         $appDetail = $this->input->post("appDetail");
-        $appLanguage = $this->input->post("appDetail");
+        $appLanguage = $this->input->post("appLanguage");
 
         $json = json_encode(array("name"=>$appName, "lang"=>$appLanguage, "private"=>"false", "desc"=>$appDetail));
-        $output = json_decode(doStuff("apps", null, $json));
+        $output = json_decode(doStuff("apps", null, $json, $appToken));
 
         $appToken = $output->access_token;
         $appId = $output->app_id;

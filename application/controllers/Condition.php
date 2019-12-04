@@ -92,6 +92,8 @@ class Condition extends CI_Controller {
         $data["condition"] = $this->m_basic->find("conditionn", array("conditionId"=>$conditionId, "appId"=>$appId))->row();
         $data["conditiondetail"] = $this->m_basic->find("conditiondetail", array("conditionId"=>$conditionId))->result();
         $data["conditionintent"] = $this->m_basic->find("conditionintent", array("conditionId"=>$conditionId))->row();
+        $data["intent"] = $this->m_basic->find("intent", array("appId"=>$appId, "intentStatus"=>1))->result();
+
         $header = array(
             "subtitle"=>"Condition",
             "title"=>"Edit Condition"
@@ -133,8 +135,57 @@ class Condition extends CI_Controller {
             $this->m_basic->insert("conditiondetail", $conditionDetail);
         }
         
-        $this->m_basic->update(array("conditionId"=>$conditionId), "conditionn", array("conditionName"=>$conditionName, "conditionCount"=>"conditionCount+".count($value)));
+        $this->m_basic->update(array("conditionId"=>$conditionId), "conditionn", array("conditionName"=>$conditionName));
+        $this->m_basic->set(array("conditionId"=>$conditionId), "conditionn", "conditionCount", "conditionCount+".count($value));
         
         $this->m_basic->update(array("conditionId"=>$conditionId), "conditionintent", array("conditionIntent"=>$intent));
+
+        redirect(base_url("condition/all_condition"));
+    }
+
+    public function edit_condition_detail($conditionDetailId){
+        $appId = $_SESSION["appId"];
+
+        $conditionDetail = $this->m_basic->find("conditionDetail", array("conditionDetailId"=>$conditionDetailId))->row();
+        $data["conditionDetail"] = $conditionDetail;
+        $data["entity"] = $this->m_basic->find("entity", array("appId"=>$appId))->result();
+        $curCon = $this->m_basic->find("entity", array("entityName"=>$conditionDetail->conditionEntity, "appId"=>$appId))->row();
+        $data["value"] = $this->m_basic->find("value", array("entityId"=>$curCon->entityId))->result();
+
+        $header = array(
+            "subtitle"=>"Condition",
+            "title"=>"Edit Condition"
+        );
+        $this->load->view('header', $header);
+        $this->load->view('editConditionDetail', $data);
+        $this->load->view('footer');
+    }
+
+    public function editConditionDetail(){
+        $entity = $this->input->post('entity');
+        $value = $this->input->post('value');
+        $conditionDetailId = $this->input->post('conditionDetailId');
+        $conditionId = $this->input->post('conditionId');
+
+        $entityName = $this->m_basic->find("entity", array("entityId"=>$entity))->row()->entityName;
+        $this->m_basic->update(array("conditionDetailId"=>$conditionDetailId), "conditiondetail", array("conditionEntity"=>$entityName, "conditionValue"=>$value));
+
+        redirect(base_url("condition/edit_condition/").$conditionId);
+    }
+
+    public function delete_condition_detail($conditionDetailId){
+        $this->m_basic->update(array("conditionDetailId"=>$conditionDetailId), "conditiondetail", array("conditionDetailStatus"=>0));
+        $conditionId = $this->m_basic->find("conditiondetail", array("conditionDetailId"=>$conditionDetailId))->row()->conditionId;
+        $this->m_basic->set(array("conditionId"=>$conditionId), "conditionn", "conditionCount", "conditionCount-1");
+
+        redirect(base_url("condition/edit_condition/").$conditionId);
+    }
+
+    public function activate_condition_detail($conditionDetailId){
+        $this->m_basic->update(array("conditionDetailId"=>$conditionDetailId), "conditiondetail", array("conditionDetailStatus"=>1));
+        $conditionId = $this->m_basic->find("conditiondetail", array("conditionDetailId"=>$conditionDetailId))->row()->conditionId;
+        $this->m_basic->set(array("conditionId"=>$conditionId), "conditionn", "conditionCount", "conditionCount+1");
+
+        redirect(base_url("condition/edit_condition/").$conditionId);
     }
 }

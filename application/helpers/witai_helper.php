@@ -9,7 +9,7 @@ function doStuff($type, $input_utterance, $json, $token){
     if($input_utterance != null){
         $witURL .= "&q=" . $input_utterance;
     }
-    echo $witURL. "<br><br><br>";
+    //echo $witURL. "<br><br><br>";
     
     $ch = curl_init();
     $header = array();
@@ -27,7 +27,7 @@ function doStuff($type, $input_utterance, $json, $token){
     $server_output = curl_exec($ch); //call the URL and store the data in $server_output
 
     curl_close($ch);
-    echo $server_output. "<br><br>";
+    //echo $server_output. "<br><br>";
     
     return $server_output;
 }
@@ -72,7 +72,7 @@ function deleteStuff($type, $token){
     //$witURL = $witRoot . "v=" . $witVersion . "&q=" . $input_utterance;
 
     $witURL = "https://api.wit.ai/". $type. "?v=". $witVersion;
-    echo $witURL. "<br><br><br>";
+    //echo $witURL. "<br><br><br>";
     
     $ch = curl_init();
     $header = array();
@@ -87,7 +87,7 @@ function deleteStuff($type, $token){
     $server_output = curl_exec($ch); //call the URL and store the data in $server_output
 
     curl_close($ch);
-    echo $server_output. "<br><br>";
+    //echo $server_output. "<br><br>";
     
     return $server_output;
 }

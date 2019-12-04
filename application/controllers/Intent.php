@@ -47,7 +47,7 @@ class Intent extends CI_Controller {
         $intentName = $this->input->post("intentName");
         $intentDetail = $this->input->post("intentDetail");
 
-        $json = array("value"=>$intentName);
+        $json = json_encode(array("value"=>$intentName));
 
         $response = doStuff("/entities/intent/values", null, $json, $appToken);
 

@@ -13,7 +13,7 @@
                 <h2 class="panel-title">New Response</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('bot/insertConditionResponse')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('response/newResponse')?>" method="POST">
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Response Name</label>

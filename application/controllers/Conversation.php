@@ -33,15 +33,17 @@ class Conversation extends CI_Controller {
     public function new_conversation_flow(){
         $appId = $_SESSION["appId"];
         
-        $data["condition"] = $this->m_basic->find("condition", array("appId"=>$appId, "conditionStatus"=>"1"));
-        $data["response"] = $this->m_basic->find("response", array("appId"=>$appId, "responseStatus"=>"1"));
+        $data["condition"] = $this->m_basic->find("conditionn", array("appId"=>$appId, "conditionStatus"=>"1"))->result();
+        $data["response"] = $this->m_basic->find("response", array("appId"=>$appId, "responseStatus"=>"1"))->result();
+
+        $data["conditionArray"] = json_encode($this->m_basic->find("conditionn", array("appId"=>$appId, "conditionStatus"=>"1"))->result_array());
 
         $header = array(
             "subtitle"=>"Conversation Flow",
             "title"=>"New Conversation Flow"
         );
         $this->load->view('header', $header);
-        $this->load->view('newConversationFlow');
+        $this->load->view('newConversationFlow', $data);
         $this->load->view('footer');
     }
 

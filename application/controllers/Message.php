@@ -32,7 +32,7 @@ class Message extends CI_Controller {
     public function view_message($messageId){
         $message = $this->m_basic->find("message", array("messageId"=>$messageId))->row();
 
-        $data["messageId"] = $message->messageId;
+        $data["message"] = $message;
 
         $data["messageResponse"] = json_decode($message->messageResponse, true);
         $header = array(

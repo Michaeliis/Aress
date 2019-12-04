@@ -74,6 +74,8 @@ class Response extends CI_Controller {
             );
             $this->m_basic->insert("responsedetail", $responseDetail);
         }
+
+        redirect(base_url("response/all_response"));
     }
 
     public function edit_response($responseId){
@@ -87,6 +89,15 @@ class Response extends CI_Controller {
         $this->load->view('header', $header);
         $this->load->view('editResponse', $data);
         $this->load->view('footer');
+    }
+
+    public function editResponse(){
+        $responseId = $this->input->post("responseId");
+        $responseName = $this->input->post("responseName");
+
+        $this->m_basic->update(array("responseId"=>$responseId), "response", array("responseName"=>$responseName));
+
+        redirect(base_url("response/all_response"));
     }
 
     public function edit_response_detail($responseId, $responseTitle){

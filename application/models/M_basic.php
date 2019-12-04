@@ -32,6 +32,12 @@ class M_basic extends CI_Model{
     function runQuery($query){
         return $this->db->query($query);
     }
+
+    function set($where, $table, $from, $to){
+        $this->db->set($from, $to, false);
+        $this->db->where($where);
+        $this->db->update($table);
+    }
     
 }
 ?>

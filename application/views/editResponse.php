@@ -13,7 +13,7 @@
                 <h2 class="panel-title">Edit Response</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('bot/editResponseDetail')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('response/editResponse')?>" method="POST">
                     <input type="text" id="responseId" name="responseId" value="<?= $response->responseId?>" hidden required>
 
                     <div class="form-group">

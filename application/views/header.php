@@ -109,7 +109,7 @@
                             <nav id="menu" class="nav-main" role="navigation">
                                 <ul class="nav nav-main">
                                     <li>
-                                        <a href="index.html">
+                                        <a href="<?= base_url("dashboard")?>">
                                             <i class="fa fa-home" aria-hidden="true"></i>
                                             <span>Dashboard</span>
                                         </a>
@@ -124,6 +124,11 @@
                                             <li>
                                                 <a href="<?= base_url('bot/train_bot')?>">
                                                     Train Bot
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="<?= base_url('bot/check_message')?>">
+                                                    Check Bot
                                                 </a>
                                             </li>
                                         </ul>
@@ -192,6 +197,23 @@
                                                 </a>
                                                 <a href="<?= base_url('response/new_response')?>">
                                                     New Response
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa fa-chain" aria-hidden="true"></i>
+                                            <span>Condition-Response</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="<?= base_url('conresponse/all_condition_response')?>">
+                                                    All Condition-Response
+                                                </a>
+                                                <a href="<?= base_url('conresponse/new_condition_response')?>">
+                                                    New Condition-Response
                                                 </a>
                                             </li>
                                         </ul>

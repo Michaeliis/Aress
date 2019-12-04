@@ -30,43 +30,47 @@
                             <textarea rows="4" id="conversationFlowDetail" name="conversationFlowDetail"  class="form-control mb-md" required></textarea>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
-                    <h3 class="col-sm-offset-1">Values</h3>
-                    <p class="col-sm-offset-1"> 
-                        <input type="button" class="btn btn-success" value="Add Value" onClick="addRow('dataTable')"> 
-                        <input type="button" class="btn btn-danger" value="Remove Value" onClick="deleteRow('dataTable')">
-                    </p>
-                    
-                    <table id="dataTable" class="input-group col-sm-10 col-sm-offset-1 mb-md">
-                        <tbody>
-                        <tr>
-                            <p>
-                                <td>
-                                    <select name="conditionBefore[]" disabled>
-                                        <option value="">Start</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select name="conditionId[]">
-                                        <option value="">Select Condition</option>
-                                        <?php foreach($condition as $conditions){?>
-                                            <option value="<?= $conditions->conditionId?>"><?= $conditions->conditionName?></option>
-                                        <?php }?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select name="responseId[]">
-                                        <option value="">Select Response</option>
-                                        <?php foreach($response as $responses){?>
-                                            <option value="<?= $responses->responseId?>"><?= $responses->responseName?></option>
-                                        <?php }?>
-                                    </select>
-                                </td>
-                            </p>
-                        </tr>
-                        </tbody>
-                    </table>
+                        <h3 class="col-sm-offset-1">Values</h3>
+                        <p class="col-sm-offset-1"> 
+                            <input type="button" class="btn btn-success" value="Add Value" onClick="addRow('dataTable')"> 
+                            <input type="button" class="btn btn-danger" value="Remove Value" onClick="deleteRow('dataTable')">
+                        </p>
+                        
+                        <table id="dataTable" class="input-group col-sm-10 col-sm-offset-1 mb-md">
+                            <tbody>
+                                <tr>
+                                    <p>
+                                        <td>
+                                            <select class="form-control" name="conditionBefore[]" disabled>
+                                                <option value="">Start</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" id="conditionId0" name="conditionId[]">
+                                                <option value="">Select Condition</option>
+                                                <?php foreach($condition as $conditions){?>
+                                                    <option value="<?= $conditions->conditionId?>"><?= $conditions->conditionName?></option>
+                                                <?php }?>
+                                            </select>
+                                        </td>
+                                        
+                                        <td>
+                                            <select class="form-control" name="responseId[]">
+                                                <option value="">Select Response</option>
+                                                <?php foreach($response as $responses){?>
+                                                    <option value="<?= $responses->responseId?>"><?= $responses->responseName?></option>
+                                                <?php }?>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="button" class="btn btn-success" value="Add Value" onClick="addRow('dataTable', 'conditionId0')">
+                                        </td>
+                                    </p>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     
                     <footer class="panel-footer">
@@ -85,23 +89,38 @@
 <!-- end: page -->
 
 <script>
-function addRow(tableID) {
+    var idCounter = 1;
+function addRow(tableID, conditionId) {
 	var table = document.getElementById(tableID);
+    var before = document.getElementById(conditionId).value;
+    var condition = <?= $conditionArray?>;
+
 	var rowCount = table.rows.length;
 	if(rowCount < 20){                            // limit the user from creating fields more than your limits
 		var row = table.insertRow(rowCount);
 
+        var newcell = row.insertCell(0);
+        var selectBefore = '<td><select class="form-control" name="conditionBefore[]" disabled><option value="">Select Condition</option>';
+        for(var i=0; i<condition.length; i++){
+            selectBefore += '<option value="'+condition[i]["conditionId"]+'"';
+            if(before == condition[i]["conditionId"]){
+                selectBefore += ' selected';
+            }
+            selectBefore += '>'+condition[i]["conditionName"]+'</option>';
+        }
+        selectBefore += '</select></td>';
+        newcell.innerHTML = selectBefore;
+
         var newcell = row.insertCell(1);
-        newcell.innerHTML = '<input type="text"  class="form-control" placeholder="Text" required="required" name="text[]" />';
+        newcell.innerHTML = '<select class="form-control" id="conditionId'+idCounter+'" name="conditionBefore[]"><option value="">Select Condition</option><?php foreach($condition as $conditions){?><option value="<?= $conditions->conditionId?>"><?= $conditions->conditionName?></option><?php }?></select>';
 
         var newcell = row.insertCell(2);
-        newcell.innerHTML = '<select name="conditionBefore[]" disabled><option value="">Start</option><?php foreach($condition as $conditions){?><option value="<?= $conditions->conditionId?>"><?= $conditions->conditionName?></option><?php }?></select>';
+        newcell.innerHTML = '<select class="form-control" name="responseId[]"><option value="">Select Response</option><?php foreach($response as $responses){?><option value="<?= $responses->responseId?>"><?= $responses->responseName?></option><?php }?></select>';
 
         var newcell = row.insertCell(3);
-        newcell.innerHTML = '<select name="responseId[]"><option value="">Select Response</option><?php foreach($response as $responses){?><option value="<?= $responses->responseId?>"><?= $responses->responseName?></option><?php }?></select>';
+        newcell.innerHTML = '<input type="button" class="btn btn-success" value="Add Value" onClick="addRow('+"'dataTable'"+', '+"'conditionId"+idCounter+"'"+')">';
 
-        rowNum++;
-        console.log(rowNum);
+        idCounter++;
 	}else{
 		 alert("Maximum location count is 20");
 			   

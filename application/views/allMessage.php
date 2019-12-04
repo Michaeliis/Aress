@@ -5,7 +5,7 @@
             <a href="#" class="fa fa-times"></a>
         </div>
 
-        <h2 class="panel-title">All Response</h2>
+        <h2 class="panel-title">All Message</h2>
     </header>
     <div class="panel-body">
         <table class="table table-bordered table-striped mb-none" id="datatable-default">

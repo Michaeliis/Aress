@@ -5,32 +5,35 @@
             <a href="#" class="fa fa-times"></a>
         </div>
 
-        <h2 class="panel-title">All Sample</h2>
+        <h2 class="panel-title">All App</h2>
     </header>
     <div class="panel-body">
         <table class="table table-bordered table-striped mb-none" id="datatable-default">
             <thead>
                 <tr>
-                    <th>Date Created</th>
-                    <th>Text</th>
+                    <th>Condition Name</th>
+                    <th>Response Name</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($sample as $samples){?>
+                <?php foreach($conresponse as $conresponses){?>
                 <tr class="gradeX">
-                    <td><?= $samples->sampleDate?></td>
-                    <td><?= $samples->sampleText?></td>
+                    <td><?=$conresponses->conditionName?></td>
+                    <td><?=$conresponses->responseName?></td>
                     <td>
-                        <?php if($samples->sampleStatus == "1"){?>
+                        <?php if($conresponses->crStatus=="1"){?>
                             <span style="color:green">Active</span>
-                        <?php }else if($samples->sampleStatus == "0"){?>
+                        <?php }else if($conresponses->crStatus=="0"){?>
                             <span style="color:red">Inactive</span>
                         <?php }?>
                     </td>
                     <td>
-                        <a href="<?= base_url("sample/delete_sample/").$samples->sampleId?>" class="btn btn-danger">
+                        <a href="<?= base_url("app/edit_app/"). $conresponses->conditionId."/".$conresponses->responseId?>" class="btn btn-success">
+                            Edit
+                        </a>
+                        <a href="<?= base_url("app/delete_app/"). $conresponses->conditionId."/".$conresponses->responseId?>" class="btn btn-danger">
                             Delete
                         </a>
                     </td>

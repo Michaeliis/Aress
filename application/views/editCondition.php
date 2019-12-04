@@ -10,10 +10,10 @@
         <section class="panel">
             <header class="panel-heading">
                                         
-                <h2 class="panel-title">New Condition</h2>
+                <h2 class="panel-title">Edit Condition</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('bot/insertConditionResponse')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('condition/editCondition')?>" method="POST">
                     <input type="conditionId" name="conditionId" value="<?= $condition->conditionId?>" readonly hidden required>
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Condition Name</label>
@@ -27,7 +27,11 @@
                         <label class="col-sm-3 control-label" for="position">Intent</label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="intent" value="<?= $conditionintent->conditionIntent?>" class="form-control mb-md" required>
+                            <select name="intent" class="form-control mb-md" required>
+                                <?php foreach($intent as $intents){?>
+                                    <option value="<?= $intents->intentName?>" <?php if($intents->intentName == $conditionintent->conditionIntent){ echo "selected";}?>><?= $intents->intentName?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                     </div>
 
@@ -53,12 +57,19 @@
                                 <?php }?>
                                 </td>
                                 <td>
-                                    <a href="<?= base_url("entity/edit_value/").$conditiondetails->conditionDetailId ?>" class="btn btn-success">
+                                    <a href="<?= base_url("condition/edit_condition_detail/").$conditiondetails->conditionDetailId ?>" class="btn btn-success">
                                         Edit
                                     </a>
-                                    <a href="<?= base_url("entity/delete_keyword_detail/").$conditiondetails->conditionDetailId ?>" class="btn btn-danger">
-                                        Delete
-                                    </a>
+                                    <?php if($conditiondetails->conditionDetailStatus == "1"){?>
+                                        <a href="<?= base_url("condition/delete_condition_detail/").$conditiondetails->conditionDetailId ?>" class="btn btn-danger">
+                                            Delete
+                                        </a>
+                                    <?php }else if($conditiondetails->conditionDetailStatus == "0"){?>
+                                        <a href="<?= base_url("condition/activate_condition_detail/").$conditiondetails->conditionDetailId ?>" class="btn btn-danger">
+                                            Activate
+                                        </a>
+                                    <?php }?>
+                                    
                                 </td>
                             </tr>
                             <?php } ?>
@@ -78,7 +89,7 @@
                                 <p>
                                 <td><input type="checkbox" name="chk[]"/></td>
                                 <td>
-                                    <select name="entity[]" class="form-control" placeholder="Entity" param=0 onchange="valueSet(this)" required>
+                                    <select name="entity[]" class="form-control" placeholder="Entity" param=0 onchange="valueSet(this)" >
                                         <option value="">Select Entity</option>
                                     <?php foreach($entity as $entities){?>
                                         <option value="<?= $entities->entityId?>"><?= $entities->entityName?></option>
@@ -86,7 +97,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="value[]" class="form-control" placeholder="Value" param=0 required>
+                                    <select name="value[]" class="form-control" placeholder="Value" param=0>
                                         <option value="">Select Value</option>
                                     </select>
                                 </td>

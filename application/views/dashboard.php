@@ -93,7 +93,6 @@
 														<h4 class="title">Total Messages</h4>
 														<div class="info">
 															<strong class="amount">1281</strong>
-															<span class="text-primary">(14 unread)</span>
 														</div>
 													</div>
 													<div class="summary-footer">
@@ -117,11 +116,11 @@
 													<div class="summary">
 														<h4 class="title">Total Replied</h4>
 														<div class="info">
-															<strong class="amount">$ 14,890.30</strong>
+															<strong class="amount">300</strong>
 														</div>
 													</div>
 													<div class="summary-footer">
-														<a class="text-muted text-uppercase">(withdraw)</a>
+														<a class="text-muted text-uppercase">(view all)</a>
 													</div>
 												</div>
 											</div>
@@ -139,13 +138,13 @@
 												</div>
 												<div class="widget-summary-col">
 													<div class="summary">
-														<h4 class="title">Today's Orders</h4>
+														<h4 class="title">Today's Messages</h4>
 														<div class="info">
 															<strong class="amount">38</strong>
 														</div>
 													</div>
 													<div class="summary-footer">
-														<a class="text-muted text-uppercase">(statement)</a>
+														<a class="text-muted text-uppercase">(view all)</a>
 													</div>
 												</div>
 											</div>
@@ -163,13 +162,13 @@
 												</div>
 												<div class="widget-summary-col">
 													<div class="summary">
-														<h4 class="title">Today's Visitors</h4>
+														<h4 class="title">Today's Replies</h4>
 														<div class="info">
-															<strong class="amount">3765</strong>
+															<strong class="amount">20</strong>
 														</div>
 													</div>
 													<div class="summary-footer">
-														<a class="text-muted text-uppercase">(report)</a>
+														<a class="text-muted text-uppercase">(view all)</a>
 													</div>
 												</div>
 											</div>

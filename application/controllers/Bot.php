@@ -8,6 +8,7 @@ class Bot extends CI_Controller {
         $this->load->model('m_default');
         $this->load->helper('witai');
         $this->load->model('m_basic');
+        $this->load->model('m_witai');
 
         $this->load->library("session");
 
@@ -19,6 +20,7 @@ class Bot extends CI_Controller {
     public function train_bot(){
         $appId = $_SESSION["appId"];
         $item = $this->m_basic->find('item', array("appId"=>$appId, "itemStatus"=>"1"))->result();
+        $data['intent'] = $this->m_basic->find('intent', array("appId"=>$appId, "intentStatus"=>"1"))->result();
         $data["itemOption"] = array();
         foreach($item as $items){
             if($items->itemValue == "select"){
@@ -48,6 +50,8 @@ class Bot extends CI_Controller {
         $valueId = $this->input->post("value");
         $start = $this->input->post("start");
         $end = $this->input->post("end");
+        $conditionName = $this->input->post("conditionName");
+        $responseName = $this->input->post("responseName");
 
         //convert entity id jadi entity value
         foreach($entityId as $entityIds){
@@ -68,8 +72,6 @@ class Bot extends CI_Controller {
         $sampleId = date("YmdHis");
 
         //memasukkan response & condition ke DB
-        $conditionName = date("YmdHis");
-        $responseName = date("YmdHis");
 
         $responseId = $this->m_basic->insert("response", array("appId"=>$appId, "responseName"=>$responseName, "responseStatus"=>"1"));
         $conditionId = $this->m_basic->insert("conditionn", array("appId"=>$appId, "conditionName"=>$conditionName, "conditionCount"=>count($value),  "conditionStatus"=>"1"));
@@ -149,17 +151,59 @@ class Bot extends CI_Controller {
                     "conditionId"=>$conditionId,
                     "conditionEntity"=>$entities,
                     "conditionValue"=>$value[$counter],
-                    "conditionStatus"=>"1"
+                    "conditionDetailStatus"=>"1"
             );
             $this->m_basic->insert("conditiondetail", $conditionDetail);
         }
 
         //untuk memasukkan sample baru ke Wit.ai
         $json1 = json_encode($sampleJson);
-        echo $json1. "<br>";
         $server_output1 = doStuff("samples/", null, $json1, $appToken);
-        echo "<br><br><br>". $server_output1;
+        redirect(base_url("dashboard"));
+    }
+
+    public function check_message(){
+        $header = array(
+            "subtitle"=>"Bot",
+            "title"=>"Check"
+        );
+        $this->load->view('header', $header);
+        $this->load->view('newCheckBot');
+        $this->load->view('footer');
+    }
+
+    public function check(){
+        $appToken = $this->input->post("appToken");
+        $message = $this->input->post("message");
+
+        //interact dengan NLP
+        $server_output = doStuff("message", strip_tags($message), null, $appToken);
+        $result = json_decode($server_output, true);
+
+        $entity = $result["entities"];
+
+        //mengecek response dari db
+        $result = $this->m_witai->searchCondition($entity, $_SESSION['appId'])->row();
+        if(isset($result)){
+            $conditionId = $result->conditionId;
+            $response = $this->m_basic->find("conditionresponse", array("conditionId"=>$conditionId))->row();
+            if(isset($response)){
+                $responseDetail = $this->m_basic->find("responsedetail", array("responseId"=>$response->responseId))->result();
+                foreach($responseDetail as $responseDetails){
+                    $output[$responseDetails->responseTitle] = $responseDetails->responseValue;
+                }
+            }
+        }
+
+        $data["message"] = $message;
+        $data["result"] = json_encode($output);
+        $header = array(
+            "subtitle"=>"Bot",
+            "title"=>"Check Result"
+        );
+        $this->load->view('header', $header);
+        $this->load->view('checkBotResult', $data);
+        $this->load->view('footer');
         
-        echo "Intent telah dibuat";
     }
 }

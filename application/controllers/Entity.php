@@ -57,9 +57,8 @@ class Entity extends CI_Controller {
         //untuk memasukkan entity baru
         $json = json_encode(array("id"=>$entityName));
         $server_output = doStuff("entities/", null, $json, $appToken);
-        echo $server_output. "<br>";
         //memasukkan entity ke db
-        $entityId = $this->m_basic->insert("entity", array("appId"=>$appId, "entityName"=>$entityName, "detail"=>$entityDetail, "entityStatus"=>"1"));
+        $entityId = $this->m_basic->insert("entity", array("appId"=>$appId, "entityName"=>$entityName, "entityDetail"=>$entityDetail, "entityStatus"=>"1"));
 
         //memasukkan value baru
         foreach($value as $counter =>$values){
@@ -67,7 +66,6 @@ class Entity extends CI_Controller {
 
             $json = json_encode(array("value"=>$values, "expressions"=>$expressions));
             $server_output = doStuff("entities/".$entityName."/values/", null, $json, $appToken);
-            echo $server_output. "<br>";
 
             //memasukkan value ke db
             $valueId = $this->m_basic->insert("value", array("entityId"=>$entityId, "value"=>$values, "valueStatus"=>"1"));
@@ -77,6 +75,8 @@ class Entity extends CI_Controller {
                 $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "expressionStatus"=>"1"));
             }
         }
+
+        redirect(base_url("entity/all_entity"));
     }
 
     public function edit_entity($entity){
@@ -112,7 +112,6 @@ class Entity extends CI_Controller {
 
             $json = json_encode(array("value"=>$values, "expressions"=>$expressions));
             $server_output = doStuff("entities/".$entityName."/values/", null, $json, $appToken);
-            echo $server_output. "<br>";
 
             //memasukkan value ke db
             $valueId = $this->m_basic->insert("value", array("entityId"=>$entityId, "value"=>$values, "valueStatus"=>"1"));
@@ -122,6 +121,7 @@ class Entity extends CI_Controller {
                 $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "expressionStatus"=>"1"));
             }
         }
+        redirect(base_url("entity/all_entity"));
     }
 
     public function edit_value($entity, $value){
@@ -171,6 +171,8 @@ class Entity extends CI_Controller {
         doStuff($type, null, $json, $appToken);
         //update expression to db
         $this->m_basic->update(array("entity"=>$entity, "value"=>$value, "expression"=>$expressionOld), "expression", array("expression"=>$expression));
+
+        redirect(base_url("entity/edit_value/").$entity."/".$value);
     }
 
     public function testThis(){
