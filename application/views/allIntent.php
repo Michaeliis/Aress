@@ -1,3 +1,6 @@
+<?php if(isset($_SESSION["error"])){?>
+    <script>alert("<?=$_SESSION['error']?>")</script>
+<?php }?>
 <section class="panel">
     <header class="panel-heading">
         <div class="panel-actions">
@@ -30,12 +33,12 @@
                         <?php }?>
                     </td>
                     <td>
-                        <a href="<?= base_url("intent/edit_intent/").$intents->intentId?>" class="btn btn-success">
-                            Edit
-                        </a>
                         <?php if($intents->intentStatus == "1"){?>
                             <a href="<?= base_url("intent/delete_intent/").$intents->intentId?>" class="btn btn-danger">
                                 Delete
+                            </a>
+                            <a href="<?= base_url("intent/edit_intent/").$intents->intentId?>" class="btn btn-success">
+                                Edit
                             </a>
                         <?php }else if($intents->intentStatus == "0"){?>
                             <a href="<?= base_url("intent/activate_intent/").$intents->intentId?>" class="btn btn-danger">

@@ -33,8 +33,12 @@ class Message extends CI_Controller {
         $message = $this->m_basic->find("message", array("messageId"=>$messageId))->row();
 
         $data["message"] = $message;
-
-        $data["messageResponse"] = json_decode($message->messageResponse, true);
+        if($message->messageResponse != null){
+            $data["messageResponse"] = json_decode($message->messageResponse, true);
+        }else{
+            $data["messageResponse"] = array();
+        }
+        
         $header = array(
             "subtitle"=>"Message",
             "title"=>"View Message"

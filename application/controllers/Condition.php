@@ -8,6 +8,7 @@ class Condition extends CI_Controller {
         $this->load->model('m_default');
         $this->load->helper('witai');
         $this->load->model('m_basic');
+        $this->load->model('m_witai');
 
         $this->load->library("session");
         
@@ -50,6 +51,7 @@ class Condition extends CI_Controller {
         $intentName = $this->input->post("intent");
         $entityId = $this->input->post("entity");
         $valueId = $this->input->post("value");
+        $conditionName = $this->input->post("conditionName");
 
         //convert entity id jadi entity value
         foreach($entityId as $entityIds){
@@ -61,29 +63,50 @@ class Condition extends CI_Controller {
             $value[] = $resultValue->value;
         }
 
-        //memasukkan response & condition ke DB
-        $conditionName = date("YmdHis");
-        
-        $conditionId = $this->m_basic->insert("conditionn", array("appId"=>$appId, "conditionName"=>$conditionName, "conditionCount"=>count($value),  "conditionStatus"=>"1"));
-        
-        //memasukkan intent ke conditionintent di db
-        $conditionIntent = array(
-            "conditionId"=>$conditionId,
-            "conditionIntent"=>$intentName,
-            "conditionIntentStatus"=>"1"
-        );
-        $this->m_basic->insert("conditionintent", $conditionIntent);
+        //cek condition di DB
+        $conditionCount = $this->m_basic->find("conditionn", array("conditionName"=>$conditionName, "appId"=>$appId))->num_rows();
 
-        foreach($entity as $counter => $entities){
-            //memasukkan entities ke conditiondetail di db
-            $conditionDetail = array(
+        if(!$conditionCount > 0){
+            //cek intent dan detail condition serupa
+            $entityList["intent"][0]["value"] = $intentName;
+            foreach($entity as $counter => $entities){
+                $entityList[$entities][]["value"] = $value[$counter];
+            }
+            $entityCheck = $this->m_witai->searchCondition($entityList, $appId)->num_rows();
+
+            if(!$entityCheck > 0){
+                //memasukkan condition ke DB
+                $conditionId = $this->m_basic->insert("conditionn", array("appId"=>$appId, "conditionName"=>$conditionName, "conditionCount"=>count($value),  "conditionStatus"=>"1"));
+
+                //memasukkan intent ke conditionintent di db
+                $conditionIntent = array(
                     "conditionId"=>$conditionId,
-                    "conditionEntity"=>$entities,
-                    "conditionValue"=>$value[$counter],
-                    "conditionStatus"=>"1"
-            );
-            $this->m_basic->insert("conditiondetail", $conditionDetail);
+                    "conditionIntent"=>$intentName,
+                    "conditionIntentStatus"=>"1"
+                );
+                $this->m_basic->insert("conditionintent", $conditionIntent);
+
+                foreach($entity as $counter => $entities){
+                    //memasukkan entities ke conditiondetail di db
+                    $conditionDetail = array(
+                            "conditionId"=>$conditionId,
+                            "conditionEntity"=>$entities,
+                            "conditionValue"=>$value[$counter],
+                            "conditionDetailStatus"=>"1"
+                    );
+                    $this->m_basic->insert("conditiondetail", $conditionDetail);
+                }
+            }else{
+                $_SESSION["error"] = "This condition detail has been used, please check your condition";
+                $this->session->mark_as_flash('error');
+            }
+            
+        }else{
+            $_SESSION["error"] = "The condition name has been used, please use another name";
+            $this->session->mark_as_flash('error');
         }
+        
+        redirect(base_url("condition/all_condition"));
     }
 
     public function edit_condition($conditionId){
@@ -93,6 +116,7 @@ class Condition extends CI_Controller {
         $data["conditiondetail"] = $this->m_basic->find("conditiondetail", array("conditionId"=>$conditionId))->result();
         $data["conditionintent"] = $this->m_basic->find("conditionintent", array("conditionId"=>$conditionId))->row();
         $data["intent"] = $this->m_basic->find("intent", array("appId"=>$appId, "intentStatus"=>1))->result();
+        $data["entity"] = $this->m_basic->find("entity", array("appId"=>$appId, "entityStatus"=>1))->result();
 
         $header = array(
             "subtitle"=>"Condition",
@@ -104,7 +128,10 @@ class Condition extends CI_Controller {
     }
 
     public function editCondition(){
+        $appId = $_SESSION["appId"];
+
         $conditionName = $this->input->post('conditionName');
+        $conditionNameOld = $this->input->post('conditionNameOld');
         $conditionId = $this->input->post('conditionId');
         $intent = $this->input->post('intent');
         $entityId = $this->input->post('entity');
@@ -124,21 +151,43 @@ class Condition extends CI_Controller {
             }
         }
 
-        foreach($entity as $counter => $entities){
-            //memasukkan entities ke conditiondetail di db
-            $conditionDetail = array(
-                    "conditionId"=>$conditionId,
-                    "conditionEntity"=>$entities,
-                    "conditionValue"=>$value[$counter],
-                    "conditionStatus"=>"1"
-            );
-            $this->m_basic->insert("conditiondetail", $conditionDetail);
+        //cek condition di DB
+        $conditionCountf = $this->m_basic->find("conditionn", array("conditionName"=>$conditionName, "appId"=>$appId))->num_rows();
+        if($conditionName == $conditionNameOld){
+            $conditionCountf = $conditionCountf - 1;
         }
-        
-        $this->m_basic->update(array("conditionId"=>$conditionId), "conditionn", array("conditionName"=>$conditionName));
-        $this->m_basic->set(array("conditionId"=>$conditionId), "conditionn", "conditionCount", "conditionCount+".count($value));
-        
-        $this->m_basic->update(array("conditionId"=>$conditionId), "conditionintent", array("conditionIntent"=>$intent));
+        if(!$conditionCountf > 0){
+            //cek intent dan detail condition serupa
+            $entityList["intent"][0]["value"] = $intent;
+            foreach($entity as $counter => $entities){
+                $entityList[$entities][]["value"] = $value[$counter];
+            }
+            $entityCheck = $this->m_witai->searchCondition($entityList, $appId)->num_rows();
+
+            if(!$entityCheck > 0){
+                foreach($entity as $counter => $entities){
+                    //memasukkan entities ke conditiondetail di db
+                    $conditionDetail = array(
+                            "conditionId"=>$conditionId,
+                            "conditionEntity"=>$entities,
+                            "conditionValue"=>$value[$counter],
+                            "conditionDetailStatus"=>"1"
+                    );
+                    $this->m_basic->insert("conditiondetail", $conditionDetail);
+                }
+                
+                $this->m_basic->update(array("conditionId"=>$conditionId), "conditionn", array("conditionName"=>$conditionName));
+                $this->m_basic->set(array("conditionId"=>$conditionId), "conditionn", "conditionCount", "conditionCount+".count($value));
+                
+                $this->m_basic->update(array("conditionId"=>$conditionId), "conditionintent", array("conditionIntent"=>$intent));
+            }else{
+                $_SESSION["error"] = "This condition detail has been used, please check your condition";
+                $this->session->mark_as_flash('error');
+            }
+        }else{
+            $_SESSION["error"] = "This condition name has been used, please use another name";
+            $this->session->mark_as_flash('error');
+        }
 
         redirect(base_url("condition/all_condition"));
     }

@@ -19,7 +19,7 @@
                         <label class="col-sm-3 control-label" for="position">Response Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="responseName" name="responseName"  class="form-control mb-md" required>
+                            <input type="text" id="responseName" name="responseName"  class="form-control mb-md" required maxlength="30">
                         </div>
                     </div>
 
@@ -42,7 +42,7 @@
 
                             <?php if($items->itemValue == "select"){?>
                             <select name="<?= $items->itemId?>" class="form-control mb-md" required>
-                                <option value="">Select <?= $items->itemId?></option>
+                                <option value="">Select One</option>
                                 <?php foreach($itemOption[$items->itemId] as $itemOptions){?>
                                     <option value="<?=$itemOptions["itemOptionValue"]?>"><?=$itemOptions["itemOptionName"]?></option>
                                 <?php }?>

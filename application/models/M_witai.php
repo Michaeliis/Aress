@@ -11,11 +11,11 @@ class M_witai extends CI_Model{
                     if($next){
                         $query.= " OR ";
                     }
-                    $query.= "(";
+                    $query.= "((";
                     $query.= "conditionEntity = '".$entities."'";
                     $query.= " AND ";
                     $query.= "conditionValue = '".$values["value"]."'";
-                    $query.= ")";
+                    $query.= ") AND conditionDetailStatus = 1)";
         
                     $next = true;
                 }

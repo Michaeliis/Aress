@@ -18,7 +18,7 @@
                         <label class="col-sm-3 control-label" for="position">App Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="appName" name="appName"  class="form-control mb-md" required>
+                            <input type="text" id="appName" name="appName"  class="form-control mb-md" required maxlength="30">
                         </div>
                     </div>
 

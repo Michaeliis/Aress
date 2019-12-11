@@ -29,6 +29,14 @@
                             <textarea readonly name="result" rows="4" class="form-control mb-md" required><?= $result?></textarea>
                         </div>
                     </div>
+
+                    <footer class="panel-footer">
+                        <div class="row">
+                            <div class="col-sm-offset-11">
+                                <a href="<?= base_url("bot/check_message")?>" class="btn btn-warning">Back</a>
+                            </div>
+                        </div>
+                    </footer>
                 </form>
             </div>
         </section>										

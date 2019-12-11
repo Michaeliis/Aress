@@ -26,7 +26,7 @@
                         <label class="col-sm-3 control-label" for="position">Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="name" name="name" class="form-control mb-md" required value="<?= $user->userName?>">
+                            <input type="text" id="name" name="name" class="form-control mb-md" required value="<?= $user->userName?>" maxlength="30">
                         </div>
                     </div>
 
@@ -34,7 +34,7 @@
                         <label class="col-sm-3 control-label" for="position">Email</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="email" name="email"  class="form-control mb-md" required value="<?= $user->userEmail?>">
+                            <input type="text" id="email" name="email"  class="form-control mb-md" required value="<?= $user->userEmail?>" maxlength="30">
                         </div>
                     </div>
 
@@ -42,7 +42,7 @@
                         <label class="col-sm-3 control-label" for="position">Username</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="username" name="username" class="form-control mb-md" required value="<?= $user->userUsername?>">
+                            <input type="text" id="username" name="username" class="form-control mb-md" required value="<?= $user->userUsername?>" maxlength="30">
                         </div>
                     </div>
 
@@ -58,7 +58,7 @@
                         <label class="col-sm-3 control-label" for="position">Phone</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="phone" name="phone"  class="form-control mb-md" required value="<?= $user->userPhone?>">
+                            <input type="text" id="phone" name="phone"  class="form-control mb-md" required value="<?= $user->userPhone?>" maxlength="30">
                         </div>
                     </div>
 

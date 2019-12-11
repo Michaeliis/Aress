@@ -26,7 +26,8 @@
                         <label class="col-sm-3 control-label" for="position">App Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="appName" name="appName" value="<?= $app->appName?>" class="form-control mb-md" required>
+                            <input type="text" id="appName" name="appName" value="<?= $app->appName?>" class="form-control mb-md" required maxlength="30">
+                            <input type="text" id="appNameOld" name="appNameOld" value="<?= $app->appName?>" required hidden>
                         </div>
                     </div>
 

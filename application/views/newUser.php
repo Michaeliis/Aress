@@ -1,3 +1,6 @@
+<?php if(isset($_SESSION["error"])){?>
+    <script>alert("<?=$_SESSION['error']?>")</script>
+<?php }?>
 <style>
     #dataTable td{
         vertical-align: top;
@@ -18,7 +21,7 @@
                         <label class="col-sm-3 control-label" for="position">Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="name" name="name"  class="form-control mb-md" required>
+                            <input type="text" id="name" name="name"  class="form-control mb-md" required maxlength="30">
                         </div>
                     </div>
 
@@ -26,7 +29,23 @@
                         <label class="col-sm-3 control-label" for="position">Email</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="email" name="email"  class="form-control mb-md" required>
+                            <input type="text" id="email" name="email"  class="form-control mb-md" required maxlength="30">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="position">Username</label>
+
+                        <div class="col-sm-8">
+                            <input type="text" id="userUsername" name="userUsername"  class="form-control mb-md" required maxlength="30">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="position">Password</label>
+
+                        <div class="col-sm-8">
+                            <input type="password" id="userPassword" name="userPassword"  class="form-control mb-md" required maxlength="50">
                         </div>
                     </div>
 
@@ -34,7 +53,7 @@
                         <label class="col-sm-3 control-label" for="position">Phone</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="phone" name="phone"  class="form-control mb-md" required>
+                            <input type="text" id="phone" name="phone"  class="form-control mb-md" required maxlength="30">
                         </div>
                     </div>
 

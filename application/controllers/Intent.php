@@ -47,11 +47,26 @@ class Intent extends CI_Controller {
         $intentName = $this->input->post("intentName");
         $intentDetail = $this->input->post("intentDetail");
 
-        $json = json_encode(array("value"=>$intentName));
+        $intentCount = $this->m_basic->find("intent", array("intentName"=>$intentName, "appId"=>$appId))->num_rows();
+        if(!$intentCount > 0){
+            $intentName = str_replace(" ", "_", $intentName);
 
-        $response = doStuff("/entities/intent/values", null, $json, $appToken);
-
-        $this->m_basic->insert("intent", array("intentName"=>$intentName, "appId"=>$appId, "intentDetail"=>$intentDetail, "intentStatus"=>"1"));
+            $json = json_encode(array("value"=>$intentName));
+            $server_output = json_decode(doStuff("/entities/intent/values", null, $json, $appToken));
+            //cek api
+            $intentStatus = 0;
+            if(isset($server_output->name)){
+                $intentStatus = 1;
+            }else{
+                $_SESSION["error"] = "There's an error when creating intent, please check your internet connection";
+                $this->session->mark_as_flash("error");
+            }
+            $this->m_basic->insert("intent", array("intentName"=>$intentName, "appId"=>$appId, "intentDetail"=>$intentDetail, "intentStatus"=>$intentStatus));
+        }else{
+            $_SESSION["error"] = "This intent name has been used, please use another name";
+            $this->session->mark_as_flash("error");
+        }
+        
         redirect(base_url("intent/all_intent"));
     }
 
@@ -69,11 +84,34 @@ class Intent extends CI_Controller {
     }
 
     public function editIntent(){
+        $appToken = $_SESSION["appToken"];
+        $appId = $_SESSION["appId"];
+
         $intentId = $this->input->post("intentId");
         $intentName = $this->input->post("intentName");
+        $intentNameBefore = $this->input->post("intentNameBefore");
         $intentDetail = $this->input->post("intentDetail");
+        
+        //delete old intent
+        $server_output = json_decode(deleteStuff("/entities/intent/values/".$intentNameBefore, null, $appToken));
+        //cek api
+        if(isset($server_output->deleted)){
+            $json = json_encode(array("value"=>$intentName));
 
-        $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentName"=>$intentName, "intentDetail"=>$intentDetail));
+            $server_output = json_decode(doStuff("/entities/intent/values", null, $json, $appToken));
+
+            //cek api
+            if(isset($server_output->name)){
+                $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentName"=>$intentName, "intentDetail"=>$intentDetail));
+            }else{
+                $_SESSION["error"] = "There's an error when creating intent, please check your internet connection";
+                $this->session->mark_as_flash("error");
+            }
+        }else{
+            $_SESSION["error"] = "There's an error when deleting intent, please check your connection";
+            $this->session->mark_as_flash("error");
+        }
+
         redirect(base_url("intent/all_intent"));
     }
 
@@ -81,9 +119,15 @@ class Intent extends CI_Controller {
         $appToken = $_SESSION["appToken"];
 
         $intent = $this->m_basic->find("intent", array("intentId"=>$intentId))->row();
-        deleteStuff("/entities/intent/values/".$intent->intentName, null, $appToken);
+        $server_output = json_decode(deleteStuff("/entities/intent/values/".$intent->intentName, null, $appToken));
 
-        $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentStatus"=>"0"));
+        if(isset($server_output->deleted)){
+            $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentStatus"=>"0"));
+        }else{
+            $_SESSION["error"] = "There's an error when deleting intent, please check your connection";
+            $this->session->mark_as_flash("error");
+        }
+        
         redirect(base_url("intent/all_intent"));
     }
 
@@ -93,9 +137,15 @@ class Intent extends CI_Controller {
         $intent = $this->m_basic->find("intent", array("intentId"=>$intentId))->row();
         $json = array("value"=>$intent->intentName);
 
-        $response = doStuff("/entities/intent/values", null, $json, $appToken);
+        $server_output = json_decode(doStuff("/entities/intent/values", null, json_encode($json), $appToken));
 
-        $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentStatus"=>"1"));
+        if(isset($server_output->name)){
+            $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentStatus"=>"1"));
+        }else{
+            $_SESSION["error"] = "There's an error when creating intent, please check your internet connection";
+            $this->session->mark_as_flash("error");
+        }
+        
         redirect(base_url("intent/all_intent"));
     }
 }

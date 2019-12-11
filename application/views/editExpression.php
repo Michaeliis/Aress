@@ -38,7 +38,7 @@
 
                         <div class="col-sm-8">
                         <input type="text" id="expressionOld" name="expressionOld" required value="<?= $expression->expression?>" readonly hidden>
-                        <input type="text" id="expression" name="expression"  class="form-control mb-md" required value="<?= $expression->expression?>">
+                        <input type="text" id="expression" name="expression"  class="form-control mb-md" required value="<?= $expression->expression?>" maxlength="50">
                         </div>
                     </div>
                     

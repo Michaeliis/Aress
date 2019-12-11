@@ -27,7 +27,8 @@
                         <label class="col-sm-3 control-label" for="position">Option Value</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="itemOptionValue" name="itemOptionValue"  class="form-control mb-md" required value="<?= $itemOption->itemOptionValue?>" readonly>
+                            <input type="text" name="itemOptionValueOld" value="<?= $itemOption->itemOptionValue?>" hidden readonly>
+                            <input type="text" id="itemOptionValue" name="itemOptionValue"  class="form-control mb-md" required value="<?= $itemOption->itemOptionValue?>"  maxlength="30">
                         </div>
                     </div>
 
@@ -35,7 +36,8 @@
                         <label class="col-sm-3 control-label" for="position">Option Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="itemOptionName" name="itemOptionName"  class="form-control mb-md" required value="<?= $itemOption->itemOptionName?>">
+                            <input type="text" name="itemOptionNameOld" value="<?= $itemOption->itemOptionName?>" hidden readonly>
+                            <input type="text" id="itemOptionName" name="itemOptionName"  class="form-control mb-md" required value="<?= $itemOption->itemOptionName?>" maxlength="30">
                         </div>
                     </div>
                     

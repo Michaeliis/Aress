@@ -19,7 +19,7 @@
                         <label class="col-sm-3 control-label" for="position">Item Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="item" name="item"  class="form-control mb-md" required>
+                            <input type="text" id="item" name="item"  class="form-control mb-md" required maxlength="30">
                         </div>
                     </div>
 
@@ -59,10 +59,10 @@
                                 <p>
                                 <td><input type="checkbox" name="chk[]"/></td>
                                 <td>
-                                    <input type="text" name="optionValue[]" class="form-control" placeholder="Value">
+                                    <input type="text" name="optionValue[]" class="form-control" placeholder="Value" maxlength="30">
                                 </td>
                                 <td>
-                                    <input type="text" name="optionName[]" class="form-control" placeholder="Name">
+                                    <input type="text" name="optionName[]" class="form-control" placeholder="Name" maxlength="30">
                                 </td>
                                 </p>
                             </tr>

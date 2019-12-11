@@ -65,22 +65,7 @@ class Sample extends CI_Controller {
             $value[] = $resultValue->value;
         }
 
-        //menambahkan sample ke db
-        $sampleDb = array(
-            "appId"=>$appId,
-            "sampleText"=>$sample,
-            "sampleDate"=>date("Y-m-d"),
-            "sampleStatus"=>"1"
-        );
-        $sampleId = $this->m_basic->insert("sample", $sampleDb);
-        
-        //menambahkan sample intent ke db
-        $sampleIntent = array(
-            "sampleId"=>$sampleId,
-            "intentName"=>$intentName
-        );
-        $this->m_basic->insert("sampleintent", $sampleIntent);
-
+        //menghubungkan dengan wit.ai
         //untuk memasukkan intent ke json sample
         $sampleJson[0] = array(
             "text"=>$sample,
@@ -91,7 +76,6 @@ class Sample extends CI_Controller {
                 )
             )
         );
-
         foreach($entity as $counter => $entities){
             //menambahkan keywords ke json sample
             $sampleJson[0]["entities"][] = array(
@@ -100,23 +84,45 @@ class Sample extends CI_Controller {
                 "end"=>$end[$counter],
                 "value"=>$value[$counter]
             );
-            
-            //memasukkan detail sample ke db
-            $sampleDetail = array(
-                "sampleId"=>$sampleId,
-                "entityName"=>$entities,
-                "valueName"=>$value[$counter]
-            );
-            $this->m_basic->insert("sampleentity", $sampleDetail);
         }
-
         //untuk memasukkan sample baru ke Wit.ai
         $json1 = json_encode($sampleJson);
-        echo $json1. "<br>";
-        $server_output1 = doStuff("samples/", null, $json1, $appToken);
-        echo "<br><br><br>". $server_output1;
-        
-        echo "Intent telah dibuat";
+        $server_output = json_decode(doStuff("samples/", null, $json1, $appToken));
+
+        //cek api
+        if(isset($server_output->sent)){
+            //menambahkan sample ke db
+            $sampleDb = array(
+                "appId"=>$appId,
+                "sampleText"=>$sample,
+                "sampleDate"=>date("Y-m-d"),
+                "sampleStatus"=>"1"
+            );
+            $sampleId = $this->m_basic->insert("sample", $sampleDb);
+            
+            //menambahkan sample intent ke db
+            $sampleIntent = array(
+                "sampleId"=>$sampleId,
+                "intentName"=>$intentName
+            );
+            $this->m_basic->insert("sampleintent", $sampleIntent);
+
+
+            foreach($entity as $counter => $entities){
+                //memasukkan detail sample ke db
+                $sampleDetail = array(
+                    "sampleId"=>$sampleId,
+                    "entityName"=>$entities,
+                    "valueName"=>$value[$counter]
+                );
+                $this->m_basic->insert("sampleentity", $sampleDetail);
+            }
+        }else{
+            $_SESSION["error"] = "There's a problem when inserting sample, please check your internet connection";
+            $this->session->mark_as_flash("error");
+        }
+
+        redirect(base_url("sample/all_sample"));
     }
 
     public function view_sample($sampleId){
@@ -138,6 +144,17 @@ class Sample extends CI_Controller {
 
         $sampleText = $this->m_basic->find("sample", array("sampleId"=>$sampleId))->row()->sampleText;
         $json[] = array("text"=>$sampleText);
-        deleteStuff("samples", json_encode($json), $appToken);
+
+        
+        $server_output = json_decode(deleteStuff("samples", json_encode($json), $appToken));
+        
+        if(isset($server_output->sent)){
+            $this->m_basic->delete(array("sampleId"=>$sampleId), "sample");
+        }else{
+            $_SESSION["error"] = "There's an error when deleting sample, please check your internet connection";
+            $this->session->mark_as_flash("error");
+        }
+
+        redirect("sample/all_sample");
     }
 }

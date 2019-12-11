@@ -1,3 +1,6 @@
+<?php if(isset($_SESSION["error"])){?>
+    <script>alert("<?=$_SESSION['error']?>")</script>
+<?php }?>
 <section class="panel">
     <header class="panel-heading">
         <div class="panel-actions">

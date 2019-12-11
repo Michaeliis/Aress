@@ -1,3 +1,6 @@
+<?php if(isset($_SESSION["error"])){?>
+    <script>alert("<?=$_SESSION['error']?>")</script>
+<?php }?>
 <style>
     #dataTable td{
         vertical-align: top;
@@ -22,6 +25,14 @@
 
                         <div class="col-sm-8">
                             <input type="text" id="entity" name="entity" value="<?= $entity->entityName?>" class="form-control mb-md" required readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="position">Entity Detail</label>
+
+                        <div class="col-sm-8">
+                            <textarea rows="4" id="entityDetail" name="entityDetail" class="form-control mb-md" required><?= $entity->entityDetail?></textarea>
                         </div>
                     </div>
 
@@ -52,15 +63,15 @@
                                 </td>
                                 </td>
                                 <td>
-                                    <a href="<?= base_url("entity/edit_value/").$entity->entityId. "/". $values->valueId?>" class="btn btn-success">
-                                        Edit
-                                    </a>
                                     <?php if($values->valueStatus == "1"){?>
-                                        <a href="<?= base_url("entity/delete_value/").$values->valueId?>" class="btn btn-danger">
+                                        <a href="<?= base_url("entity/delete_value/").$entity->entityId. "/". $values->valueId?>" class="btn btn-danger">
                                             Delete
                                         </a>
+                                        <a href="<?= base_url("entity/edit_value/").$entity->entityId. "/". $values->valueId?>" class="btn btn-success">
+                                            Edit
+                                        </a>
                                     <?php }else if($values->valueStatus == "0"){?>
-                                        <a href="<?= base_url("entity/activate_value/").$values->valueId?>" class="btn btn-danger">
+                                        <a href="<?= base_url("entity/activate_value/").$entity->entityId. "/". $values->valueId?>" class="btn btn-danger">
                                             Reactivate
                                         </a>
                                     <?php }?>
@@ -71,27 +82,27 @@
                     </table>
                     
                     <div class="form-group">
-                    <h3 class="col-sm-offset-1">New Values</h3>
-                    <p class="col-sm-offset-1"> 
-                        <input type="button" class="btn btn-success" value="Add Value" onClick="addRow('dataTable')"> 
-                        <input type="button" class="btn btn-danger" value="Remove Value" onClick="deleteRow('dataTable')">
-                    </p>
-                    
-                    <table id="dataTable" class="input-group col-sm-10 col-sm-offset-1 mb-md">
-                        <tbody>
-                        <tr>
-                            <p>
-                            <td><input type="checkbox" name="chk[]"/></td>
-                            <td>
-                                <input type="text" name="value[]" class="form-control" placeholder="Value Name" required>
-                            </td>
-                            <td>
-                                <textarea name="expression[]" class="form-control" placeholder="Expressions / Synonyms" required></textarea>
-                            </td>
-                            </p>
-                        </tr>
-                        </tbody>
-                    </table>
+                        <h3 class="col-sm-offset-1">New Values</h3>
+                        <p class="col-sm-offset-1"> 
+                            <input type="button" class="btn btn-success" value="Add Value" onClick="addRow('dataTable')"> 
+                            <input type="button" class="btn btn-danger" value="Remove Value" onClick="deleteRow('dataTable')">
+                        </p>
+                        
+                        <table id="dataTable" class="input-group col-sm-10 col-sm-offset-1 mb-md">
+                            <tbody>
+                            <tr>
+                                <p>
+                                <td><input type="checkbox" name="chk[]"/></td>
+                                <td>
+                                    <input type="text" name="value[]" class="form-control" placeholder="Value Name" maxlength="50">
+                                </td>
+                                <td>
+                                    <textarea name="expression[]" class="form-control" placeholder="Expressions / Synonyms"></textarea>
+                                </td>
+                                </p>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     
                     <footer class="panel-footer">

@@ -1,3 +1,7 @@
+<?php if(isset($_SESSION["error"])){?>
+    <script>alert("<?=$_SESSION['error']?>")</script>
+<?php }?>
+
 <style>
     #dataTable td{
         vertical-align: top;
@@ -5,11 +9,7 @@
     }
 </style>
 <!-- start: page -->
-<script>
-    <?php if(isset($_SESSION["error"])){?>
-        alert("This Condition and Response have already been used");
-    <?php }?>
-</script>
+
 <div class="row">
     <div class="col-lg-12">
         <section class="panel">
@@ -24,6 +24,7 @@
                         <label class="col-sm-3 control-label" for="position">Condition</label>
 
                         <div class="col-sm-8">
+                            <input type="text" name="oldCondition" value="<?= $conresponse->conditionId?>" required hidden>
                             <select name="condition" id="condition" class="form-control mb-md" required>
                                 <option value="">Select Condition</option>
                                 <?php foreach($condition as $conditions){?>

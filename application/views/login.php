@@ -1,4 +1,6 @@
-
+<?php if(isset($_SESSION["error"])){?>
+    <script>alert("<?=$_SESSION['error']?>")</script>
+<?php }?>
 		<!-- start: page -->
 		<section class="body-sign">
 			<div class="center-sign">

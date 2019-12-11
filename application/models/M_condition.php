@@ -13,6 +13,9 @@ class M_condition extends CI_Model{
 
         return $this->db->get();
     }
-    
+
+    function conditionSetSearch(){
+        
+    }    
 }
 ?>

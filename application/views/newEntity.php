@@ -19,7 +19,7 @@
                         <label class="col-sm-3 control-label" for="position">Entity Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="entity" name="entity"  class="form-control mb-md" required>
+                            <input type="text" id="entity" name="entity"  class="form-control mb-md" required maxlength="30">
                         </div>
                     </div>
 
@@ -44,7 +44,7 @@
                             <p>
                             <td><input type="checkbox" name="chk[]"/></td>
                             <td>
-                                <input type="text" name="value[]" class="form-control" placeholder="Value Name" required>
+                                <input type="text" name="value[]" class="form-control" placeholder="Value Name" required maxlength="30">
                             </td>
                             <td>
                                 <textarea name="expression[]" class="form-control" placeholder="Expressions / Synonyms" required></textarea>

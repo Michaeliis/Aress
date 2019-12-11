@@ -58,17 +58,30 @@ class App extends CI_Controller {
 
     public function newApp(){
         $appToken = $_SESSION["appToken"];
-        $appName = $this->input->post("appName");
+        $appName = str_replace(" ", "_", $this->input->post("appName"));
         $appDetail = $this->input->post("appDetail");
         $appLanguage = $this->input->post("appLanguage");
 
-        $json = json_encode(array("name"=>$appName, "lang"=>$appLanguage, "private"=>"false", "desc"=>$appDetail));
-        $output = json_decode(doStuff("apps", null, $json, $appToken));
+        //check appName
+        $appCount = $this->m_basic->find("app", array("appName"=>$appName))->num_rows();
 
-        $appToken = $output->access_token;
-        $appId = $output->app_id;
-
-        $this->m_basic->insert("app", array("appId"=>$appId, "appName"=>$appName, "appLanguage"=>$appLanguage, "appToken"=>$appToken, "appDetail"=>$appDetail, "appStatus"=>"1"));
+        if(!$appCount > 0){
+            $json = json_encode(array("name"=>$appName, "lang"=>$appLanguage, "private"=>"false", "desc"=>$appDetail));
+            $output = json_decode(doStuff("apps", null, $json, $appToken));
+            //check api
+            if(isset($output->access_token)){
+                $appToken = $output->access_token;
+                $appId = $output->app_id;
+        
+                $this->m_basic->insert("app", array("appId"=>$appId, "appName"=>$appName, "appLanguage"=>$appLanguage, "appToken"=>$appToken, "appDetail"=>$appDetail, "appStatus"=>"1"));
+            }else{
+                $_SESSION["error"] = "There is a problem when inserting app, please check your connection";
+                $this->session->mark_as_flash('error');
+            }
+        }else{
+            $_SESSION["error"] = "The app name has been used, please use another name";
+            $this->session->mark_as_flash('error');
+        }
 
         redirect(base_url("app/all_app"));
     }
@@ -87,15 +100,31 @@ class App extends CI_Controller {
 
     public function editApp(){
         $appId = $this->input->post("appId");
-        $appName = $this->input->post("appName");
+        $appName = str_replace(" ", "_", $this->input->post("appName"));
+        $appNameOld = $this->input->post("appNameOld");
         $appDetail = $this->input->post("appDetail");
         $appLanguage = $this->input->post("appLanguage");
         $appToken = $this->input->post("appToken");
 
-        $json = json_encode(array("name"=>$appName, "lang"=>$appLanguage, "private"=>"false", "desc"=>$appDetail));
-        $output = putStuff("apps/".$appId, null, $json, $appToken);
+        //check appName
+        $appCount = $this->m_basic->find("app", array("appName"=>$appName))->num_rows();
+        if($appNameOld == $appName){
+            $appCount--;
+        }
+        if(!$appCount > 0){
+            $json = json_encode(array("name"=>$appName, "lang"=>$appLanguage, "private"=>"false", "desc"=>$appDetail));
+            $server_output = json_decode(putStuff("apps/".$appId, null, $json, $appToken));
 
-        $this->m_basic->update(array("appId"=>$appId), "app", array("appName"=>$appName, "appLanguage"=>$appLanguage, "appDetail"=>$appDetail, "appStatus"=>"1"));
+            if(isset($server_output->success)){
+                $this->m_basic->update(array("appId"=>$appId), "app", array("appName"=>$appName, "appLanguage"=>$appLanguage, "appDetail"=>$appDetail, "appStatus"=>"1"));
+            }else{
+                $_SESSION["error"] = "There is a problem when editing app, please check your connection";
+                $this->session->mark_as_flash('error');
+            }
+        }else{
+            $_SESSION["error"] = "This app name has been used, please use another name";
+            $this->session->mark_as_flash('error');
+        }
 
         redirect(base_url("app/all_app"));
     }

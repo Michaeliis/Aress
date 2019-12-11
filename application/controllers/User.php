@@ -44,22 +44,31 @@ class User extends CI_Controller {
         $email = $this->input->post('email');
         $position = $this->input->post('position');
         $phone = $this->input->post('phone');
+        $userUsername = $this->input->post('userUsername');
+        $userPassword = $this->input->post('userPassword');
 
-        $userUsername = date("YmdHis");
-        $userPassword = md5($phone);
+        $userPassword = md5($userPassword);
 
-        $data = array(
-            "userName"=>$name,
-            "userEmail"=>$email,
-            "userUsername"=>$userUsername,
-            "userPassword"=>$userPassword,
-            "userPhone"=>$phone,
-            "userPosition"=>$position,
-            "userStatus"=>1
-        );
-        $this->m_basic->insert("user", $data);
+        $userCount = $this->m_basic->find("user", array("userUsername"=>$userUsername))->num_rows();
+        if(!$userCount > 0){
+            $data = array(
+                "userName"=>$name,
+                "userEmail"=>$email,
+                "userUsername"=>$userUsername,
+                "userPassword"=>$userPassword,
+                "userPhone"=>$phone,
+                "userPosition"=>$position,
+                "userStatus"=>1
+            );
+            $this->m_basic->insert("user", $data);
+    
+            redirect(base_url("user/all_user"));
+        }else{
+            $_SESSION["error"] = "This username has been used, please use another name";
+            $this->session->mark_as_flash("error");
 
-        redirect(base_url("user/all_user"));
+            redirect(base_url("user/new_user"));
+        }
     }
 
     public function edit_user($userId){
@@ -83,29 +92,47 @@ class User extends CI_Controller {
         $phone = $this->input->post('phone');
         $password = $this->input->post('password');
 
-        $data = array(
-            "userName"=>$name,
-            "userEmail"=>$email,
-            "userPosition"=>$position,
-            "userPhone"=>$phone,
-            "userUsername"=>$username
-        );
+        $userCount = $this->m_basic->find("user", array("userUsername"=>$username))->num_rows();
+        if(!$userCount > 0){
+            $data = array(
+                "userName"=>$name,
+                "userEmail"=>$email,
+                "userPosition"=>$position,
+                "userPhone"=>$phone,
+                "userUsername"=>$username
+            );
+    
+            if($password != ""){
+                $data["userPassword"] = md5($password);
+            }
+            $this->m_basic->update(array("userId"=>$userId), "user", $data);
+            redirect(base_url("user/all_user"));
+        }else{
+            $_SESSION["error"] = "This username has been used, please use another name";
+            $this->session->mark_as_flash("error");
 
-        if($password != ""){
-            $data["userPassword"] = md5($password);
-        }
-        $this->m_basic->update(array("userId"=>$userId), "user", $data);
-        redirect(base_url("user/all_user"));
+            redirect(base_url("user/new_user"));
+        }        
     }
 
     public function delete_user($userId){
-        $this->m_basic->update(array("userId"=>$userId), "user", array("userStatus"=>"0"));
+        if($userId == $_SESSION["userId"]){
+            $_SESSION["error"] = "You cannot delete your own account";
+            $this->session->mark_as_flash("error");
+        }else{
+            $this->m_basic->update(array("userId"=>$userId), "user", array("userStatus"=>"0"));
+        }
 
         redirect(base_url("user/all_user"));
     }
 
     public function activate_user($userId){
-        $this->m_basic->update(array("userId"=>$userId), "user", array("userStatus"=>"1"));
+        if($userId == $_SESSION["userId"]){
+            $_SESSION["error"] = "You cannot reactivate your own account";
+            $this->session->mark_as_flash("error");
+        }else{
+            $this->m_basic->update(array("userId"=>$userId), "user", array("userStatus"=>"1"));
+        }
 
         redirect(base_url("user/all_user"));
     }

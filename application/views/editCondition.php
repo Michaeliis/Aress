@@ -19,7 +19,8 @@
                         <label class="col-sm-3 control-label" for="position">Condition Name</label>
 
                         <div class="col-sm-8">
-                            <input type="conditionName" name="conditionName" value="<?= $condition->conditionName?>" class="form-control mb-md" required>
+                            <input type="text" name="conditionName" value="<?= $condition->conditionName?>" class="form-control mb-md" required maxlength="50">
+                            <input name="conditionNameOld" value="<?= $condition->conditionName?>" hidden required>
                         </div>
                     </div>
 

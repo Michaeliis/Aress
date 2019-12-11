@@ -13,13 +13,13 @@
                 <h2 class="panel-title">New Condition</h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal form-bordered" action="<?= base_url('bot/insertConditionResponse')?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= base_url('condition/newCondition')?>" method="POST">
                     
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="position">Condition Name</label>
 
                         <div class="col-sm-8">
-                            <input type="conditionName" name="conditionName"  class="form-control mb-md" required>
+                            <input type="text" name="conditionName"  class="form-control mb-md" required maxlength="30">
                         </div>
                     </div>
 

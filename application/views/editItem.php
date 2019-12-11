@@ -1,3 +1,6 @@
+<?php if(isset($_SESSION["error"])){?>
+    <script>alert("<?=$_SESSION['error']?>")</script>
+<?php }?>
 <style>
     #dataTable td{
         vertical-align: top;
@@ -20,7 +23,7 @@
                         <label class="col-sm-3 control-label" for="position">Item Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="item" name="item"  class="form-control mb-md" value="<?= $item->itemName ?>" required readonly>
+                            <input type="text" id="item" name="item"  class="form-control mb-md" value="<?= $item->itemName ?>" required readonly maxlength="30">
                         </div>
                     </div>
 

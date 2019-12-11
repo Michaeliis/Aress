@@ -75,10 +75,7 @@
                             <ul class="list-unstyled">
                                 <li class="divider"></li>
                                 <li>
-                                    <a role="menuitem" tabindex="-1" href="pages-user-profile.html"><i class="fa fa-user"></i> My Profile</a>
-                                </li>
-                                <li>
-                                    <a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>
+                                    <a role="menuitem" tabindex="-1" href="<?= base_url("user/edit_user/").$_SESSION["userId"]?>"><i class="fa fa-user"></i> My Profile</a>
                                 </li>
                                 <li>
                                     <a role="menuitem" tabindex="-1" href="<?= base_url("login/logout")?>"><i class="fa fa-power-off"></i> Logout</a>

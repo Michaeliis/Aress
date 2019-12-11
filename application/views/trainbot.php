@@ -32,7 +32,7 @@
                         <label class="col-sm-3 control-label" for="position">Condition Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="conditionName"  class="form-control mb-md" required>
+                            <input type="text" name="conditionName"  class="form-control mb-md" required maxlength="30">
                         </div>
                     </div>
 
@@ -40,7 +40,7 @@
                         <label class="col-sm-3 control-label" for="position">Response Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="responseName"  class="form-control mb-md" required>
+                            <input type="text" name="responseName"  class="form-control mb-md" required maxlength="30">
                         </div>
                     </div>
 

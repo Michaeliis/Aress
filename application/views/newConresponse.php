@@ -5,11 +5,9 @@
     }
 </style>
 <!-- start: page -->
-<script>
-    <?php if(isset($_SESSION["error"])){?>
-        alert("This Condition and Response have already been used");
-    <?php }?>
-</script>
+<?php if(isset($_SESSION["error"])){?>
+    <script>alert("<?=$_SESSION['error']?>")</script>
+<?php }?>
 <div class="row">
     <div class="col-lg-12">
         <section class="panel">

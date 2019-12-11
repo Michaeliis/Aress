@@ -48,12 +48,27 @@ class Item extends CI_Controller {
         $optionValue = $this->input->post("optionValue");
         $optionName = $this->input->post("optionName");
         
-        $itemId = $this->m_basic->insert("item", array("appId"=>$appId, "itemName"=>$itemName, "itemValue"=>$itemValue, "itemDetail"=>$itemDetail, "itemStatus"=>"1"));
-
-        foreach($optionValue as $counter => $optionValues){
-            if($optionValues != null){
-                $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "itemOptionStatus"=>"1"));
+        $itemCounter = $this->m_basic->find("item", array("itemName"=>$itemName, "appId"=>$appId))->num_rows();
+        if(!$itemCounter > 0){
+            $itemId = $this->m_basic->insert("item", array("appId"=>$appId, "itemName"=>$itemName, "itemValue"=>$itemValue, "itemDetail"=>$itemDetail, "itemStatus"=>"1"));
+    
+            foreach($optionValue as $counter => $optionValues){
+                if($optionValues != null){
+                    $optionNames = $optionName[$counter];
+                    
+                    //check item option duplicate
+                    $itemOptionCounter = $this->m_basic->find("itemOption", "itemId ='$itemId' AND (itemOptionValue = '$optionValues' OR itemOptionName = '$optionNames')")->num_rows();
+                    if(!$itemOptionCounter > 0){
+                        $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "itemOptionStatus"=>"1"));
+                    }else{
+                        $_SESSION['error'] = 'This item option name(s) or value(s) has been used';
+                        $this->session->mark_as_flash('error');
+                    }
+                }
             }
+        }else{
+            $_SESSION['error'] = 'This item name has been used, please use another name';
+            $this->session->mark_as_flash('error');
         }
 
         redirect(base_url("item/all_item"));
@@ -86,7 +101,16 @@ class Item extends CI_Controller {
 
         if(isset($optionValue)){
             foreach($optionValue as $counter => $optionValues){
-                $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "itemOptionStatus"=>"1"));
+                $optionNames = $optionName[$counter];
+                    
+                //check item option duplicate
+                $itemOptionCounter = $this->m_basic->find("itemOption", "itemId ='$itemId' AND (itemOptionValue = '$optionValues' OR itemOptionName = '$optionNames')")->num_rows();
+                if(!$itemOptionCounter > 0){
+                    $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "itemOptionStatus"=>"1"));
+                }else{
+                    $_SESSION['error'] = 'This item option name(s) or value(s) has been used';
+                    $this->session->mark_as_flash('error');
+                }
             }
         }
 
@@ -121,9 +145,18 @@ class Item extends CI_Controller {
         $itemId = $this->input->post("itemId");
         $itemOptionValue = $this->input->post("itemOptionValue");
         $itemOptionName = $this->input->post("itemOptionName");
+        $itemOptionValueOld = $this->input->post("itemOptionValueOld");
+        $itemOptionNameOld = $this->input->post("itemOptionNameOld");
 
-        $this->m_basic->update(array("itemId"=>$itemId, "itemOptionValue"=>$itemOptionValue), "itemoption", array("itemOptionName"=>$itemOptionName));
-        
+        //check item option duplicate
+        $itemOptionCounter = $this->m_basic->find("itemOption", "itemId ='$itemId' AND (itemOptionValue = '$itemOptionValue' OR itemOptionName = '$itemOptionName')")->num_rows();
+        if(!$itemOptionCounter > 0){
+            $this->m_basic->update(array("itemId"=>$itemId, "itemOptionValue"=>$itemOptionValueOld, "itemOptionName"=>$itemOptionNameOld), "itemoption", array("itemOptionName"=>$itemOptionName, "itemOptionValue"=>$itemOptionValue));
+        }else{
+            $_SESSION['error'] = 'This item option name(s) or value(s) has been used';
+            $this->session->mark_as_flash('error');
+        }
+            
         redirect(base_url("item/edit_item/"). $itemId);
     }
 }?>

@@ -1,3 +1,6 @@
+<?php if(isset($_SESSION["error"])){?>
+    <script>alert("<?=$_SESSION['error']?>")</script>
+<?php }?>
 <style>
     #dataTable td{
         vertical-align: top;
@@ -20,7 +23,7 @@
                         <label class="col-sm-3 control-label" for="position">Response Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" id="responseName" name="responseName" value="<?= $response->responseName?>" class="form-control mb-md" required>
+                            <input type="text" id="responseName" name="responseName" value="<?= $response->responseName?>" class="form-control mb-md" required maxlength="30">
                         </div>
                     </div>
 
