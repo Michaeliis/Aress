@@ -144,7 +144,6 @@ class Sample extends CI_Controller {
 
         $sampleText = $this->m_basic->find("sample", array("sampleId"=>$sampleId))->row()->sampleText;
         $json[] = array("text"=>$sampleText);
-
         
         $server_output = json_decode(deleteStuff("samples", json_encode($json), $appToken));
         

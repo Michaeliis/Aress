@@ -211,6 +211,7 @@ class Bot extends CI_Controller {
 
         //interact dengan NLP
         $server_output = doStuff("message", strip_tags($message), null, $appToken);
+        $data["server_output"] = json_decode($server_output, true);
         $result = json_decode($server_output, true);
 
         if(isset($result["_text"])){
@@ -232,7 +233,7 @@ class Bot extends CI_Controller {
             }
     
             $data["message"] = $message;
-            $data["result"] = json_encode($output);
+            $data["result"] = $output;
             $header = array(
                 "subtitle"=>"Bot",
                 "title"=>"Check Result"

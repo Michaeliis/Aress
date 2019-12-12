@@ -24,6 +24,7 @@
 
                         <div class="col-sm-8">
                             <input type="text" id="responseName" name="responseName" value="<?= $response->responseName?>" class="form-control mb-md" required maxlength="30">
+                            <input type="text" id="responseNameOld" name="responseNameOld" value="<?= $response->responseName?>" required hidden>
                         </div>
                     </div>
 
@@ -52,9 +53,15 @@
                                     <a href="<?= base_url("response/edit_response_detail/").$response->responseId. "/". $responsedetails->responseTitle?>" class="btn btn-success">
                                         Edit
                                     </a>
-                                    <a href="<?= base_url("response/delete_response_detail/").$response->responseId."/".$responsedetails->responseTitle?>" class="btn btn-danger">
-                                        Delete
-                                    </a>
+                                    <?php if($responsedetails->responseDetailStatus=="1"){?>
+                                        <a href="<?= base_url("response/delete_response_detail/").$response->responseId."/".$responsedetails->responseTitle?>" class="btn btn-danger">
+                                            Delete
+                                        </a>
+                                    <?php }else if($responsedetails->responseDetailStatus=="0"){?>
+                                        <a href="<?= base_url("response/activate_response_detail/").$response->responseId."/".$responsedetails->responseTitle?>" class="btn btn-danger">
+                                            Reactivate
+                                        </a>
+                                    <?php }?>
                                 </td>
                             </tr>
                             <?php } ?>

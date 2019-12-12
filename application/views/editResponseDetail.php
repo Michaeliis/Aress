@@ -29,7 +29,7 @@
                         <label class="col-sm-3 control-label" for="position">Value</label>
 
                         <div class="col-sm-8">
-                        <input type="text" id="responseValue" name="responseValue"  class="form-control mb-md" value="<?= $responsedetail->responseValue ?>" required>
+                            <textarea rows="4" id="responseValue" name="responseValue"  class="form-control mb-md" required><?= $responsedetail->responseValue ?></textarea>
                         </div>
                     </div>
                     

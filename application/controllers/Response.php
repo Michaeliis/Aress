@@ -112,10 +112,19 @@ class Response extends CI_Controller {
     }
 
     public function editResponse(){
+        $appId = $_SESSION["appId"];
+
         $responseId = $this->input->post("responseId");
         $responseName = $this->input->post("responseName");
-
-        $this->m_basic->update(array("responseId"=>$responseId), "response", array("responseName"=>$responseName));
+        $responseNameOld = $this->input->post("responseNameOld");
+        //cek responseName
+        $responseCount = $this->m_basic->find("response", array("responseName"=>$responseName, "appId"=>$appId))->num_rows();
+        if($responseNameOld == $responseName){
+            $responseCount--;
+        }
+        if(!$responseCount > 0){
+            $this->m_basic->update(array("responseId"=>$responseId), "response", array("responseName"=>$responseName));
+        }
 
         redirect(base_url("response/all_response"));
     }
@@ -157,6 +166,13 @@ class Response extends CI_Controller {
     public function delete_response_detail($responseId, $responseTitle){
         $responseTitle = rawurldecode($responseTitle);
         $this->m_basic->update(array("responseId"=>$responseId, "responseTitle"=>$responseTitle), "responsedetail", array("responseDetailStatus"=>"0"));
+
+        redirect(base_url("response/edit_response/$responseId"));
+    }
+
+    public function activate_response_detail($responseId, $responseTitle){
+        $responseTitle = rawurldecode($responseTitle);
+        $this->m_basic->update(array("responseId"=>$responseId, "responseTitle"=>$responseTitle), "responsedetail", array("responseDetailStatus"=>"1"));
 
         redirect(base_url("response/edit_response/$responseId"));
     }

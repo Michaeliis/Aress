@@ -45,11 +45,11 @@ class Intent extends CI_Controller {
         $appToken = $_SESSION["appToken"];
 
         $intentName = $this->input->post("intentName");
+        $intentName = str_replace(" ", "_", $intentName);
         $intentDetail = $this->input->post("intentDetail");
 
         $intentCount = $this->m_basic->find("intent", array("intentName"=>$intentName, "appId"=>$appId))->num_rows();
         if(!$intentCount > 0){
-            $intentName = str_replace(" ", "_", $intentName);
 
             $json = json_encode(array("value"=>$intentName));
             $server_output = json_decode(doStuff("/entities/intent/values", null, $json, $appToken));
@@ -89,26 +89,42 @@ class Intent extends CI_Controller {
 
         $intentId = $this->input->post("intentId");
         $intentName = $this->input->post("intentName");
+        $intentName = str_replace(" ", "_", $intentName);
         $intentNameBefore = $this->input->post("intentNameBefore");
         $intentDetail = $this->input->post("intentDetail");
-        
-        //delete old intent
-        $server_output = json_decode(deleteStuff("/entities/intent/values/".$intentNameBefore, null, $appToken));
-        //cek api
-        if(isset($server_output->deleted)){
-            $json = json_encode(array("value"=>$intentName));
 
-            $server_output = json_decode(doStuff("/entities/intent/values", null, $json, $appToken));
+        //cek double intent name
+        $intentCount = $this->m_basic->find("intent", array("intentName"=>$intentName, "appId"=>$appId))->num_rows();
+        if($intentNameBefore == $intentName){
+            $intentCount--;
+            $changeIntent=false;
+        }
+        if(!$intentCount > 0){
+            if(!$changeIntent){
+                //delete old intent
+                $server_output = json_decode(deleteStuff("/entities/intent/values/".$intentNameBefore, null, $appToken));
+                //cek api
+                if(isset($server_output->deleted)){
+                    $json = json_encode(array("value"=>$intentName));
 
-            //cek api
-            if(isset($server_output->name)){
-                $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentName"=>$intentName, "intentDetail"=>$intentDetail));
-            }else{
-                $_SESSION["error"] = "There's an error when creating intent, please check your internet connection";
-                $this->session->mark_as_flash("error");
+                    $server_output = json_decode(doStuff("/entities/intent/values", null, $json, $appToken));
+
+                    //cek api
+                    if(isset($server_output->name)){
+                        $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentName"=>$intentName, "intentDetail"=>$intentDetail));
+                    }else{
+                        $_SESSION["error"] = "There's an error when creating intent, please check your internet connection";
+                        $this->session->mark_as_flash("error");
+                    }
+                }else{
+                    $_SESSION["error"] = "There's an error when deleting intent, please check your connection";
+                    $this->session->mark_as_flash("error");
+                }
             }
+            
+            $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentDetail"=>$intentDetail));
         }else{
-            $_SESSION["error"] = "There's an error when deleting intent, please check your connection";
+            $_SESSION["error"] = "This intent name have already been used, please use another name";
             $this->session->mark_as_flash("error");
         }
 

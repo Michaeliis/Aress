@@ -43,6 +43,7 @@
 
                         <div class="col-sm-8">
                             <input type="text" id="username" name="username" class="form-control mb-md" required value="<?= $user->userUsername?>" maxlength="30">
+                            <input type="text" id="usernameOld" name="usernameOld" required value="<?= $user->userUsername?>" hidden>
                         </div>
                     </div>
 
@@ -68,8 +69,8 @@
                         <div class="col-sm-8">
                             <select id="position" name="position"  class="form-control mb-md" required>
                                 <option value="">Select Position</option>
-                                <option <?php if($userPosition == "admin"){echo "selected";}?> value="admin">Admin</option>
-                                <option <?php if($userPosition == "user"){echo "selected";}?> value="user">User</option>
+                                <option <?php if($user->userPosition == "admin"){echo "selected";}?> value="admin">Admin</option>
+                                <option <?php if($user->userPosition == "user"){echo "selected";}?> value="user">User</option>
                             </select>
                         </div>
                     </div>

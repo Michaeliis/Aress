@@ -87,12 +87,16 @@ class User extends CI_Controller {
         $userId = $this->input->post('userId');
         $name = $this->input->post('name');
         $username = $this->input->post('username');
+        $usernameOld = $this->input->post('usernameOld');
         $email = $this->input->post('email');
         $position = $this->input->post('position');
         $phone = $this->input->post('phone');
         $password = $this->input->post('password');
 
         $userCount = $this->m_basic->find("user", array("userUsername"=>$username))->num_rows();
+        if($usernameOld == $username){
+            $userCount--;
+        }
         if(!$userCount > 0){
             $data = array(
                 "userName"=>$name,
