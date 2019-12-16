@@ -16,6 +16,7 @@
                 <tr>
                     <th>Condition Name</th>
                     <th>Entity Count</th>
+                    <th>Created By</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -25,6 +26,7 @@
                 <tr class="gradeX">
                     <td><?=$conditions->conditionName?></td>
                     <td><?=$conditions->conditionCount?></td>
+                    <td><?=$conditions->userName?></td>
                     <td>
                         <?php if($conditions->conditionStatus == "1"){?>
                             <span style="color:green">Active</span>

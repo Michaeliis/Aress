@@ -16,6 +16,7 @@
                 <tr>
                     <th>Condition Name</th>
                     <th>Response Name</th>
+                    <th>Created By</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -25,6 +26,7 @@
                 <tr class="gradeX">
                     <td><?=$conresponses->conditionName?></td>
                     <td><?=$conresponses->responseName?></td>
+                    <td><?=$conresponses->userName?></td>
                     <td>
                         <?php if($conresponses->crStatus=="1"){?>
                             <span style="color:green">Active</span>

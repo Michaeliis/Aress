@@ -16,6 +16,7 @@
                 <tr>
                     <th>App Name</th>
                     <th>Detail</th>
+                    <th>Created By</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -25,6 +26,7 @@
                 <tr class="gradeX">
                     <td><?=$apps->appName?></td>
                     <td><?=$apps->appDetail?></td>
+                    <td><?=$apps->userName?></td>
                     <td>
                         <?php if($apps->appStatus=="1"){?>
                             <span style="color:green">Active</span>

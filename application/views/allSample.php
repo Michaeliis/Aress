@@ -16,6 +16,7 @@
                 <tr>
                     <th>Date Created</th>
                     <th>Text</th>
+                    <th>Created By</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -25,6 +26,7 @@
                 <tr class="gradeX">
                     <td><?= $samples->sampleDate?></td>
                     <td><?= $samples->sampleText?></td>
+                    <td><?= $samples->userName?></td>
                     <td>
                         <?php if($samples->sampleStatus == "1"){?>
                             <span style="color:green">Active</span>

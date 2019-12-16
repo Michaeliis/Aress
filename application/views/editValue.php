@@ -39,6 +39,7 @@
                         <thead>
                             <tr>
                                 <th>Expression</th>
+                                <th>Created By</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -48,6 +49,9 @@
                             <tr class="gradeX">
                                 <td>
                                     <?= $expressions->expression?>
+                                </td>
+                                <td>
+                                    <?= $expressions->userName?>
                                 </td>
                                 <td>
                                     <?php if($expressions->expressionStatus=="1"){?>

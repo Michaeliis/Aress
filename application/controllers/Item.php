@@ -17,8 +17,7 @@ class Item extends CI_Controller {
     }
 
     public function all_item(){
-        $appId = $_SESSION["appId"];
-        $data['item'] = $this->m_basic->find('item', array("appId"=>$appId))->result();
+        $data['item'] = $this->m_basic->joinUser('item')->result();
 
         $header = array(
             "subtitle"=>"Item",
@@ -50,7 +49,7 @@ class Item extends CI_Controller {
         
         $itemCounter = $this->m_basic->find("item", array("itemName"=>$itemName, "appId"=>$appId))->num_rows();
         if(!$itemCounter > 0){
-            $itemId = $this->m_basic->insert("item", array("appId"=>$appId, "itemName"=>$itemName, "itemValue"=>$itemValue, "itemDetail"=>$itemDetail, "itemStatus"=>"1"));
+            $itemId = $this->m_basic->insert("item", array("appId"=>$appId, "itemName"=>$itemName, "itemValue"=>$itemValue, "itemDetail"=>$itemDetail, "userId"=>$_SESSION["userId"], "itemStatus"=>"1"));
     
             foreach($optionValue as $counter => $optionValues){
                 if($optionValues != null){
@@ -59,7 +58,7 @@ class Item extends CI_Controller {
                     //check item option duplicate
                     $itemOptionCounter = $this->m_basic->find("itemOption", "itemId ='$itemId' AND (itemOptionValue = '$optionValues' OR itemOptionName = '$optionNames')")->num_rows();
                     if(!$itemOptionCounter > 0){
-                        $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "itemOptionStatus"=>"1"));
+                        $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "userId"=>$_SESSION["userId"], "itemOptionStatus"=>"1"));
                     }else{
                         $_SESSION['error'] = 'This item option name(s) or value(s) has been used';
                         $this->session->mark_as_flash('error');

@@ -16,6 +16,7 @@
                 <tr>
                     <th>Entity</th>
                     <th>Value</th>
+                    <th>Created By</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -30,6 +31,7 @@
                             echo $values->value. "; ";
                         }?>
                     </td>
+                    <td><?= $entities->userName?></td>
                     <td>
                         <?php if($entities->entityStatus == "1"){?>
                             <span style="color:green">Active</span>

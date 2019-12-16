@@ -18,9 +18,7 @@ class Condition extends CI_Controller {
     }
     
     public function all_condition(){
-        $appId = $_SESSION["appId"];
-
-        $data["condition"] = $this->m_basic->find("conditionn", array("appId"=>$appId))->result();
+        $data["condition"] = $this->m_basic->joinUser("conditionn")->result();
 
         $header = array(
             "subtitle"=>"Condition",
@@ -76,7 +74,7 @@ class Condition extends CI_Controller {
 
             if(!$entityCheck > 0){
                 //memasukkan condition ke DB
-                $conditionId = $this->m_basic->insert("conditionn", array("appId"=>$appId, "conditionName"=>$conditionName, "conditionCount"=>count($value),  "conditionStatus"=>"1"));
+                $conditionId = $this->m_basic->insert("conditionn", array("appId"=>$appId, "conditionName"=>$conditionName, "conditionCount"=>count($value), "userId"=>$_SESSION["userId"], "conditionStatus"=>"1"));
 
                 //memasukkan intent ke conditionintent di db
                 $conditionIntent = array(

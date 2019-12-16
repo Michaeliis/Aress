@@ -17,6 +17,7 @@
                     <th>Item Name</th>
                     <th>Value</th>
                     <th>Detail</th>
+                    <th>Created By</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -27,6 +28,7 @@
                     <td><?=$items->itemName?></td>
                     <td><?=$items->itemValue?></td>
                     <td><?=$items->itemDetail?></td>
+                    <td><?=$items->userName?></td>
                     <td>
                         <?php if($items->itemStatus == "1"){?>
                             <span style="color:green">Active</span>

@@ -15,6 +15,7 @@
             <thead>
                 <tr>
                     <th>Response Name</th>
+                    <th>Created By</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -23,6 +24,7 @@
                 <?php foreach($response as $responses){?>
                 <tr class="gradeX">
                     <td><?=$responses->responseName?></td>
+                    <td><?=$responses->userName?></td>
                     <td>
                         <?php if($responses->responseStatus == "1"){?>
                             <span style="color:green">Active</span>

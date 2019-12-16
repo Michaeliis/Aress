@@ -38,6 +38,32 @@ class M_basic extends CI_Model{
         $this->db->where($where);
         $this->db->update($table);
     }
+
+    function joinUser($table){
+        $appId = $_SESSION['appId'];
+        //mengecek response dari db
+        
+        $this->db->select("*");
+        $this->db->from($table);
+        $this->db->join("user", "$table.userId = user.userId");
+        if($table != "app"){
+            $this->db->where(array("appId"=>$appId));
+        }
+
+        return $this->db->get();
+    }
+
+    function joinUserWhere($table, $where){
+        $appId = $_SESSION['appId'];
+        //mengecek response dari db
+        
+        $this->db->select("*");
+        $this->db->from($table);
+        $this->db->join("user", "$table.userId = user.userId");
+        $this->db->where($where);
+
+        return $this->db->get();
+    } 
     
 }
 ?>

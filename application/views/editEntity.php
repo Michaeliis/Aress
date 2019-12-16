@@ -41,6 +41,7 @@
                             <tr>
                                 <th class="col-md-3">Value</th>
                                 <th class="col-md-3">Expression</th>
+                                <th class="col-md-3">Created By</th>
                                 <th class="col-md-2">Status</th>
                                 <th class="col-md-2">Action</th>
                             </tr>
@@ -49,11 +50,12 @@
                             <?php foreach($value as $values){?>
                             <tr class="gradeX">
                                 <td><?=$values->value?></td>
-                                <td><?php
-                                foreach($expression[$values->valueId] as $expressions){
-                                    echo ($expressions->expression . "; ");
-                                }
-                                ?>
+                                <td>
+                                    <?php foreach($expression[$values->valueId] as $expressions){
+                                        echo ($expressions->expression . "; ");
+                                    }?>
+                                </td>
+                                <td><?=$values->userName?></td>
                                 <td>
                                     <?php if($values->valueStatus == "1"){?>
                                         <span style="color:green">Active</span>

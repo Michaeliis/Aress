@@ -111,13 +111,14 @@ class Bot extends CI_Controller {
                     //cek api
                     if(isset($server_output->sent)){
                         //memasukkan response & condition ke DB
-                        $responseId = $this->m_basic->insert("response", array("appId"=>$appId, "responseName"=>$responseName, "responseStatus"=>"1"));
-                        $conditionId = $this->m_basic->insert("conditionn", array("appId"=>$appId, "conditionName"=>$conditionName, "conditionCount"=>count($value),  "conditionStatus"=>"1"));
+                        $responseId = $this->m_basic->insert("response", array("appId"=>$appId, "responseName"=>$responseName, "userId"=>$_SESSION["userId"], "responseStatus"=>"1"));
+                        $conditionId = $this->m_basic->insert("conditionn", array("appId"=>$appId, "conditionName"=>$conditionName, "userId"=>$_SESSION["userId"], "conditionCount"=>count($value),  "conditionStatus"=>"1"));
 
                         $conditionresponse = array(
                             "appId"=>$appId,
                             "conditionId"=>$conditionId,
                             "responseId"=>$responseId,
+                            "userId"=>$_SESSION["userId"], 
                             "crStatus"=>"1"
                         );
                         $this->m_basic->insert("conditionresponse", $conditionresponse);
@@ -138,6 +139,7 @@ class Bot extends CI_Controller {
                             "appId"=>$appId,
                             "sampleText"=>$sample,
                             "sampleDate"=>date("Y-m-d"),
+                            "userId"=>$_SESSION["userId"], 
                             "sampleStatus"=>"1"
                         );
                         $sampleId = $this->m_basic->insert("sample", $sampleDb);

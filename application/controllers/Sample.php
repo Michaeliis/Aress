@@ -17,8 +17,7 @@ class Sample extends CI_Controller {
 	}
 
     public function all_sample(){
-        $appId = $_SESSION["appId"];
-        $data['sample'] = $this->m_basic->find('sample', array("appId"=>$appId))->result();
+        $data['sample'] = $this->m_basic->joinUser('sample')->result();
 
         $header = array(
             "subtitle"=>"Sample",
@@ -96,6 +95,7 @@ class Sample extends CI_Controller {
                 "appId"=>$appId,
                 "sampleText"=>$sample,
                 "sampleDate"=>date("Y-m-d"),
+                "userId"=>$_SESSION["userId"], 
                 "sampleStatus"=>"1"
             );
             $sampleId = $this->m_basic->insert("sample", $sampleDb);

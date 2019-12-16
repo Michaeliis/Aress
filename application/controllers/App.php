@@ -35,7 +35,7 @@ class App extends CI_Controller {
     }
 
     public function all_app(){
-        $data["app"] = $this->m_basic->gets('app')->result();
+        $data["app"] = $this->m_basic->joinUser("app")->result();
 
         $header = array(
             "subtitle"=>"App",
@@ -73,7 +73,7 @@ class App extends CI_Controller {
                 $appToken = $output->access_token;
                 $appId = $output->app_id;
         
-                $this->m_basic->insert("app", array("appId"=>$appId, "appName"=>$appName, "appLanguage"=>$appLanguage, "appToken"=>$appToken, "appDetail"=>$appDetail, "appStatus"=>"1"));
+                $this->m_basic->insert("app", array("appId"=>$appId, "appName"=>$appName, "appLanguage"=>$appLanguage, "appToken"=>$appToken, "appDetail"=>$appDetail, "userId"=>$_SESSION["userId"], "appStatus"=>"1"));
             }else{
                 $_SESSION["error"] = "There is a problem when inserting app, please check your connection";
                 $this->session->mark_as_flash('error');

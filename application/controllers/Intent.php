@@ -17,9 +17,7 @@ class Intent extends CI_Controller {
     }
     
     public function all_intent(){
-        $appId = $_SESSION["appId"];
-
-        $data["intent"] = $this->m_basic->find("intent", array("appId"=>$appId))->result();
+        $data["intent"] = $this->m_basic->joinUser("intent")->result();
 
         $header = array(
             "subtitle"=>"Intent",
@@ -61,7 +59,7 @@ class Intent extends CI_Controller {
                 $_SESSION["error"] = "There's an error when creating intent, please check your internet connection";
                 $this->session->mark_as_flash("error");
             }
-            $this->m_basic->insert("intent", array("intentName"=>$intentName, "appId"=>$appId, "intentDetail"=>$intentDetail, "intentStatus"=>$intentStatus));
+            $this->m_basic->insert("intent", array("intentName"=>$intentName, "appId"=>$appId, "intentDetail"=>$intentDetail, "userId"=>$_SESSION["userId"], "intentStatus"=>$intentStatus));
         }else{
             $_SESSION["error"] = "This intent name has been used, please use another name";
             $this->session->mark_as_flash("error");

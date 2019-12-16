@@ -21,7 +21,7 @@ class Entity extends CI_Controller {
     public function all_entity(){
         $appId = $_SESSION["appId"];
 
-        $entity = $this->m_basic->find('entity', array("appId"=>$appId))->result();
+        $entity = $this->m_basic->joinUser('entity')->result();
         $data['entity'] = $entity;
         foreach($entity as $entities){
             $data['value'][$entities->entityId] = $this->m_basic->find('value', array("entityId"=>$entities->entityId))->result();
@@ -81,7 +81,7 @@ class Entity extends CI_Controller {
             }
 
             //memasukkan entity ke db
-            $entityId = $this->m_basic->insert("entity", array("appId"=>$appId, "entityName"=>$entityName, "entityDetail"=>$entityDetail, "entityStatus"=>$entityStatus));
+            $entityId = $this->m_basic->insert("entity", array("appId"=>$appId, "entityName"=>$entityName, "entityDetail"=>$entityDetail, "userId"=>$_SESSION["userId"], "entityStatus"=>$entityStatus));
 
             //memasukkan value baru
             foreach($value as $counter =>$values){
@@ -105,7 +105,7 @@ class Entity extends CI_Controller {
                     }
                     
                     //memasukkan value ke db
-                    $valueId = $this->m_basic->insert("value", array("entityId"=>$entityId, "value"=>$values, "valueStatus"=>$valueStatus));
+                    $valueId = $this->m_basic->insert("value", array("entityId"=>$entityId, "value"=>$values, "userId"=>$_SESSION["userId"], "valueStatus"=>$valueStatus));
 
                     //memasukkan expression ke db
                     if(!in_array($values, $expressions)){
@@ -113,7 +113,7 @@ class Entity extends CI_Controller {
                     }
                     $expressions = array_unique($expressions);
                     foreach($expressions as $expressionss){
-                        $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "expressionStatus"=>"1"));
+                        $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "userId"=>$_SESSION["userId"], "expressionStatus"=>"1"));
                     }
                 }else{
                     $_SESSION["error"] = "One or more of the value name is duplicate";
@@ -137,7 +137,7 @@ class Entity extends CI_Controller {
 
         $data["entity"] = $this->m_basic->find("entity", array("entityId"=>$entity))->row();
 
-        $value = $this->m_basic->find("value", array("entityId"=>$entity))->result();
+        $value = $this->m_basic->joinUserWhere("value", array("entityId"=>$entity))->result();
         $data["value"] = $value;
         foreach($value as $values){
             $data["expression"][$values->valueId] = $this->m_basic->find("expression", array("valueId"=>$values->valueId))->result();
@@ -178,13 +178,13 @@ class Entity extends CI_Controller {
                         $this->session->mark_as_flash("error");
                     }
                     //memasukkan value ke db
-                    $valueId = $this->m_basic->insert("value", array("entityId"=>$entityId, "value"=>$values, "valueStatus"=>$valueStatus));
+                    $valueId = $this->m_basic->insert("value", array("entityId"=>$entityId, "value"=>$values, "userId"=>$_SESSION["userId"], "valueStatus"=>$valueStatus));
 
                     //memasukkan expression ke db
                     $expressions[] = $values;
                     $expressions = array_unique($expressions);
                     foreach($expressions as $expressionss){
-                        $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "expressionStatus"=>"1"));
+                        $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "userId"=>$_SESSION["userId"], "expressionStatus"=>"1"));
                     }
                 }else{
                     $_SESSION["error"] = "One or more of the value name is duplicate";
@@ -254,7 +254,7 @@ class Entity extends CI_Controller {
     public function edit_value($entity, $value){
         $data['value'] = $this->m_basic->find("value", array("valueId"=>$value))->row();
         $data['entity'] = $this->m_basic->find("entity", array("entityId"=>$entity))->row();
-        $data['expression'] = $this->m_basic->find("expression", array("valueId"=>$value))->result();
+        $data['expression'] = $this->m_basic->joinUserWhere("expression", array("valueId"=>$value))->result();
 
         $header = array(
             "subtitle"=>"Entity",
@@ -292,7 +292,7 @@ class Entity extends CI_Controller {
                     $_SESSION["error"] = "There's an error when inserting expression";
                     $this->session->mark_as_flash("error");
                 }
-                $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "expressionStatus"=>$expressionStatus));
+                $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "userId"=>$_SESSION["userId"], "expressionStatus"=>$expressionStatus));
             }else{
                 $_SESSION["error"] = "This expression(s) have already been used, please check your expressions";
                 $this->session->mark_as_flash("error");

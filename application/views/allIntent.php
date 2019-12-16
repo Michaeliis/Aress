@@ -16,6 +16,7 @@
                 <tr>
                     <th>Intent Name</th>
                     <th>Detail</th>
+                    <th>Created By</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -25,6 +26,7 @@
                 <tr class="gradeX">
                     <td><?=$intents->intentName?></td>
                     <td><?=$intents->intentDetail?></td>
+                    <td><?=$intents->userName?></td>
                     <td>
                         <?php if($intents->intentStatus == "1"){?>
                             <span style="color:green">Active</span>

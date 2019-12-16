@@ -17,8 +17,7 @@ class Response extends CI_Controller {
     }
     
     public function all_response(){
-        $appId = $_SESSION["appId"];
-        $data["response"] = $this->m_basic->find("response", array("appId"=>$appId))->result();
+        $data["response"] = $this->m_basic->joinUser("response")->result();
 
         $header = array(
             "subtitle"=>"Response",
@@ -60,7 +59,7 @@ class Response extends CI_Controller {
         $responseCount = $this->m_basic->find("response", array("responseName"=>$responseName, "appId"=>$appId))->num_rows();
         if(!$responseCount > 0){
             //insert response ke db
-            $responseId = $this->m_basic->insert("response", array("appId"=>$appId, "responseName"=>$responseName, "responseStatus"=>"1"));
+            $responseId = $this->m_basic->insert("response", array("appId"=>$appId, "responseName"=>$responseName, "userId"=>$_SESSION["userId"], "responseStatus"=>"1"));
 
             //ambil item dari form
             $item = $this->m_basic->find("item", array("appId"=>$appId, "itemStatus"=>"1"))->result();

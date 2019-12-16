@@ -18,8 +18,6 @@ class Conresponse extends CI_Controller {
     }
     
     public function all_condition_response(){
-        $appId = $_SESSION["appId"];
-
         $data["conresponse"] = $this->m_condition->conditionResponse()->result();
 
         $header = array(
@@ -58,7 +56,7 @@ class Conresponse extends CI_Controller {
             $conditionCount = $this->m_basic->find("conditionresponse", array("conditionId"=>$condition, "crStatus"=>"1"))->num_rows();
             //check already used condition
             if(!$conditionCount > 0){
-                $this->m_basic->insert("conditionresponse", array("appId"=>$appId, "conditionId"=>$condition, "responseId"=>$response, "crStatus"=>1));
+                $this->m_basic->insert("conditionresponse", array("appId"=>$appId, "conditionId"=>$condition, "responseId"=>$response, "userId"=>$_SESSION["userId"], "crStatus"=>1));
                 redirect(base_url("conresponse/all_condition_response"));
             }else{
                 $_SESSION['error'] = 'This condition has already been used and still active';
