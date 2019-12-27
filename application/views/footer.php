@@ -13,7 +13,21 @@
 		
 		<!-- Specific Page Vendor -->
         <script src="<?=base_url("assets/")?>vendor/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-        <script src="<?=base_url("assets/")?>vendor/summernote/summernote.js"></script>
+		<script src="<?=base_url("assets/")?>vendor/summernote/summernote.js"></script>
+		<script>
+		$(document).ready(function() {
+			$('.summernote').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']]
+				]
+			});
+		});
+		</script>
 
         <script src="<?=base_url("assets/")?>vendor/select2/select2.js"></script>
 		<script src="<?=base_url("assets/")?>vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>

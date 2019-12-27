@@ -43,20 +43,26 @@
 
 						</div>
 					</div>
-					<div class="col-lg-4 text-center">
-						<h2 class="panel-title mt-md">Percent Replied Total</h2>
-						<div class="liquid-meter-wrapper liquid-meter-sm mt-lg">
-							<div class="liquid-meter">
-								<meter min="0" max="150" value="<?= $percentReplied?>" id="meterSales"></meter>
+					<h2 class="panel-title mt-md">
+						Percent Replied
+						<select onchange="messageIn(this)" style="height: 50px">
+							<option value="all">All</option>
+							<option value="today">Today</option>
+						</select>
+					</h2>
+					
+					<div class="col-lg-4 text-center" id="chartTotal">
+						<div class="circular-bar">
+							<div class="circular-bar-chart" data-percent="<?= $percentReplied?>" data-plugin-options='{ "barColor": "#0088CC", "delay": 300 }'>
+								<label><span class="percent"><?= $percentReplied?></span>%</label>
 							</div>
 						</div>
 					</div>
 
-					<div class="col-lg-4 text-center">
-						<h2 class="panel-title mt-md">Percent Replied Today</h2>
-						<div class="liquid-meter-wrapper liquid-meter-sm mt-lg">
-							<div class="liquid-meter">
-								<meter min="0" max="150" value="<?= $percentRepliedToday?>" id="meterSales2"></meter>
+					<div class="col-lg-4 text-center" id="chartToday">
+						<div class="circular-bar">
+							<div class="circular-bar-chart" data-percent="<?= $percentRepliedToday?>" data-plugin-options='{ "barColor": "#0088CC", "delay": 300 }'>
+								<label><span class="percent"><?= $percentRepliedToday?></span>%</label>
 							</div>
 						</div>
 					</div>
@@ -165,4 +171,18 @@
 		</div>
 	</div>
 </div>
+<script>
+	document.getElementById("chartTotal").style.display = "block";
+			document.getElementById("chartToday").style.display = "none";
+	function messageIn(thing){
+		var selectvalue = thing.value;
+		if(selectvalue == "all"){
+			document.getElementById("chartTotal").style.display = "block";
+			document.getElementById("chartToday").style.display = "none";
+		}else if(selectvalue == "today"){
+			document.getElementById("chartTotal").style.display = "none";
+			document.getElementById("chartToday").style.display = "block";
+		}
+	}
+</script>
 <!-- end: page -->

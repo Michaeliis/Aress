@@ -15,6 +15,17 @@ class Item extends CI_Controller {
             redirect(base_url("login/login"));
         }
     }
+    
+
+    public function testWys(){
+        $header = array(
+            "subtitle"=>"Item",
+            "title"=>"All Item"
+        );
+        $this->load->view("header", $header);
+        $this->load->view("testWys");
+        $this->load->view("footer");
+    }
 
     public function all_item(){
         $data['item'] = $this->m_basic->joinUser('item')->result();
@@ -56,9 +67,9 @@ class Item extends CI_Controller {
                     $optionNames = $optionName[$counter];
                     
                     //check item option duplicate
-                    $itemOptionCounter = $this->m_basic->find("itemOption", "itemId ='$itemId' AND (itemOptionValue = '$optionValues' OR itemOptionName = '$optionNames')")->num_rows();
+                    $itemOptionCounter = $this->m_basic->find("itemoption", "itemId ='$itemId' AND (itemOptionValue = '$optionValues' OR itemOptionName = '$optionNames')")->num_rows();
                     if(!$itemOptionCounter > 0){
-                        $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "userId"=>$_SESSION["userId"], "itemOptionStatus"=>"1"));
+                        $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "itemOptionStatus"=>"1"));
                     }else{
                         $_SESSION['error'] = 'This item option name(s) or value(s) has been used';
                         $this->session->mark_as_flash('error');

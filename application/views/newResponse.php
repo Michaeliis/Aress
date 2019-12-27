@@ -40,6 +40,10 @@
                             <input type="number" name="<?= $items->itemId?>" class="form-control mb-md" required>
                             <?php }?>
 
+                            <?php if($items->itemValue == "texteditor"){?>
+                            <textarea name="<?= $items->itemId?>" class="form-control mb-md summernote"></textarea>
+                            <?php }?>
+
                             <?php if($items->itemValue == "select"){?>
                             <select name="<?= $items->itemId?>" class="form-control mb-md" required>
                                 <option value="">Select One</option>

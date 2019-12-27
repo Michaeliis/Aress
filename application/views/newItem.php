@@ -39,6 +39,7 @@
                                 <option value="">Select Value</option>
                                 <option value="text">Text</option>
                                 <option value="textarea">Textarea</option>
+                                <option value="texteditor">Text Editor</option>
                                 <option value="number">Number</option>
                                 <option value="select">Select</option>
                             </select>

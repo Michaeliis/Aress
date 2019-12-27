@@ -159,10 +159,10 @@ function addRow(tableID) {
         newcell.innerHTML = '<select name="value[]" class="form-control" placeholder="Value" param="'+ (rowNum) +'" required><option value="">Select Value</option></select>';
 
         var newcell = row.insertCell(4);
-        newcell.innerHTML = '<input type="number" name="start[]" placeholder="Start">';
+        newcell.innerHTML = '<input type="number" class="form-control" name="start[]" placeholder="Start">';
 
         var newcell = row.insertCell(5);
-        newcell.innerHTML = '<input type="number" name="end[]" placeholder="End">';
+        newcell.innerHTML = '<input type="number" class="form-control" name="end[]" placeholder="End">';
         rowNum++;
         console.log(rowNum);
 	}else{
