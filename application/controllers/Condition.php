@@ -64,6 +64,10 @@ class Condition extends CI_Controller {
         //cek condition di DB
         $conditionCount = $this->m_basic->find("conditionn", array("conditionName"=>$conditionName, "appId"=>$appId))->num_rows();
 
+        $_SESSION["notif"] = "Condition successfully created.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
+
         if(!$conditionCount > 0){
             //cek intent dan detail condition serupa
             $entityList["intent"][0]["value"] = $intentName;
@@ -95,13 +99,15 @@ class Condition extends CI_Controller {
                     $this->m_basic->insert("conditiondetail", $conditionDetail);
                 }
             }else{
-                $_SESSION["error"] = "This condition detail has been used, please check your condition";
-                $this->session->mark_as_flash('error');
+                $_SESSION["notif"] = "This condition detail has been used, please check your condition";
+                $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
             }
             
         }else{
-            $_SESSION["error"] = "The condition name has been used, please use another name";
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = "The condition name has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
         
         redirect(base_url("condition/all_condition"));
@@ -134,6 +140,10 @@ class Condition extends CI_Controller {
         $intent = $this->input->post('intent');
         $entityId = $this->input->post('entity');
         $valueId = $this->input->post('value');
+
+        $_SESSION["notif"] = "Condition successfully edited.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
 
         //convert entity id jadi entity value
         $entity = array();
@@ -179,12 +189,14 @@ class Condition extends CI_Controller {
                 
                 $this->m_basic->update(array("conditionId"=>$conditionId), "conditionintent", array("conditionIntent"=>$intent));
             }else{
-                $_SESSION["error"] = "This condition detail has been used, please check your condition";
-                $this->session->mark_as_flash('error');
+                $_SESSION["notif"] = "This condition detail has been used, please check your condition";
+                $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
             }
         }else{
-            $_SESSION["error"] = "This condition name has been used, please use another name";
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = "This condition name has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("condition/all_condition"));
@@ -192,11 +204,17 @@ class Condition extends CI_Controller {
 
     public function delete_condition($conditionId){
         $this->m_basic->update(array("conditionId"=>$conditionId), "conditionn", array("conditionStatus"=>"0"));
+        $_SESSION["notif"] = "Condition successfully deleted.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         redirect(base_url("condition/all_condition"));
     }
 
     public function activate_condition($conditionId){
         $this->m_basic->update(array("conditionId"=>$conditionId), "conditionn", array("conditionStatus"=>"1"));
+        $_SESSION["notif"] = "Condition successfully reactivated.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         redirect(base_url("condition/all_condition"));
     }
 
@@ -227,6 +245,10 @@ class Condition extends CI_Controller {
         $entityName = $this->m_basic->find("entity", array("entityId"=>$entity))->row()->entityName;
         $this->m_basic->update(array("conditionDetailId"=>$conditionDetailId), "conditiondetail", array("conditionEntity"=>$entityName, "conditionValue"=>$value));
 
+        $_SESSION["notif"] = "Condition Detail successfully edited.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
+
         redirect(base_url("condition/edit_condition/").$conditionId);
     }
 
@@ -235,6 +257,9 @@ class Condition extends CI_Controller {
         $conditionId = $this->m_basic->find("conditiondetail", array("conditionDetailId"=>$conditionDetailId))->row()->conditionId;
         $this->m_basic->set(array("conditionId"=>$conditionId), "conditionn", "conditionCount", "conditionCount-1");
 
+        $_SESSION["notif"] = "Condition Detail successfully deleted.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         redirect(base_url("condition/edit_condition/").$conditionId);
     }
 
@@ -243,6 +268,9 @@ class Condition extends CI_Controller {
         $conditionId = $this->m_basic->find("conditiondetail", array("conditionDetailId"=>$conditionDetailId))->row()->conditionId;
         $this->m_basic->set(array("conditionId"=>$conditionId), "conditionn", "conditionCount", "conditionCount+1");
 
+        $_SESSION["notif"] = "Condition Detail successfully reactivated.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         redirect(base_url("condition/edit_condition/").$conditionId);
     }
 }

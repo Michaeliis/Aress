@@ -1,6 +1,3 @@
-<?php if(isset($_SESSION["error"])){?>
-    <script>alert("<?=$_SESSION['error']?>")</script>
-<?php }?>
 <section class="panel">
     <header class="panel-heading">
         <div class="panel-actions">
@@ -8,7 +5,7 @@
             <a href="#" class="fa fa-times"></a>
         </div>
 
-        <h2 class="panel-title">All App</h2>
+        <h2 class="panel-title">All Condition-Response</h2>
     </header>
     <div class="panel-body">
         <table class="table table-bordered table-striped mb-none" id="datatable-default">
@@ -54,3 +51,17 @@
         </table>
     </div>
 </section>
+<script src="<?=base_url("assets/")?>vendor/jquery/jquery.js"></script>
+
+
+<script>
+    <?php if(isset($_SESSION["notif"])){?>
+    $(document).ready(function(){
+        new PNotify({
+            title: 'Notification',
+            text: '<?=$_SESSION['notif']?>',
+            type: '<?=$_SESSION['notifType']?>'
+        });
+    });
+    <?php }?>
+</script>

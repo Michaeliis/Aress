@@ -50,6 +50,9 @@ class Conresponse extends CI_Controller {
         $condition = $this->input->post("condition");
         $response = $this->input->post("response");
         $conresponseCount = $this->m_basic->find("conditionresponse", array("conditionId"=>$condition, "responseId"=>$response))->num_rows();
+        $_SESSION["notif"] = "Condition-Response successfully created.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
 
         //check duplicate condition-response
         if(!$conresponseCount > 0){
@@ -59,12 +62,14 @@ class Conresponse extends CI_Controller {
                 $this->m_basic->insert("conditionresponse", array("appId"=>$appId, "conditionId"=>$condition, "responseId"=>$response, "userId"=>$_SESSION["userId"], "crStatus"=>1));
                 redirect(base_url("conresponse/all_condition_response"));
             }else{
-                $_SESSION['error'] = 'This condition has already been used and still active';
-                $this->session->mark_as_flash('error');
+                $_SESSION["notif"] = 'This condition has already been used and still active';
+                $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
             }
         }else{
-            $_SESSION['error'] = 'This condition and response has already been used';
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = 'This condition and response has already been used';
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
         redirect(base_url("conresponse/new_condition_response"));
     }
@@ -92,6 +97,9 @@ class Conresponse extends CI_Controller {
         $crId = $this->input->post("crId");
 
         $count = $this->m_basic->find("conditionresponse", array("conditionId"=>$condition, "responseId"=>$response))->num_rows();
+        $_SESSION["notif"] = "Condition-Response successfully edited.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         //check duplicate condition-response
         if(!$count>0){
             $conditionCount = $this->m_basic->find("conditionresponse", array("conditionId"=>$condition, "crStatus"=>"1"))->num_rows();
@@ -103,31 +111,40 @@ class Conresponse extends CI_Controller {
                 $this->m_basic->update(array("crId"=>$crId), "conditionresponse", array("conditionId"=>$condition, "responseId"=>$response));
                 redirect(base_url("conresponse/all_condition_response"));
             }else{
-                $_SESSION['error'] = 'This condition has already been used, please use another condition';
-                $this->session->mark_as_flash('error');
+                $_SESSION["notif"] = 'This condition has already been used, please use another condition';
+                $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
                 redirect(base_url("conresponse/edit_condition_response/").$crId);
             }
         }else{
-            $_SESSION['error'] = 'This condition has already been used, please use another condition';
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = 'This condition has already been used, please use another condition';
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
             redirect(base_url("conresponse/edit_condition_response/").$crId);
         }
     }
 
     public function delete_condition_response($crId){
         $this->m_basic->update(array("crId"=>$crId), "conditionresponse", array("crStatus"=>"0"));
+        $_SESSION["notif"] = "Condition-Response successfully deleted.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         redirect(base_url("conresponse/all_condition_response"));
     }
 
     public function activate_condition_response($crId){
         $condition = $this->m_basic->find("conditionresponse", array("crId"=>$crId))->row();
         $conditionCount = $this->m_basic->find("conditionresponse", array("conditionId"=>$condition->conditionId, "crStatus"=>"1"))->num_rows();
+        $_SESSION["notif"] = "Condition-Response successfully reactivated.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         //check already used condition
         if(!$conditionCount > 0){
             $this->m_basic->update(array("crId"=>$crId), "conditionresponse", array("crStatus"=>"1"));
         }else{
-            $_SESSION['error'] = 'This condition has already been used and still active';
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = 'This condition has already been used and still active';
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
         redirect(base_url("conresponse/all_condition_response"));
     }

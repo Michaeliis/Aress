@@ -30,8 +30,9 @@ class Login extends CI_Controller {
             $_SESSION["userPosition"] = $user->userPosition;
             redirect(base_url("app/select_app"));
         }else{
-            $_SESSION["error"] = "Invalid username or password";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "Invalid username or password";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
             redirect(base_url("login/login"));
         }
     }

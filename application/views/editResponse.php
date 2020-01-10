@@ -1,6 +1,3 @@
-<?php if(isset($_SESSION["error"])){?>
-    <script>alert("<?=$_SESSION['error']?>")</script>
-<?php }?>
 <style>
     #dataTable td{
         vertical-align: top;
@@ -27,7 +24,7 @@
                             <input type="text" id="responseNameOld" name="responseNameOld" value="<?= $response->responseName?>" required hidden>
                         </div>
                     </div>
-
+                    
                     <table class="table table-bordered table-striped mb-none" id="datatable-default">
                         <thead>
                             <tr>
@@ -67,6 +64,7 @@
                             <?php } ?>
                         </tbody>
                     </table>
+                    <a class="btn btn-success" href="<?= base_url('response/new_response_detail/'). $response->responseId?>">Add New</a>
                     
                     <footer class="panel-footer">
                         <div class="row">
@@ -83,3 +81,17 @@
     </div>
 </div>
 <!-- end: page -->
+<script src="<?=base_url("assets/")?>vendor/jquery/jquery.js"></script>
+
+
+<script>
+    <?php if(isset($_SESSION["notif"])){?>
+    $(document).ready(function(){
+        new PNotify({
+            title: 'Notification',
+            text: '<?=$_SESSION['notif']?>',
+            type: '<?=$_SESSION['notifType']?>'
+        });
+    });
+    <?php }?>
+</script>

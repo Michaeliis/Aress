@@ -15,17 +15,6 @@ class Item extends CI_Controller {
             redirect(base_url("login/login"));
         }
     }
-    
-
-    public function testWys(){
-        $header = array(
-            "subtitle"=>"Item",
-            "title"=>"All Item"
-        );
-        $this->load->view("header", $header);
-        $this->load->view("testWys");
-        $this->load->view("footer");
-    }
 
     public function all_item(){
         $data['item'] = $this->m_basic->joinUser('item')->result();
@@ -61,6 +50,10 @@ class Item extends CI_Controller {
         $itemCounter = $this->m_basic->find("item", array("itemName"=>$itemName, "appId"=>$appId))->num_rows();
         if(!$itemCounter > 0){
             $itemId = $this->m_basic->insert("item", array("appId"=>$appId, "itemName"=>$itemName, "itemValue"=>$itemValue, "itemDetail"=>$itemDetail, "userId"=>$_SESSION["userId"], "itemStatus"=>"1"));
+
+            $_SESSION["notif"] = "Item successfully created.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
     
             foreach($optionValue as $counter => $optionValues){
                 if($optionValues != null){
@@ -71,14 +64,16 @@ class Item extends CI_Controller {
                     if(!$itemOptionCounter > 0){
                         $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "itemOptionStatus"=>"1"));
                     }else{
-                        $_SESSION['error'] = 'This item option name(s) or value(s) has been used';
-                        $this->session->mark_as_flash('error');
+                        $_SESSION["notif"] = 'This item option name(s) or value(s) has been used';
+                        $_SESSION["notifType"] = "error";
+                        $this->session->mark_as_flash(array("notif", "notifType"));
                     }
                 }
             }
         }else{
-            $_SESSION['error'] = 'This item name has been used, please use another name';
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = 'This item name has been used, please use another name';
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("item/all_item"));
@@ -117,9 +112,13 @@ class Item extends CI_Controller {
                 $itemOptionCounter = $this->m_basic->find("itemOption", "itemId ='$itemId' AND (itemOptionValue = '$optionValues' OR itemOptionName = '$optionNames')")->num_rows();
                 if(!$itemOptionCounter > 0){
                     $this->m_basic->insert("itemOption", array("itemId"=>$itemId, "itemOptionValue"=>$optionValues, "itemOptionName"=>$optionName[$counter], "itemOptionStatus"=>"1"));
+                    $_SESSION["notif"] = "Item successfully edited.";
+                    $_SESSION["notifType"] = "success";
+                    $this->session->mark_as_flash(array("notif", "notifType"));
                 }else{
-                    $_SESSION['error'] = 'This item option name(s) or value(s) has been used';
-                    $this->session->mark_as_flash('error');
+                    $_SESSION["notif"] = 'This item option name(s) or value(s) has been used';
+                    $_SESSION["notifType"] = "error";
+                    $this->session->mark_as_flash(array("notif", "notifType"));
                 }
             }
         }
@@ -129,13 +128,17 @@ class Item extends CI_Controller {
 
     public function delete_item($itemId){
         $this->m_basic->update(array("itemId"=>$itemId), "item", array("itemStatus"=>"0"));
-
+        $_SESSION["notif"] = "Item successfully deleted.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         redirect(base_url("item/all_item"));
     }
 
     public function activate_item($itemId){
         $this->m_basic->update(array("itemId"=>$itemId), "item", array("itemStatus"=>"1"));
-
+        $_SESSION["notif"] = "Item successfully reactivated.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         redirect(base_url("item/all_item"));
     }
 
@@ -162,9 +165,13 @@ class Item extends CI_Controller {
         $itemOptionCounter = $this->m_basic->find("itemOption", "itemId ='$itemId' AND (itemOptionValue = '$itemOptionValue' OR itemOptionName = '$itemOptionName')")->num_rows();
         if(!$itemOptionCounter > 0){
             $this->m_basic->update(array("itemId"=>$itemId, "itemOptionValue"=>$itemOptionValueOld, "itemOptionName"=>$itemOptionNameOld), "itemoption", array("itemOptionName"=>$itemOptionName, "itemOptionValue"=>$itemOptionValue));
+            $_SESSION["notif"] = "Item Option successfully created.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }else{
-            $_SESSION['error'] = 'This item option name(s) or value(s) has been used';
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = 'This item option name(s) or value(s) has been used';
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
             
         redirect(base_url("item/edit_item/"). $itemId);

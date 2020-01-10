@@ -54,12 +54,16 @@ class Response extends CI_Controller {
         $appId = $_SESSION["appId"];
 
         $responseName = $this->input->post("responseName");
-
+        
         //cek responseName
         $responseCount = $this->m_basic->find("response", array("responseName"=>$responseName, "appId"=>$appId))->num_rows();
         if(!$responseCount > 0){
             //insert response ke db
             $responseId = $this->m_basic->insert("response", array("appId"=>$appId, "responseName"=>$responseName, "userId"=>$_SESSION["userId"], "responseStatus"=>"1"));
+
+            $_SESSION["notif"] = "Response successfully created.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
 
             //ambil item dari form
             $item = $this->m_basic->find("item", array("appId"=>$appId, "itemStatus"=>"1"))->result();
@@ -78,8 +82,9 @@ class Response extends CI_Controller {
                 $this->m_basic->insert("responsedetail", $responseDetail);
             }
         }else{
-            $_SESSION["error"] = "This response name has been used, please use another response";
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = "This response name has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("response/all_response"));
@@ -101,12 +106,18 @@ class Response extends CI_Controller {
     public function delete_response($responseId){
         $this->m_basic->update(array("responseId"=>$responseId), "response", array("responseStatus"=>"0"));
 
+        $_SESSION["notif"] = "Response successfully deleted.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
+
         redirect(base_url("response/all_response"));
     }
 
     public function activate_response($responseId){
         $this->m_basic->update(array("responseId"=>$responseId), "response", array("responseStatus"=>"1"));
-
+        $_SESSION["notif"] = "Response successfully reactivated.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         redirect(base_url("response/all_response"));
     }
 
@@ -123,6 +134,13 @@ class Response extends CI_Controller {
         }
         if(!$responseCount > 0){
             $this->m_basic->update(array("responseId"=>$responseId), "response", array("responseName"=>$responseName));
+            $_SESSION["notif"] = "Response successfully edited.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
+        }else{
+            $_SESSION["notif"] = "This response name has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("response/all_response"));
@@ -154,17 +172,36 @@ class Response extends CI_Controller {
         }
         if(!$responseDetailCount > 0){
             $this->m_basic->update(array("responseId"=>$responseId, "responseTitle"=>$oldresponseTitle), "responsedetail", array("responseTitle"=>$responseTitle, "responseValue"=>$responseValue));
+            $_SESSION["notif"] = "Response detail successfully edited.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }else{
-            $_SESSION["error"] = "This response detail title has been used, please use another name";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "This response detail title has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("response/edit_response/").$responseId);
     }
 
+    public function new_response_detail($responseId){
+        $data["responseId"] = $responseId;
+        $header = array(
+            "subtitle"=>"Response",
+            "title"=>"New Response Detail"
+        );
+        $this->load->view('header', $header);
+        $this->load->view('newResponseDetail', $data);
+        $this->load->view('footer');
+    }
+
     public function delete_response_detail($responseId, $responseTitle){
         $responseTitle = rawurldecode($responseTitle);
         $this->m_basic->update(array("responseId"=>$responseId, "responseTitle"=>$responseTitle), "responsedetail", array("responseDetailStatus"=>"0"));
+
+        $_SESSION["notif"] = "Response successfully deleted.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
 
         redirect(base_url("response/edit_response/$responseId"));
     }
@@ -172,6 +209,10 @@ class Response extends CI_Controller {
     public function activate_response_detail($responseId, $responseTitle){
         $responseTitle = rawurldecode($responseTitle);
         $this->m_basic->update(array("responseId"=>$responseId, "responseTitle"=>$responseTitle), "responsedetail", array("responseDetailStatus"=>"1"));
+
+        $_SESSION["notif"] = "Response successfully reactivated.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
 
         redirect(base_url("response/edit_response/$responseId"));
     }

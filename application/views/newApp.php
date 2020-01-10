@@ -30,6 +30,7 @@
                                 <option value="">Select Language</option>
                                 <option value="en">English</option>
                                 <option value="id">Indonesian</option>
+                            </select>
                         </div>
                     </div>
 

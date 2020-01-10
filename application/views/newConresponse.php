@@ -5,9 +5,6 @@
     }
 </style>
 <!-- start: page -->
-<?php if(isset($_SESSION["error"])){?>
-    <script>alert("<?=$_SESSION['error']?>")</script>
-<?php }?>
 <div class="row">
     <div class="col-lg-12">
         <section class="panel">
@@ -56,3 +53,17 @@
     </div>
 </div>
 <!-- end: page -->
+<script src="<?=base_url("assets/")?>vendor/jquery/jquery.js"></script>
+
+
+<script>
+    <?php if(isset($_SESSION["notif"])){?>
+    $(document).ready(function(){
+        new PNotify({
+            title: 'Notification',
+            text: '<?=$_SESSION['notif']?>',
+            type: '<?=$_SESSION['notifType']?>'
+        });
+    });
+    <?php }?>
+</script>

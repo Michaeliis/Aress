@@ -10,7 +10,7 @@
         <section class="panel">
             <header class="panel-heading">
                                         
-                <h2 class="panel-title">Train Bot</h2>
+                <h2 class="panel-title">New Sample</h2>
             </header>
             <div class="panel-body">
                 <form class="form-horizontal form-bordered" action="<?= base_url('sample/newSample')?>" method="POST">

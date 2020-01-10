@@ -22,7 +22,7 @@ class User extends CI_Controller {
         $data['user'] = $this->m_basic->gets("user")->result();
         $header = array(
             "subtitle"=>"User",
-            "title"=>"View User"
+            "title"=>"All User"
         );
         $this->load->view('header', $header);
         $this->load->view('allUser', $data);
@@ -61,11 +61,15 @@ class User extends CI_Controller {
                 "userStatus"=>1
             );
             $this->m_basic->insert("user", $data);
+            $_SESSION["notif"] = "User successfully created.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
     
             redirect(base_url("user/all_user"));
         }else{
-            $_SESSION["error"] = "This username has been used, please use another name";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "This username has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
 
             redirect(base_url("user/new_user"));
         }
@@ -110,21 +114,30 @@ class User extends CI_Controller {
                 $data["userPassword"] = md5($password);
             }
             $this->m_basic->update(array("userId"=>$userId), "user", $data);
+            $_SESSION["notif"] = "User successfully edited.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
             redirect(base_url("user/all_user"));
         }else{
-            $_SESSION["error"] = "This username has been used, please use another name";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "This username has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
 
-            redirect(base_url("user/new_user"));
+            redirect(base_url("user/all_user"));
         }        
     }
 
     public function delete_user($userId){
         if($userId == $_SESSION["userId"]){
-            $_SESSION["error"] = "You cannot delete your own account";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "You cannot delete your own account";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }else{
             $this->m_basic->update(array("userId"=>$userId), "user", array("userStatus"=>"0"));
+            
+            $_SESSION["notif"] = "User successfully deleted.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("user/all_user"));
@@ -132,9 +145,13 @@ class User extends CI_Controller {
 
     public function activate_user($userId){
         if($userId == $_SESSION["userId"]){
-            $_SESSION["error"] = "You cannot reactivate your own account";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "You cannot reactivate your own account";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }else{
+            $_SESSION["notif"] = "User successfully reactivated.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
             $this->m_basic->update(array("userId"=>$userId), "user", array("userStatus"=>"1"));
         }
 

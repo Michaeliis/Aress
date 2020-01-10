@@ -70,8 +70,9 @@ class Entity extends CI_Controller {
             if(isset($server_output->name)){
                 $entityStatus = 1;
             }else{
-                $_SESSION["error"] = "There's a problem when inserting entity, please check your internet connection";
-                $this->session->mark_as_flash("error");
+                $_SESSION["notif"] = "There's a problem when inserting entity, please check your internet connection";
+                $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
             }
 
             //mengubah lookup entity
@@ -82,6 +83,10 @@ class Entity extends CI_Controller {
 
             //memasukkan entity ke db
             $entityId = $this->m_basic->insert("entity", array("appId"=>$appId, "entityName"=>$entityName, "entityDetail"=>$entityDetail, "userId"=>$_SESSION["userId"], "entityStatus"=>$entityStatus));
+            
+            $_SESSION["notif"] = "Entity successfully created.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
 
             //memasukkan value baru
             foreach($value as $counter =>$values){
@@ -99,8 +104,9 @@ class Entity extends CI_Controller {
                         if(isset($server_output->name)){
                             $valueStatus = 1;
                         }else{
-                            $_SESSION["error"] = "There's a problem when inserting values, please check your internet connection";
-                            $this->session->mark_as_flash("error");
+                            $_SESSION["notif"] = "There's a problem when inserting values, please check your internet connection";
+                            $_SESSION["notifType"] = "error";
+                            $this->session->mark_as_flash(array("notif", "notifType"));
                         }
                     }
                     
@@ -116,14 +122,16 @@ class Entity extends CI_Controller {
                         $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "userId"=>$_SESSION["userId"], "expressionStatus"=>"1"));
                     }
                 }else{
-                    $_SESSION["error"] = "One or more of the value name is duplicate";
-                    $this->session->mark_as_flash('error');
+                    $_SESSION["notif"] = "One or more of the value name is duplicate";
+                    $_SESSION["notifType"] = "error";
+                    $this->session->mark_as_flash(array("notif", "notifType"));
                     continue;
                 }
             }
         }else{
-            $_SESSION["error"] = "The entity name has been used, please use another name";
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = "The entity name has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("entity/all_entity"));
@@ -158,7 +166,12 @@ class Entity extends CI_Controller {
         $expression  = $this->input->post("expression");
 
         $this->m_basic->update(array("entityId"=>$entityId), "entity", array("entityDetail"=>$entityDetail));
+        
         if($value[0]!=""){
+            $_SESSION["notif"] = "Value successfully created.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
+
             //memasukkan value baru
             foreach($value as $counter =>$values){
                 //mengecek apakah value sudah digunakan
@@ -174,8 +187,9 @@ class Entity extends CI_Controller {
                     if(isset($server_output->name)){
                         $valueStatus = 1;
                     }else{
-                        $_SESSION["error"] = "There's a problem when inserting value, please check your internet connection";
-                        $this->session->mark_as_flash("error");
+                        $_SESSION["notif"] = "There's a problem when inserting value, please check your internet connection";
+                        $_SESSION["notifType"] = "error";
+                        $this->session->mark_as_flash(array("notif", "notifType"));
                     }
                     //memasukkan value ke db
                     $valueId = $this->m_basic->insert("value", array("entityId"=>$entityId, "value"=>$values, "userId"=>$_SESSION["userId"], "valueStatus"=>$valueStatus));
@@ -187,8 +201,9 @@ class Entity extends CI_Controller {
                         $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "userId"=>$_SESSION["userId"], "expressionStatus"=>"1"));
                     }
                 }else{
-                    $_SESSION["error"] = "One or more of the value name is duplicate";
-                    $this->session->mark_as_flash('error');
+                    $_SESSION["notif"] = "One or more of the value name is duplicate";
+                    $_SESSION["notifType"] = "error";
+                    $this->session->mark_as_flash(array("notif", "notifType"));
                     continue;
                 }
             }
@@ -205,9 +220,13 @@ class Entity extends CI_Controller {
         
         if(isset($server_response->deleted)){
             $this->m_basic->update(array("entityId"=>$entityId), "entity", array("entityStatus"=>"0"));
+            $_SESSION["notif"] = "Entity successfully deleted.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }else{
-            $_SESSION["error"] = "There's a problem when deleting entity, please check your connection";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "There's a problem when deleting entity, please check your connection";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
         
         redirect(base_url("entity/all_entity"));
@@ -220,6 +239,9 @@ class Entity extends CI_Controller {
         $json = json_encode(array("id"=>$entityName));
         $server_output = json_decode(doStuff("entities/", null, $json, $appToken));
 
+        $_SESSION["notif"] = "Entity successfully reactivated.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         //check api result
         if(isset($server_output->name)){
             $this->m_basic->update(array("entityId"=>$entityId), "entity", array("entityStatus"=>"1"));
@@ -239,13 +261,15 @@ class Entity extends CI_Controller {
                 //check api
                 if(!isset($server_output->name)){
                     $this->m_basic->update(array("value"=>$value, "entityId"=>$entityId), "value", array("valueStatus"=>0));
-                    $_SESSION["error"] = "There's a problem when inserting value(s), please check your internet connection";
-                    $this->session->mark_as_flash("error");
+                    $_SESSION["notif"] = "There's a problem when inserting value(s), please check your internet connection";
+                    $_SESSION["notifType"] = "error";
+                    $this->session->mark_as_flash(array("notif", "notifType"));
                 }
             }
         }else{
-            $_SESSION["error"] = "There's a problem when inserting entity, please check your internet connection";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "There's a problem when inserting entity, please check your internet connection";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
         
         redirect(base_url("entity/all_entity"));
@@ -276,6 +300,10 @@ class Entity extends CI_Controller {
         $expressions = explode(";", $expression);
         $expressions = array_unique($expressions);
 
+        $_SESSION["notif"] = "Expression(s) successfully created.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
+
         foreach($expressions as $expressionss){
             $type = "entities/".$value->entityName."/values/".$value->value."/expressions";
             $json = array("expression"=>$expressionss);
@@ -289,13 +317,15 @@ class Entity extends CI_Controller {
                 if(isset($server_output->name)){
                     $expressionStatus = 1;
                 }else{
-                    $_SESSION["error"] = "There's an error when inserting expression";
-                    $this->session->mark_as_flash("error");
+                    $_SESSION["notif"] = "There's an error when inserting expression";
+                    $_SESSION["notifType"] = "error";
+                    $this->session->mark_as_flash(array("notif", "notifType"));
                 }
                 $this->m_basic->insert("expression", array("valueId"=>$valueId, "expression"=>$expressionss, "userId"=>$_SESSION["userId"], "expressionStatus"=>$expressionStatus));
             }else{
-                $_SESSION["error"] = "This expression(s) have already been used, please check your expressions";
-                $this->session->mark_as_flash("error");
+                $_SESSION["notif"] = "This expression(s) have already been used, please check your expressions";
+                $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
             }
         }
 
@@ -311,9 +341,13 @@ class Entity extends CI_Controller {
         $result = deleteStuff(rawurlencode($type), null, $appToken);
         if(isset(json_decode($result)->deleted)){
             $this->m_basic->update(array("valueId"=>$valueId), "value", array("valueStatus"=>"0"));
+            $_SESSION["notif"] = "Value successfully deleted.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }else{
-            $_SESSION["error"] = "There's an error when deleting value, please check your connection";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "There's an error when deleting value, please check your connection";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
         
         redirect(base_url("entity/edit_entity/").$entityId);
@@ -340,9 +374,13 @@ class Entity extends CI_Controller {
         //cek api
         if(isset($server_output->name)){
             $this->m_basic->update(array("valueId"=>$valueId), "value", array("valueStatus"=>"1"));
+            $_SESSION["notif"] = "Value successfully reactivated.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }else{
-            $_SESSION["error"] = "There's an error when deleting value, please check your connection";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "There's an error when deleting value, please check your connection";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("entity/edit_entity/").$entityId);
@@ -372,26 +410,45 @@ class Entity extends CI_Controller {
         $expressionOld = $this->input->post("expressionOld");
         $expression = $this->input->post("expression");
 
-        //remove old expression
-        $type = "entities/".$entityName."/values/".$valueName."/expressions/".$expressionOld;
-        $server_output = json_decode(deleteStuff(rawurlencode($type), null, $appToken));
+        //check duplicate expression
+        $countExpression = $this->m_basic->find("expression", array("valueId"=>$value, "expression"=>$expression))->num_rows();
+        if(!$countExpression > 0){
+            //remove old expression
+            $type = "entities/".$entityName."/values/".$valueName."/expressions/".$expressionOld;
+            $server_output = json_decode(deleteStuff(rawurlencode($type), null, $appToken));
 
-        if(isset($server_output->error)){
-            $_SESSION["error"] = $server_output->error;
-            $this->session->mark_as_flash('error');
-        }else if(isset($server_output->deleted)){
-            //insert new expression
-            $type = "entities/".$entityName."/values/".$valueName."/expressions";
-            $json = json_encode(array("expression"=>$expression));
-            $server_output = json_decode(doStuff(rawurlencode($type), null, $json, $appToken));
+            if(isset($server_output->error)){
+                $_SESSION["notif"] = $server_output->error;
+                $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
+            }else if(isset($server_output->deleted)){
+                //insert new expression
+                $type = "entities/".$entityName."/values/".$valueName."/expressions";
+                $json = json_encode(array("expression"=>$expression));
+                $server_output = json_decode(doStuff(rawurlencode($type), null, $json, $appToken));
 
-            if(isset($server_output->name)){
-                //update expression to db
-                $this->m_basic->update(array("valueId"=>$value, "expression"=>$expressionOld), "expression", array("expression"=>$expression));
+                if(isset($server_output->name)){
+                    //update expression in db
+                    $this->m_basic->update(array("valueId"=>$value, "expression"=>$expressionOld), "expression", array("expression"=>$expression));
+                    $_SESSION["notif"] = "Expression successfully edited.";
+                    $_SESSION["notifType"] = "success";
+                    $this->session->mark_as_flash(array("notif", "notifType"));
+                }else{
+                    //update expression in db and change status to inactive
+                    $this->m_basic->update(array("valueId"=>$value, "expression"=>$expressionOld), "expression", array("expression"=>$expression, "expressionStatus"=>0));
+                    $_SESSION["notif"] = "There's an error when inserting this expression, please check your connection";
+                    $_SESSION["notifType"] = "error";
+                    $this->session->mark_as_flash(array("notif", "notifType"));
+                }
+            }else{
+                $_SESSION["notif"] = "There's an error when deleting this expression, please check your connection";
+                $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
             }
         }else{
-            $_SESSION["error"] = "There's an error when deleting this expression, please check your connection";
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = "This expression has already been used";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("entity/edit_value/").$entity."/".$value);
@@ -411,13 +468,18 @@ class Entity extends CI_Controller {
         $result = json_decode(deleteStuff(rawurlencode($type), null, $appToken));
         
         if(isset($result->error)){
-            $_SESSION["error"] = $result->error;
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = $result->error;
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }else if(isset($result->deleted)){
             $this->m_basic->update(array("expressionId"=>$expressionId), "expression", array("expressionStatus"=>"0"));
+            $_SESSION["notif"] = "Expression successfully deleted.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }else{
-            $_SESSION["error"] = "There's an error when deleting this expression, please check your connection";
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = "There's an error when deleting this expression, please check your connection";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("entity/edit_value/".$entityId."/".$valueId));
@@ -436,9 +498,13 @@ class Entity extends CI_Controller {
 
         if(isset($server_output->name)){
             $this->m_basic->update(array("expressionId"=>$expressionId), "expression", array("expressionStatus"=>"1"));
+            $_SESSION["notif"] = "Expression successfully reactivated.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }else{
-            $_SESSION["error"] = "There's an error when inserting expression";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "There's an error when inserting expression";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
         redirect(base_url("entity/edit_value/".$entityId."/".$valueId));
     }

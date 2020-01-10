@@ -54,6 +54,10 @@ class Sample extends CI_Controller {
         $start = $this->input->post("start");
         $end = $this->input->post("end");
 
+        $_SESSION["notif"] = "Sample successfully created.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
+
         //convert entity id jadi entity value
         foreach($entityId as $entityIds){
             $resultValue = $this->m_basic->find("entity", array("entityId"=>$entityIds))->row();
@@ -118,8 +122,9 @@ class Sample extends CI_Controller {
                 $this->m_basic->insert("sampleentity", $sampleDetail);
             }
         }else{
-            $_SESSION["error"] = "There's a problem when inserting sample, please check your internet connection";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "There's a problem when inserting sample, please check your internet connection";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("sample/all_sample"));
@@ -132,7 +137,7 @@ class Sample extends CI_Controller {
 
         $header = array(
             "subtitle"=>"Sample",
-            "title"=>"New Sample"
+            "title"=>"View Sample"
         );
         $this->load->view('header', $header);
         $this->load->view('viewSample', $data);
@@ -149,9 +154,13 @@ class Sample extends CI_Controller {
         
         if(isset($server_output->sent)){
             $this->m_basic->delete(array("sampleId"=>$sampleId), "sample");
+            $_SESSION["notif"] = "Sample successfully deleted.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }else{
-            $_SESSION["error"] = "There's an error when deleting sample, please check your internet connection";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "There's an error when deleting sample, please check your internet connection";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect("sample/all_sample");

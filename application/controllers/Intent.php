@@ -47,6 +47,10 @@ class Intent extends CI_Controller {
         $intentDetail = $this->input->post("intentDetail");
 
         $intentCount = $this->m_basic->find("intent", array("intentName"=>$intentName, "appId"=>$appId))->num_rows();
+
+        $_SESSION["notif"] = "Intent successfully created.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         if(!$intentCount > 0){
 
             $json = json_encode(array("value"=>$intentName));
@@ -56,13 +60,15 @@ class Intent extends CI_Controller {
             if(isset($server_output->name)){
                 $intentStatus = 1;
             }else{
-                $_SESSION["error"] = "There's an error when creating intent, please check your internet connection";
-                $this->session->mark_as_flash("error");
+                $_SESSION["notif"] = "There's an error when creating intent, please check your internet connection";
+                $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
             }
             $this->m_basic->insert("intent", array("intentName"=>$intentName, "appId"=>$appId, "intentDetail"=>$intentDetail, "userId"=>$_SESSION["userId"], "intentStatus"=>$intentStatus));
         }else{
-            $_SESSION["error"] = "This intent name has been used, please use another name";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "This intent name has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
         
         redirect(base_url("intent/all_intent"));
@@ -93,6 +99,9 @@ class Intent extends CI_Controller {
 
         //cek double intent name
         $intentCount = $this->m_basic->find("intent", array("intentName"=>$intentName, "appId"=>$appId))->num_rows();
+        $_SESSION["notif"] = "Intent successfully edited.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         if($intentNameBefore == $intentName){
             $intentCount--;
             $changeIntent=false;
@@ -111,19 +120,22 @@ class Intent extends CI_Controller {
                     if(isset($server_output->name)){
                         $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentName"=>$intentName, "intentDetail"=>$intentDetail));
                     }else{
-                        $_SESSION["error"] = "There's an error when creating intent, please check your internet connection";
-                        $this->session->mark_as_flash("error");
+                        $_SESSION["notif"] = "There's an error when creating intent, please check your internet connection";
+                        $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
                     }
                 }else{
-                    $_SESSION["error"] = "There's an error when deleting intent, please check your connection";
-                    $this->session->mark_as_flash("error");
+                    $_SESSION["notif"] = "There's an error when deleting intent, please check your connection";
+                    $_SESSION["notifType"] = "error";
+                    $this->session->mark_as_flash(array("notif", "notifType"));
                 }
             }
             
             $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentDetail"=>$intentDetail));
         }else{
-            $_SESSION["error"] = "This intent name have already been used, please use another name";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "This intent name have already been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("intent/all_intent"));
@@ -136,10 +148,14 @@ class Intent extends CI_Controller {
         $server_output = json_decode(deleteStuff("/entities/intent/values/".$intent->intentName, null, $appToken));
 
         if(isset($server_output->deleted)){
+            $_SESSION["notif"] = "Intent successfully deleted.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
             $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentStatus"=>"0"));
         }else{
-            $_SESSION["error"] = "There's an error when deleting intent, please check your connection";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "There's an error when deleting intent, please check your connection";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
         
         redirect(base_url("intent/all_intent"));
@@ -154,10 +170,14 @@ class Intent extends CI_Controller {
         $server_output = json_decode(doStuff("/entities/intent/values", null, json_encode($json), $appToken));
 
         if(isset($server_output->name)){
+            $_SESSION["notif"] = "Intent successfully reactivated.";
+            $_SESSION["notifType"] = "success";
+            $this->session->mark_as_flash(array("notif", "notifType"));
             $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentStatus"=>"1"));
         }else{
-            $_SESSION["error"] = "There's an error when creating intent, please check your internet connection";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "There's an error when creating intent, please check your internet connection";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
         
         redirect(base_url("intent/all_intent"));

@@ -19,14 +19,15 @@
                         <label class="col-sm-3 control-label" for="position">Message</label>
 
                         <div class="col-sm-8">
-                            <span  class="form-control mb-md"><?= $message->messageText?></span>
+                            <textarea rows="4" class="form-control mb-md"><?= $message->messageText?></textarea>
                         </div>
                     </div>
 
+                    <h3>Response</h3>
                     <table class="table table-bordered table-striped mb-none" id="datatable-default">
                         <thead>
                             <tr>
-                                <th class="col-md-4">Entity</th>
+                                <th class="col-md-4">Item</th>
                                 <th class="col-md-6">Value</th>
                             </tr>
                         </thead>

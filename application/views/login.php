@@ -1,6 +1,3 @@
-<?php if(isset($_SESSION["error"])){?>
-    <script>alert("<?=$_SESSION['error']?>")</script>
-<?php }?>
 		<!-- start: page -->
 		<section class="body-sign">
 			<div class="center-sign">
@@ -54,3 +51,17 @@
 			</div>
 		</section>
 		<!-- end: page -->
+<script src="<?=base_url("assets/")?>vendor/jquery/jquery.js"></script>
+<script src="<?=base_url("assets/")?>vendor/pnotify/pnotify.custom.js"></script>
+
+<script>
+    <?php if(isset($_SESSION["notif"])){?>
+    $(document).ready(function(){
+        new PNotify({
+            title: 'Notification',
+            text: '<?=$_SESSION['notif']?>',
+            type: '<?=$_SESSION['notifType']?>'
+        });
+    });
+    <?php }?>
+</script>

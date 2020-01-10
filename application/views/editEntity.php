@@ -1,6 +1,3 @@
-<?php if(isset($_SESSION["error"])){?>
-    <script>alert("<?=$_SESSION['error']?>")</script>
-<?php }?>
 <style>
     #dataTable td{
         vertical-align: top;
@@ -157,4 +154,18 @@ function deleteRow(tableID) {
 		}
 	}
 }
+</script>
+<script src="<?=base_url("assets/")?>vendor/jquery/jquery.js"></script>
+
+
+<script>
+    <?php if(isset($_SESSION["notif"])){?>
+    $(document).ready(function(){
+        new PNotify({
+            title: 'Notification',
+            text: '<?=$_SESSION['notif']?>',
+            type: '<?=$_SESSION['notifType']?>'
+        });
+    });
+    <?php }?>
 </script>

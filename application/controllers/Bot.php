@@ -54,6 +54,10 @@ class Bot extends CI_Controller {
         $conditionName = $this->input->post("conditionName");
         $responseName = $this->input->post("responseName");
 
+        $_SESSION["notif"] = "Successfully trained.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
+
         //convert entity id jadi entity value
         foreach($entityId as $entityIds){
             $resultValue = $this->m_basic->find("entity", array("entityId"=>$entityIds))->row();
@@ -178,20 +182,24 @@ class Bot extends CI_Controller {
                             $this->m_basic->insert("conditiondetail", $conditionDetail);
                         }
                     }else{
-                        $_SESSION["error"] = "There's a problem when inserting sample, please check your internet connection";
-                        $this->session->mark_as_flash("error");
+                        $_SESSION["notif"] = "There's a problem when inserting sample, please check your internet connection";
+                        $_SESSION["notifType"] = "error";
+                        $this->session->mark_as_flash(array("notif", "notifType"));
                     }
                 }else{
-                    $_SESSION["error"] = "This response name has been used, please use another name";
-                    $this->session->mark_as_flash("error");
+                    $_SESSION["notif"] = "This response name has been used, please use another name";
+                    $_SESSION["notifType"] = "error";
+                    $this->session->mark_as_flash(array("notif", "notifType"));
                 }
             }else{
-                $_SESSION["error"] = "This condition detail has been used, please check your condition";
-                $this->session->mark_as_flash('error');
+                $_SESSION["notif"] = "This condition detail has been used, please check your condition";
+                $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
             }
         }else{
-            $_SESSION["error"] = "This condition name has been used, please use another name";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "This condition name has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
         
         redirect(base_url("dashboard"));
@@ -244,8 +252,9 @@ class Bot extends CI_Controller {
             $this->load->view('checkBotResult', $data);
             $this->load->view('footer');
         }else{
-            $_SESSION["error"] = "There's a problem when testing, please check your internet connection";
-            $this->session->mark_as_flash("error");
+            $_SESSION["notif"] = "There's a problem when testing, please check your internet connection";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
             redirect(base_url("bot/check_message"));
         }
     }

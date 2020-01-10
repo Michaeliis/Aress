@@ -1,6 +1,3 @@
-<?php if(isset($_SESSION["error"])){?>
-    <script>alert("<?=$_SESSION['error']?>")</script>
-<?php }?>
 <section class="panel">
     <header class="panel-heading">
         <div class="panel-actions">
@@ -41,7 +38,7 @@
                     </td>
                     <td>
                         <?php if($entities->entityStatus == "1"){?>
-                            <a href="<?= base_url("entity/delete_entity/").$entities->entityId?>" class="btn btn-danger">
+                            <a href="<?= base_url("entity/delete_entity/").$entities->entityId?>" data-href="<?= base_url("entity/delete_entity/").$entities->entityId?>" class="btn btn-danger">
                                 Delete
                             </a>
                             <a href="<?= base_url("entity/edit_entity/").$entities->entityId?>" class="btn btn-success">
@@ -59,3 +56,18 @@
         </table>
     </div>
 </section>
+
+<script src="<?=base_url("assets/")?>vendor/jquery/jquery.js"></script>
+
+
+<script>
+    <?php if(isset($_SESSION["notif"])){?>
+    $(document).ready(function(){
+        new PNotify({
+            title: 'Notification',
+            text: '<?=$_SESSION['notif']?>',
+            type: '<?=$_SESSION['notifType']?>'
+        });
+    });
+    <?php }?>
+</script>

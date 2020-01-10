@@ -65,6 +65,10 @@ class App extends CI_Controller {
         //check appName
         $appCount = $this->m_basic->find("app", array("appName"=>$appName))->num_rows();
 
+        $_SESSION["notif"] = "App successfully created.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
+
         if(!$appCount > 0){
             $json = json_encode(array("name"=>$appName, "lang"=>$appLanguage, "private"=>"false", "desc"=>$appDetail));
             $output = json_decode(doStuff("apps", null, $json, $appToken));
@@ -75,12 +79,14 @@ class App extends CI_Controller {
         
                 $this->m_basic->insert("app", array("appId"=>$appId, "appName"=>$appName, "appLanguage"=>$appLanguage, "appToken"=>$appToken, "appDetail"=>$appDetail, "userId"=>$_SESSION["userId"], "appStatus"=>"1"));
             }else{
-                $_SESSION["error"] = "There is a problem when inserting app, please check your connection";
-                $this->session->mark_as_flash('error');
+                $_SESSION["notif"] = "There is a problem when inserting app, please check your connection";
+                $_SESSION["notifType"] = "error";
+                $this->session->mark_as_flash(array("notif", "notifType"));
             }
         }else{
-            $_SESSION["error"] = "The app name has been used, please use another name";
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = "The app name has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("app/all_app"));
@@ -108,6 +114,9 @@ class App extends CI_Controller {
 
         //check appName
         $appCount = $this->m_basic->find("app", array("appName"=>$appName))->num_rows();
+        $_SESSION["notif"] = "App successfully edited.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         if($appNameOld == $appName){
             $appCount--;
         }
@@ -118,12 +127,14 @@ class App extends CI_Controller {
             if(isset($server_output->success)){
                 $this->m_basic->update(array("appId"=>$appId), "app", array("appName"=>$appName, "appLanguage"=>$appLanguage, "appDetail"=>$appDetail, "appStatus"=>"1"));
             }else{
-                $_SESSION["error"] = "There is a problem when editing app, please check your connection";
-                $this->session->mark_as_flash('error');
+                $_SESSION["notif"] = "There is a problem when editing app, please check your connection";
+                $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
             }
         }else{
-            $_SESSION["error"] = "This app name has been used, please use another name";
-            $this->session->mark_as_flash('error');
+            $_SESSION["notif"] = "This app name has been used, please use another name";
+            $_SESSION["notifType"] = "error";
+            $this->session->mark_as_flash(array("notif", "notifType"));
         }
 
         redirect(base_url("app/all_app"));
@@ -131,11 +142,17 @@ class App extends CI_Controller {
 
     public function delete_app($appId){
         $this->m_basic->update(array("appId"=>$appId), "app", array("appStatus"=>"0"));
+        $_SESSION["notif"] = "App successfully deleted.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         redirect(base_url("app/all_app"));
     }
 
     public function activate_app($appId){
         $this->m_basic->update(array("appId"=>$appId), "app", array("appStatus"=>"1"));
+        $_SESSION["notif"] = "App successfully reactivated.";
+        $_SESSION["notifType"] = "success";
+        $this->session->mark_as_flash(array("notif", "notifType"));
         redirect(base_url("app/all_app"));
     }
 }
