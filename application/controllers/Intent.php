@@ -120,9 +120,10 @@ class Intent extends CI_Controller {
                     if(isset($server_output->name)){
                         $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentName"=>$intentName, "intentDetail"=>$intentDetail));
                     }else{
+                        $this->m_basic->update(array("intentId"=>$intentId), "intent", array("intentName"=>$intentName, "intentDetail"=>$intentDetail, "intentStatus"=>"0"));
                         $_SESSION["notif"] = "There's an error when creating intent, please check your internet connection";
                         $_SESSION["notifType"] = "error";
-                $this->session->mark_as_flash(array("notif", "notifType"));
+                        $this->session->mark_as_flash(array("notif", "notifType"));
                     }
                 }else{
                     $_SESSION["notif"] = "There's an error when deleting intent, please check your connection";

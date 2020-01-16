@@ -28,7 +28,7 @@
                     <table class="table table-bordered table-striped mb-none" id="datatable-default">
                         <thead>
                             <tr>
-                                <th class="col-md-3">Title</th>
+                                <th class="col-md-3">Item</th>
                                 <th class="col-md-3">Value</th>
                                 <th class="col-md-2">Status</th>
                                 <th class="col-md-2">Action</th>
